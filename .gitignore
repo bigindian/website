@@ -1,0 +1,103 @@
+# ------------------------------------------------------------------------------
+# Common Node files and folders
+#  https://github.com/github/gitignore/blob/master/Node.gitignore
+# ------------------------------------------------------------------------------
+
+lib-cov
+*.seed
+*.log
+*.csv
+*.dat
+*.out
+*.pid
+*.gz
+
+pids
+results
+
+node_modules
+npm-debug.log
+
+
+# ------------------------------------------------------------------------------
+# Nodemon
+# ------------------------------------------------------------------------------
+.monitor
+
+
+# ------------------------------------------------------------------------------
+# JSHint
+# ------------------------------------------------------------------------------
+jshint
+
+
+# ------------------------------------------------------------------------------
+# Numerous always-ignore extensions
+# ------------------------------------------------------------------------------
+*.diff
+*.err
+*.orig
+*.rej
+*.swo
+*.swp
+*.vi
+*~
+*.sass-cache
+
+
+# ------------------------------------------------------------------------------
+# Files from other repository control systems
+# ------------------------------------------------------------------------------
+.hg
+.svn
+.CVS
+
+
+# ------------------------------------------------------------------------------
+# Your ideas
+# ------------------------------------------------------------------------------
+ideas
+
+
+# ------------------------------------------------------------------------------
+# OS X and other IDE's folder attributes
+# ------------------------------------------------------------------------------
+.DS_Store
+Thumbs.db
+.cache
+.project
+.settings
+.tmproj
+*.esproj
+nbproject
+*.sublime-project
+*.sublime-workspace
+*.komodoproject
+.komodotools
+_notes
+dwsync.xml
+
+
+# ------------------------------------------------------------------------------
+# Add your custom excludes below
+# ------------------------------------------------------------------------------
+.bower-cache/
+.bower-registry/
+.bower/
+.env
+.tmp/
+.vagrant/
+bin/activate
+boot/local.js
+bower_components/
+coverage/
+dist/
+docs
+src/server/locales/.generated/*.json
+src/public/build
+src/public/checksums
+src/public/javascripts/*.js
+src/public/stylesheets/*.css
+src/server/views/**/*.js
+tmp
+var/backups/*.tgz

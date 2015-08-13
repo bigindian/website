@@ -1,0 +1,50 @@
+// Define CSS font-specific classes
+.font-roboto-slab
+  font-family: "Roboto Slab", serif
+
+.font-open
+  font-family: "Open Sans", sans-serif
+
+.font-awesome
+  font: normal normal normal 14px/1 "FontAwesome";
+  font-size: 100%;
+  text-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transform: translate(0, 0);
+
+.font-cantarell
+  font-family: "Cantarell", sans-serif
+
+.font-roboto
+  font-family: "Roboto", serif
+
+.font-palanquin
+  font-family: 'Palanquin', 'Helvetica', 'Arial', sans-serif
+
+.font-droid
+  font-family: 'Droid Sans', sans-serif
+
+
+// Define CSS text-specific classes
+.font-text
+  @extend .font-open
+
+.font-thin
+  @extend .font-palanquin
+  font-weight: 100
+
+.font-bold
+  @extend .font-droid
+  font-weight: 700
+
+
+.font-title
+  @extend .font-roboto
+
+.icon
+  @extend .font-awesome
+
+// Default page Font
+body
+  @extend .font-cantarell

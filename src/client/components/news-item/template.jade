@@ -1,0 +1,25 @@
+.story_liner
+  .voters
+    a.upvoter.hide-if-loggedin(fn-route="/login")
+    a.upvoter.show-if-loggedin(ng-click="upvote()", ng-class="{voted: hasVoted}")
+  .details
+    span.link
+      span(ng-if="!story.is_gone")
+        a(fn-route="{{ story.url }}") {{ story.title }}
+      span(ng-if="story.is_gone")
+        | [Story removed by {{ story.is_moderated ? "moderator" : "original submitter" }}]
+
+    span.cats(ng-if="!story.is_gone")
+      news-category(ng-model="cat", ng-repeat="cat in story.categories")
+
+    a.domain(fn-route="{{ story.url }}") ({{ story.url | domain }})
+    | &nbsp;&middot;&nbsp;
+    span {{ story.views || 0 }} views
+    | &nbsp;&middot;&nbsp;
+    span
+      | {{ story.score || 0 }} points by {{ story.created_by.username }}
+    | &nbsp;&middot;&nbsp;
+    span.comments_label
+      a(fn-route="/story/{{ story.slug }}") {{ story.comments_count }} {{ story.comments_count == 1 ? "comment" : "comments" }}
+    | &nbsp;&middot;&nbsp;
+    span.timestamp {{ story.created_at | prettydate }}

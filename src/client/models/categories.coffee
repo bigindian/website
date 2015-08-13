@@ -1,0 +1,34 @@
+exports = module.exports = (Enum, $http) ->
+  class Categories extends Enum
+    downloadUrl: -> "/api/news/categories"
+    name: "[model:news/categories]"
+
+    ###
+      This function returns the category (child or parent) given only it's slug.
+      For this function to work flawlessly, it assumes that all slugs (both
+      parent and child combined) are unique.
+    ###
+    findBySlug: (slug) ->
+      for cat in @getAll()
+        # Compare with the parent
+        if cat.slug is slug then return cat
+        # If parent didn't match then try with each of the child categories
+        if cat.children? then for childcat in cat.children
+          if childcat.slug is slug then return childcat
+
+
+    getCounters: ->
+      $http.get @url "/counters"
+      .then (response) ->
+        counters = response.data
+        counter.stories = Number counter.stories for counter in counters
+        counters
+
+
+  new Categories
+
+
+exports.$inject = [
+  "models.base.enum",
+  "$http"
+]
