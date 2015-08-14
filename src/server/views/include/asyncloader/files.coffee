@@ -10,12 +10,12 @@ window.scripts = [
     remote: [
       "//ajax.googleapis.com/ajax/libs/angularjs/1.4.0/angular.min.js"
       "//cdnjs.cloudflare.com/ajax/libs/angular-hotkeys/1.4.5/hotkeys.min.js"
-      # "//ajax.googleapis.com/ajax/libs/angularjs/1.4.0/angular-cookies.min.js"
+      "//ajax.googleapis.com/ajax/libs/angularjs/1.4.0/angular-cookies.min.js"
       # "//ajax.googleapis.com/ajax/libs/angularjs/1.4.0/angular-sanitize.min.js"
-      "//ajax.googleapis.com/ajax/libs/angularjs/1.4.0/angular-touch.min.js"
+      # "//ajax.googleapis.com/ajax/libs/angularjs/1.4.0/angular-touch.min.js"
       "//cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.14/angular-ui-router.min.js"
-      "//cdnjs.cloudflare.com/ajax/libs/masonry/3.3.0/masonry.pkgd.min.js"
-      "//cdnjs.cloudflare.com/ajax/libs/angular-md5/0.1.7/angular-md5.min.js"
+      # "//cdnjs.cloudflare.com/ajax/libs/masonry/3.3.0/masonry.pkgd.min.js"
+      # "//cdnjs.cloudflare.com/ajax/libs/angular-md5/0.1.7/angular-md5.min.js"
       # "//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.5/socket.io.min.js"
     ]
     local: "/build/md5/libraries_#{ publicData.md5['libraries.js'] }.js"
