@@ -64,20 +64,20 @@ exports = module.exports = ($http, $root, $log, $storage, $environment, $q) ->
     isAnonymous: -> not currentUser.isAnonymous()
 
 
-    ###*
-     * Get a user with the a specific id.
-     *
-     * @param  Number id          ID of the user to fetch from the API
-     * @return Promise            A promise that resolves with the HTTP response
+    ###
+      Get a user with the a specific id.
+
+      @param  Number id          ID of the user to fetch from the API
+      @return Promise            A promise that resolves with the HTTP response
     ###
     get: (id) -> $http.get "#{userURL}/#{id}"
 
 
-    ###*
-     * Re-downloads the user from the server.
-     *
-     * @return Promise           A promise that resolves once the current user
-     *                           has been downloaded by the server.
+    ###
+      Re-downloads the user from the server.
+
+      @return Promise           A promise that resolves once the current user
+                                has been downloaded by the server.
     ###
     refresh: -> $http.get("#{userURL}/current").then updateUser
 
@@ -86,30 +86,31 @@ exports = module.exports = ($http, $root, $log, $storage, $environment, $q) ->
     findByUsername: (uname) -> $http.get "#{userURL}/username/#{uname}"
 
 
-    ###*
-     * A simple function to perform a user-logout. Deletes the current session
-     * both locally and from the server.
-     *
-     * @return Promise           A promise that resolves once the current
-     *                           session has been destroyed by the server.
+    ###
+      A simple function to perform a user-logout. Deletes the current session
+      both locally and from the server.
+
+      @return Promise           A promise that resolves once the current
+                                session has been destroyed by the server.
     ###
     logout: -> $http.get("#{authURL}/logout").then updateUser
 
 
-    ###*
-     * Download the current user from either the sessionStorage or from the API
-     *
-     * @return Promise          A promise that resolves once the current user
-     *                          has been downloaded (from API/cache)..
+    ###
+      Download the current user from either the sessionStorage or from the API
+
+      @return Promise          A promise that resolves once the current user
+                               has been downloaded (from API/cache)..
     ###
     download: ->
-      console.log name, "downloading", downloadedFlag
+      $log.log name, "downloading", downloadedFlag
       # This helper function is used to get the user details from the API
       fetchFromAPI = ->
         $log.log name, "downloading user"
         $http.get "#{userURL}/current"
         .then updateUser
         .then -> downloadedFlag = true
+
       ###
         Because this function gets called every-time we use a flag to avoid
         re-downloading the current user again. But sometimes because of the
@@ -130,6 +131,8 @@ exports = module.exports = ($http, $root, $log, $storage, $environment, $q) ->
         method: "POST"
         headers: headers
         url: "#{authURL}/email/login"
+      .then updateUser
+
 
 
     # Performs an API call to signup the user using Email.
@@ -139,6 +142,7 @@ exports = module.exports = ($http, $root, $log, $storage, $environment, $q) ->
         method: "POST"
         headers: headers
         url: "#{authURL}/email/signup"
+      .then updateUser
 
 
   new Model

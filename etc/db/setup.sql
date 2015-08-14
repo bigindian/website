@@ -1,11 +1,10 @@
--- Create a user 'news_db' with password 'password'
-CREATE ROLE news_db;
-ALTER ROLE news_db with password 'password';
-ALTER ROLE news_db WITH LOGIN;
+-- Create a user 'bignews_user' with password 'password'
+CREATE ROLE bignews_user;
+ALTER ROLE bignews_user with password 'password';
+ALTER ROLE bignews_user WITH LOGIN;
 
--- Create a database 'news' and give access only to user 'news_db'
-CREATE DATABASE news;
-REVOKE CONNECT ON DATABASE news FROM PUBLIC;
-GRANT CONNECT ON DATABASE news TO news_db;
-GRANT ALL ON DATABASE news TO news_db;
-GRANT ALL ON ALL TABLES IN DATABASE news TO news;
+-- Create a database 'news' and give access only to user 'bignews_user'
+CREATE DATABASE bigindiannews;
+REVOKE CONNECT ON DATABASE bigindiannews FROM PUBLIC;
+GRANT CONNECT ON DATABASE bigindiannews TO bignews_user;
+GRANT ALL ON DATABASE bigindiannews TO bignews_user;
