@@ -1,13 +1,20 @@
-exports = module.exports = (Renderer, Stories) ->
+Promise = require "bluebird"
+
+
+exports = module.exports = (Renderer, Categories) ->
   controller = (request, response, next) ->
-    options =
-      page: "news/categories"
-      data: categories: Stories.categories
-    Renderer request, response, options
+    Promise.props
+      counters: Categories.getStoryCount()
+      categories: Categories.getAll()
+    .then (results) ->
+      options =
+        page: "news/categories"
+        data: results
+      Renderer request, response, options
 
 
 exports["@require"] = [
   "libraries/renderer"
-  "models/news/stories"
+  "models/news/categories"
 ]
 exports["@singleton"] = true

@@ -1,6 +1,6 @@
 Promise = require "bluebird"
 
-exports = module.exports = (Stories, Cache) ->
+exports = module.exports = (Categories, Cache) ->
   controller = (request, response, next) ->
     CacheKey = "route:api/news/categories/counters"
     CacheTimeout = 1 * 5 # 5min
@@ -12,7 +12,7 @@ exports = module.exports = (Stories, Cache) ->
     # catch it here and re-fill the cache by calculating the counters again..
     .catch ->
 
-      Stories.getCategoryCount()
+      Categories.getStoryCount()
 
       # Once the categories have been fetched, we set it back into the cache
       # and return the output to the user
@@ -32,6 +32,6 @@ exports = module.exports = (Stories, Cache) ->
 
 exports["@singleton"] = true
 exports["@require"] = [
-  "models/news/stories"
+  "models/news/categories"
   "libraries/cache"
 ]

@@ -13,16 +13,13 @@ exports = module.exports = ($scope, $root, $cookies, $log, $http, Categories) ->
 
   # Fetch data from the page.
   $http.pageAsJSON().success (data) ->
-    $scope.categories = data.categories
-    $scope.$emit "page:loaded"
+    categories = $scope.categories = data.categories or []
+    counters = data.counters or []
 
-  Categories.getCounters()
-  .then (counters=[]) ->
-    for cat in $scope.categories
-      for counter in counters
-        # console.log cat, counter
-        if cat.id is counter.category
-          cat.counter = counter.stories
+    for cat in $scope.categories then for counter in counters
+      if cat.id is counter.category then cat.counter = counter.stories
+
+    $scope.$emit "page:loaded"
 
   # Save the filters.
   $scope.saveFilters = (filters) ->

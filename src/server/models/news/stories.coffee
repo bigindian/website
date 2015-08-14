@@ -90,9 +90,6 @@ exports = module.exports = (BaseModel, Users, Comments, NewsCategories) ->
       @model.forge().fetchPage null, options
 
 
-    getCategoryCount: ->
-      @knex.select("category").from "news_story_category"
-      .count("* as stories").groupBy "category"
 
 
     comments: (id) ->
@@ -102,10 +99,12 @@ exports = module.exports = (BaseModel, Users, Comments, NewsCategories) ->
         comments
         # data
 
+
     increaseCommentsCount: (id) ->
       @get(id).then (model) ->
         model.set "comments_count", 1 + model.get "comments_count"
         model.save()
+
 
     upvote: (story_id, user_id) ->
       @knex("news_votes").insert
