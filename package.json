@@ -8,6 +8,7 @@
     "schema-down": "knex --knexfile ./etc/config/knexfile.coffee migrate:rollback --cwd ./etc/db",
     "seed": "knex seed:run --cwd ./etc/db --knexfile ./etc/config/knexfile.coffee",
     "db-init": "npm run-script schema-up && npm run-script seed",
+    "s": "NODE_ENV=development forever -c coffee start bin/server.coffee",
     "db-refresh": "npm run-script schema-down && npm run-script db-init",
     "init-config": "sh ./etc/init-config.sh",
     "docs": "docker -n --ignore_hidden --colour_scheme emacs -m -i src -o docs --exclude *.sass,*.jade,public -w",
@@ -15,6 +16,7 @@
     "test": "NODE_TLS_REJECT_UNAUTHORIZED=0 mocha src/server/mocha.coffee --compilers coffee:coffee-script/register --check-leaks --bail"
   },
   "dependencies": {
+    "MD5": "^1.3.0",
     "async": "^1.4.0",
     "basic-auth": "^1.0.3",
     "bcrypt-nodejs": "0.0.3",
@@ -125,6 +127,7 @@
     "passport-windowslive": "^1.0.1",
     "passport-wordpress": "0.0.3",
     "randomstring": "^1.0.7",
+    "randomstring-extended": "^1.0.0",
     "redis": "^0.12.1",
     "request": "^2.60.0",
     "request-ip": "1.1.4",
