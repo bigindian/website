@@ -1,7 +1,7 @@
-exports = module.exports = (Enum, $http) ->
+Model = ($http, Enum) ->
   class Categories extends Enum
     downloadUrl: -> "/api/news/categories"
-    name: "[model:news/categories]"
+    tag: "model:news/categories"
 
     ###
       This function returns the category (child or parent) given only it's slug.
@@ -28,7 +28,8 @@ exports = module.exports = (Enum, $http) ->
   new Categories
 
 
-exports.$inject = [
-  "models.base.enum",
+Model.$inject = [
   "$http"
+  "@models/base/enum",
 ]
+module.exports = Model

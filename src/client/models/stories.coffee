@@ -1,12 +1,11 @@
-name = "[model:news/stories]"
+Model = ($http, $log, Environment) ->
+  logger = $log.init Model.tag
+  logger.log "initializing"
 
-
-exports = module.exports = ($environment, $http, $log, $storage) ->
-  new class Model
-
+  new class
     top: ->
-      API = "#{$environment.url}/api/news/top"
-      $log.log name, "fetching top news stories from server by id"
+      API = "#{Environment.url}/api/news/top"
+      logger.log "fetching top news stories from server by id"
       $http.get "#{API}"
 
 
@@ -14,23 +13,25 @@ exports = module.exports = ($environment, $http, $log, $storage) ->
       $http
         data: data
         method: "POST"
-        url: "#{$environment.url}/api/news/stories"
+        url: "#{Environment.url}/api/news/stories"
 
     upvote: (id) ->
       $http
         method: "PUT"
-        url: "#{$environment.url}/api/news/stories/#{id}/upvote"
+        url: "#{Environment.url}/api/news/stories/#{id}/upvote"
 
     createComment: (id, data) ->
       $http
         data: data
         method: "POST"
-        url: "#{$environment.url}/api/news/stories/#{id}/comments"
+        url: "#{Environment.url}/api/news/stories/#{id}/comments"
 
 
-exports.$inject = [
-  "$environment"
+Model.tag = "model:news/stories"
+Model.$inject = [
   "$http"
   "$log"
-  "$storage"
+  "@environment"
+  "@storage"
 ]
+module.exports = Model

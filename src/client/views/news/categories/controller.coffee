@@ -1,6 +1,7 @@
-exports = module.exports = ($scope, $root, $cookies, $log, $http, Categories) ->
-  name = "[page:news/categories]"
-  $log.log name, "initializing"
+Controller = ($scope, $root, $cookies, $log, $http, Categories) ->
+  logger = $log.init Controller.tag
+  logger.log "initializing"
+  $scope.$emit "page:initialize"
 
   # Setup variables. use 'f' as the key to store the filter attributes.
   cookiesKey = "f"
@@ -19,7 +20,7 @@ exports = module.exports = ($scope, $root, $cookies, $log, $http, Categories) ->
     for cat in $scope.categories then for counter in counters
       if cat.id is counter.category then cat.counter = counter.stories
 
-    $scope.$emit "page:loaded"
+    $scope.$emit "page:start"
 
   # Save the filters.
   $scope.saveFilters = (filters) ->
@@ -28,11 +29,13 @@ exports = module.exports = ($scope, $root, $cookies, $log, $http, Categories) ->
     $cookies.put cookiesKey, cookieString
 
 
-exports.$inject = [
+Controller.tag = "page:news/categories"
+Controller.$inject = [
   "$scope"
   "$rootScope"
   "$cookies"
   "$log"
   "$http"
-  "models.news.categories"
+  "@models/news/categories"
 ]
+module.exports = Controller

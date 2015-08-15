@@ -3,7 +3,7 @@ exports = module.exports = ($provide) ->
     originalGet = $delegate.get
 
     class CustomLogger
-      constructor: (tag) -> @tag = "[#{tag}]"
+      constructor: (tag) -> @tag = "new![#{tag}]"
 
       _perform: (fn, args=[]) ->
         args = [].slice.call args
@@ -13,6 +13,7 @@ exports = module.exports = ($provide) ->
       debug: -> @_perform $delegate.debug, arguments
       error: -> @_perform $delegate.error, arguments
       log: -> @_perform $delegate.log, arguments
+      info: -> @_perform $delegate.info, arguments
       trace: -> @_perform $delegate.trace, arguments
       warn: -> @_perform $delegate.warn, arguments
 

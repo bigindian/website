@@ -33,14 +33,13 @@ class User
 
 currentUser = new User
 downloadedFlag = false
-name = "[model:user]"
 
-
-exports = module.exports = ($http, $root, $log, $storage, $environment, $q) ->
+Model = ($http, $root, $log, $q, environment, storage) ->
+  logger = $log.init Model.tag
 
   # Updates the current user
   updateUser = (response) ->
-    $log.log name, "updating the current user"
+    logger.log "updating the current user"
     data = response.data
     downloadedFlag = false
     currentUser.set data
@@ -48,12 +47,12 @@ exports = module.exports = ($http, $root, $log, $storage, $environment, $q) ->
     $root.bodyClasses["logged-in"] = not currentUser.isAnonymous()
     response
 
-  userURL = "#{$environment.url}/api/users"
-  authURL = "#{$environment.url}/api/auth"
+  userURL = "#{environment.url}/api/users"
+  authURL = "#{environment.url}/api/auth"
 
 
-  class Model
-    constructor: -> $log.log name, "initializing"
+  class Users
+    constructor: -> logger.log "initializing"
 
     # Returns the current user
     getCurrent: -> currentUser
@@ -61,7 +60,6 @@ exports = module.exports = ($http, $root, $log, $storage, $environment, $q) ->
 
     # Use these functions to check if a user is logged-in/logged-out
     isLoggedIn: -> not currentUser.isAnonymous()
-    isAnonymous: -> not currentUser.isAnonymous()
 
 
     ###
@@ -103,10 +101,10 @@ exports = module.exports = ($http, $root, $log, $storage, $environment, $q) ->
                                has been downloaded (from API/cache)..
     ###
     download: ->
-      $log.log name, "downloading", downloadedFlag
+      logger.log "downloading", downloadedFlag
       # This helper function is used to get the user details from the API
       fetchFromAPI = ->
-        $log.log name, "downloading user"
+        logger.log "downloading user"
         $http.get "#{userURL}/current"
         .then updateUser
         .then -> downloadedFlag = true
@@ -119,7 +117,7 @@ exports = module.exports = ($http, $root, $log, $storage, $environment, $q) ->
       ###
       if not downloadedFlag
         downloadedFlag = true
-        $log.log name, "retrieving current user from API"
+        logger.log "retrieving current user from API"
         fetchFromAPI()
       else true
 
@@ -145,14 +143,17 @@ exports = module.exports = ($http, $root, $log, $storage, $environment, $q) ->
       .then updateUser
 
 
-  new Model
+  new Users
 
 
-exports.$inject = [
+Model.tag = "model:user"
+Model.$inject = [
   "$http"
   "$rootScope"
   "$log"
-  "$storage"
-  "$environment"
   "$q"
+
+  "@environment"
+  "@storage"
 ]
+module.exports = Model

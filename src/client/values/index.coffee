@@ -1,4 +1,4 @@
 module.exports = (app) ->
-  console.log "[common:values] initializing"
+  console.log "initializing values"
   app.value "$anchorScroll", angular.noop
   app.value "$log", console

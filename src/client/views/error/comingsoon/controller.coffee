@@ -1,21 +1,9 @@
-name = "[page:users/single]"
+Controller = ($log) ->
+  logger = $log.init Controller.tag
+  logger.log "initializing"
+  location.reload()
 
 
-exports = module.exports = ($scope, $root, $stateParams, $log, $http, $location) ->
-  $log.log name, "initializing"
-  $log.debug name, "routeParams", $stateParams
-
-
-
-  $scope.$emit "page:loaded"
-
-
-exports.$inject = [
-  "$scope"
-  "$rootScope"
-  "$stateParams"
-  "$log"
-
-  "$http"
-  "$location"
-]
+Controller.tag = "error/comingsoon"
+Controller.$inject = ["$log"]
+module.exports = Controller

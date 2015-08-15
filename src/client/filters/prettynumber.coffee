@@ -18,4 +18,4 @@ exports = module.exports = -> (num, decimalPlaces=1) ->
     str = Math.floor(num / (1000000000000 / factor)) / factor
     suffix = "T"
 
-  str + suffix
+  Math.floor(str) + suffix

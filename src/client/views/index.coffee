@@ -1,8 +1,9 @@
 module.exports = (app) ->
-  console.log "[common:views] initializing"
+  console.log "initializing views"
+
   app.controller "error/404", require "./error/404/controller"
 
-  app.controller "auth/forgot",      require "./auth/login/controller"
+  # app.controller "auth/forgot",      require "./auth/login/controller"
   app.controller "auth/login",       require "./auth/login/controller"
   app.controller "auth/logout",      require "./auth/logout/controller"
   app.controller "auth/signup",      require "./auth/signup/controller"

@@ -2,7 +2,8 @@ Controller = ($scope, $root, $stateParams, $log, $http, $location, Stories) ->
   name = "[page:news]"
   $log.log name, "initializing"
   $log.debug name, "routeParams", $stateParams
-  $scope.$emit "page:loaded"
+  $scope.$emit "page:initialize"
+  $scope.$emit "page:start"
 
   $scope.story = {}
 
@@ -31,7 +32,7 @@ Controller.$inject = [
 
   "$http"
   "$location"
-  "models.news.stories"
+  "@models/news/stories"
 ]
 
 

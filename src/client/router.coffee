@@ -1,7 +1,5 @@
-exports = module.exports = ($stateProvider, $locationProvider, $urlMatcher,
-  $urlRouterProvider) ->
-
-  # Enable strict mode to allow URLs with trailing slashes
+Router = ($stateProvider, $locationProvider, $urlMatcher, $urlRouterProvider) ->
+  # Disable strict mode to allow URLs with trailing slashes
   $urlMatcher.strictMode false
 
   # Helper function to create our routes
@@ -13,9 +11,9 @@ exports = module.exports = ($stateProvider, $locationProvider, $urlMatcher,
       templateUrl: templateUrl
       url: route
       resolve:
-        categories: ["models.news.categories", (m) -> m.download()]
-        user:       ["models.users",           (m) -> m.download()]
-        language:   ["models.languages",       (m) -> m.download()]
+        categories: ["@models/news/categories", (m) -> m.download()]
+        user:       ["@models/users",           (m) -> m.download()]
+        language:   ["@models/languages",       (m) -> m.download()]
 
 
   # Start adding each route one by one
@@ -43,9 +41,10 @@ exports = module.exports = ($stateProvider, $locationProvider, $urlMatcher,
     requireBases: false
 
 
-exports.$inject = [
+Router.$inject = [
   "$stateProvider"
   "$locationProvider"
   "$urlMatcherFactoryProvider"
   "$urlRouterProvider"
 ]
+module.exports = Router

@@ -1,11 +1,12 @@
-exports = module.exports = ($http, $location, $log, $notifications, $scope,
-$timeout, Languages, Users, $window) ->
-  @name = "[page:auth-login]"
-  $log.log @name, "initializing"
+Controller = ($http, $location, $log, $scope, $window, notifications, Users) ->
+  logger = $log.init Controller.tag
+  logger.log "initializing"
+  $scope.$emit "page:initialize"
+
   prompted = false
   $scope.formClasses = {}
   $scope.login = {}
-  $scope.$emit "page:loaded"
+  $scope.$emit "page:start"
 
   $scope.goto = (i) ->
     $scope.page = i
@@ -25,31 +26,30 @@ $timeout, Languages, Users, $window) ->
 
     Users.login $scope.login
     .then (response) ->
-      $location.path "/"
-      $notifications.success "Login success!"
+      # Get the redirect URL
+      getQuery = $location.search() or {}
+      redirectURL = getQuery.redirectTo or "/"
+      logger.info "redirecting to", redirectURL
+
+      # Redirect!
+      $location.url redirectURL
+
+      # Give a notification for a succesful login.
+      notifications.success "login_success"
     .catch (response) ->
-      $notifications.error "Invalid login. Please check your credentials"
-      $log.error name, response.data, response.status
+      notifications.error "invalid_login"
+      logger.error response.data, response.status
     .finally -> $scope.formClasses = loading: $scope.formLoading = false
 
 
-
-  # $window.onbeforeunload = ->
-  #   console.log $scope.page is 2 and not promted
-  #   if $scope.page is 2 and not promted
-  #     promted = true
-  #     return "Are you sure you want to leave? You haven't signed up yet."
-
-
-exports.$inject = [
+Controller.tag = "page:auth/login"
+Controller.$inject = [
   "$http"
   "$location"
   "$log"
-  "$notifications"
   "$scope"
-  "$timeout"
-
-  "models.languages"
-  "models.users"
   "$window"
+  "@notifications"
+  "@models/users"
 ]
+module.exports = Controller

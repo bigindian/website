@@ -1,13 +1,14 @@
-name = "[run:stateChangeStart]"
-exports = module.exports = ($root, $log, $storage, $timeout) ->
-  $log.log name, "initializing"
+EventHandler = ($root, $log, $timeout, storage) ->
+  logger = $log.init EventHandler.tag
+  logger.log "initialized"
 
   $root.bodyClasses ?= {}
   stateClasses = null
 
   $root.$on "$stateChangeStart",
     (event, toState, toParams, fromState, fromParams) ->
-      $log.log name, "switching #{fromState.name} -> #{toState.name}"
+      logger.log "captured event!"
+      logger.log "switching #{fromState.name} -> #{toState.name}"
       if stateClasses then $root.bodyClasses[stateClasses] = false
 
       # Set the loading class on the page
@@ -20,9 +21,11 @@ exports = module.exports = ($root, $log, $storage, $timeout) ->
         $root.bodyClasses[stateClasses] = true
 
 
-exports.$inject = [
+EventHandler.tag = "event:stateChangeStart"
+EventHandler.$inject = [
   "$rootScope"
   "$log"
-  "$storage"
   "$timeout"
+  "@storage"
 ]
+module.exports = EventHandler

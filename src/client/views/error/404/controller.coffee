@@ -1,7 +1,10 @@
 # if a 404, reload page so that server can show appropriate 404 error..
-exports = module.exports = ($log) ->
-  $log.log "reloading page"
-  # location.reload()
+Controller = ($log) ->
+  logger = $log.init Controller.tag
+  logger.log "initializing"
+  location.reload()
 
 
-exports.$inject = ["$log"]
+Controller.tag = "error/404"
+Controller.$inject = ["$log"]
+module.exports = Controller

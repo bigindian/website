@@ -15,14 +15,14 @@ form(name="form"
         input.title.field(ng-model="story.title"
           ng-disabled="formLoading"
           placeholder="Title *"
-          minlength="20"
+          minlength="10"
           maxlength="255"
           required)
       .columns.medium-2.get-title-container(ng-if="story.url && !form.$valid")
         button(ng-click="getTitle()") Get Title
 
       .columns.category-selector(ng-if="story.url && selectedCats < 2")
-        .title Choose a category
+        .title Choose two categories
         .options
           span(ng-repeat="cat in categories")
             news-category(ng-model="cat"
@@ -134,7 +134,6 @@ form(name="form"
           tt ![alt text](http://example.com/image.jpg) (only allowed in link text)
 
 
-  .columns(ng-if="form.$valid")
+  .columns(ng-if="selectedCats == 2 && form.$valid")
     div(google-recaptcha, ng-model="form.gcaptcha", ng-if="!form.gcaptcha")
-
-    button(ng-click="submit(story)", ng-if="form.gcaptcha") Submit
+    button(ng-click="submit(story)", ng-if="!form.gcaptcha") Submit

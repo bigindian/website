@@ -1,12 +1,17 @@
-exports = module.exports = ($environment, $http, $log, $storage, $q) ->
+Model = ($http, $log, $q, Environment, Storage) ->
   class Enum
-    name: "[enum]"
+    tag: "enum"
     cache: true
     _downloadedFlag: false
 
-    downloadUrl: -> ""
+    constructor: ->
+      @logger = $log.init @tag
+      @logger.log "initializing"
 
-    url: (path="") -> "#{$environment.url}#{@downloadUrl()}#{path}"
+
+    downloadUrl: -> ""
+    url: (path="") -> "#{Environment.url}#{@downloadUrl()}#{path}"
+
 
     getAll: -> @data
 
@@ -26,38 +31,41 @@ exports = module.exports = ($environment, $http, $log, $storage, $q) ->
       url = @downloadUrl()
       cacheKey = "enum:#{url}"
 
-      $log.debug @name, "downloading from", url
+      @logger.debug "downloading from", url
 
       # Now check for the data in cache if it exists
-      $storage.local cacheKey
+      Storage.local cacheKey
       .then (cache) =>
-        $log.log @name, "retrieved from cache"
+        @logger.log "retrieved from cache"
 
         $q (resolve, reject) =>
           if @cache and cache?
             # data was found in cache, prepare to parse it and return
-            $log.log @name, "parsing from cache"
+            @logger.log "parsing from cache"
             resolve @data = angular.fromJson cache
           else reject "couldn't parse from cache"
 
       # Something went wrong while parsing the cached data or there was nothing
       # in the cache. No problem, we'll retrieve it from the API.
       .catch =>
-        $log.log @name, "retrieving from API"
+        @logger.log "retrieving from API"
         $http.get @url()
-        .success (@data) => $storage.local cacheKey, angular.toJson @data
+        .success (@data) => Storage.local cacheKey, angular.toJson @data
+
       .then =>
         @_downloadedFlag = true
         @onChange @date
-        $log.log @name, "downloaded"
+        @logger.log "downloaded"
 
 
 
 
-exports.$inject = [
-  "$environment"
+Model.$inject = [
   "$http"
   "$log"
-  "$storage"
   "$q"
+  "@environment"
+  "@storage"
 ]
+
+module.exports = Model

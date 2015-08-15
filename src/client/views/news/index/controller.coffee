@@ -1,6 +1,8 @@
 Controller = ($cookies, $http, $log, $scope, $storage) ->
-  name = "[page:news]"
-  $log.log name, "initializing"
+  logger = $log.init Controller.tag
+  logger.log "initializing"
+  $scope.$emit "page:initialize"
+
 
   # Set the options for the 'results per page' dropdown
   resultOptions = $scope.resultOptions = [20, 30, 40, 50]
@@ -20,15 +22,16 @@ Controller = ($cookies, $http, $log, $scope, $storage) ->
   $http.pageAsJSON().success (data) ->
     $scope.pagination = data.pagination
     $scope.stories = data.collection
-    $scope.$emit "page:loaded"
+    $scope.$emit "page:start"
 
 
+Controller.tag = "page:news/index"
 Controller.$inject = [
   "$cookies"
   "$http"
   "$log"
   "$scope"
-  "$storage"
+  "@storage"
 ]
 
 

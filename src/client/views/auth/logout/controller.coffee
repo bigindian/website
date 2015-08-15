@@ -1,15 +1,15 @@
-name = "[page:auth-logout]"
+Controller = ($location, $log, Users) ->
+  logger = $log.init Controller.tag
+  logger.log "initializing"
 
-
-exports = module.exports = ($location, $log, Users) ->
-  $log.log name, "initializing"
   $location.path "/"
   Users.logout()
 
 
-exports.$inject = [
+Controller.tag = "page:auth/logout"
+Controller.$inject = [
   "$location"
   "$log"
-
-  "models.users"
+  "@models/users"
 ]
+module.exports = Controller

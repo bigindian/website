@@ -1,10 +1,9 @@
-name = "[page:users/single]"
+Controller = ($scope, $root, $stateParams, $log, $http, $location) ->
+  logger = $log.init Controller.tag
+  logger.log "initializing"
+  logger.debug "routeParams", $stateParams
 
-
-exports = module.exports = ($scope, $root, $stateParams, $log, $http, $location) ->
-  $log.log name, "initializing"
-  $log.debug name, "routeParams", $stateParams
-
+  $scope.$emit "page:initialize"
 
   $http.pageAsJSON().success (data) ->
     data.count =
@@ -14,10 +13,11 @@ exports = module.exports = ($scope, $root, $stateParams, $log, $http, $location)
       sharing: 100 * Math.random()
 
     $scope.user = data
-    $scope.$emit "page:loaded"
+    $scope.$emit "page:start"
 
 
-exports.$inject = [
+Controller.tag = "users/single"
+Controller.$inject = [
   "$scope"
   "$rootScope"
   "$stateParams"
@@ -26,3 +26,6 @@ exports.$inject = [
   "$http"
   "$location"
 ]
+
+
+module.exports = Controller

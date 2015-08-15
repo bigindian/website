@@ -38,6 +38,6 @@ exports = module.exports = ($window, $environment, $log) -> new class
 
 exports.$inject = [
   "$window"
-  "$environment"
+  "@environment"
   "$log"
 ]

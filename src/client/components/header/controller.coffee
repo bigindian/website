@@ -1,11 +1,11 @@
-name = "[component:header]"
-
 # Allow upto 'X' unread notifications to be put in the sub-header
 maxUnreadNotifications = 3
 
-exports = module.exports = ($scope, $root, $log, $timeout, $location,
-Notifications) ->
-  $log.log name, "initializing"
+Header = ($scope, $root, $log, $timeout, $location, Notifications) ->
+  logger = $log.init Header.tag
+  logger.log "initialized"
+
+  logger.log "initializing"
 
   $scope.activeLink = null
 
@@ -129,12 +129,13 @@ Notifications) ->
     else history.back()
 
 
-exports.$inject = [
+Header.tag = "component:header"
+Header.$inject = [
   "$scope"
   "$rootScope"
   "$log"
   "$timeout"
   "$location"
-
   # "models.notifications"
 ]
+module.exports = Header

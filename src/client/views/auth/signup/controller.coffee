@@ -1,14 +1,12 @@
-name = "[page:auth/signup]"
-
-
-exports = module.exports = ($http, $location, $log, $notifications, $scope,
-$timeout, Languages, Users, $window) ->
-  $log.log name, "initializing"
+Controller = ($log, $scope, $window, notifications, Users) ->
+  logger = $log.init Controller.tag
+  logger.log "initializing"
+  $scope.$emit "page:initialize"
 
   prompted = false
   $scope.formClasses = {}
   $scope.signup = {}
-  $scope.$emit "page:loaded"
+  $scope.$emit "page:start"
 
   $scope.goto = (i) ->
     $scope.page = i
@@ -38,20 +36,17 @@ $timeout, Languages, Users, $window) ->
         else error = "Signup failed. Please check your credentials or try
         again later"
 
-      $notifications.error error, 7000
-      $log.error name, response.data, response.status
+      notifications.error error, 7000
+      logger.error response.data, response.status
     .finally -> $scope.formClasses = loading: $scope.formLoading = false
 
 
-exports.$inject = [
-  "$http"
-  "$location"
+Controller.tag = "page:auth/signup"
+Controller.$inject = [
   "$log"
-  "$notifications"
   "$scope"
-  "$timeout"
-
-  "models.languages"
-  "models.users"
   "$window"
+  "@notifications"
+  "@models/users"
 ]
+module.exports = Controller

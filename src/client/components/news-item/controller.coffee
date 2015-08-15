@@ -13,5 +13,5 @@ exports = module.exports = ($scope, $log, Stories) ->
 exports.$inject = [
   "$scope"
   "$log"
-  "models.news.stories"
+  "@models/news/stories"
 ]

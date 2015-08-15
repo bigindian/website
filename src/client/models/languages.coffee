@@ -1,13 +1,12 @@
-exports = module.exports = (Enum, $root) ->
+Model = ($root, Enum) ->
   class Languages extends Enum
-    downloadUrl: -> "/api/language/en"
-    name: "[model:language]"
-
     data: {}
+    tag: Model.tag
+    downloadUrl: -> "/api/language/en"
+
 
     translate: (text, page) ->
       key = "#{page}:#{text}"
-      # console.log 'translating', key
       @data[key] or ""
 
 
@@ -17,7 +16,9 @@ exports = module.exports = (Enum, $root) ->
   new Languages
 
 
-exports.$inject = [
-  "models.base.enum"
+Model.tag = "model:language"
+Model.$inject = [
   "$rootScope"
+  "@models/base/enum"
 ]
+module.exports = Model

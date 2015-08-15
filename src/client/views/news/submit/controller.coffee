@@ -1,14 +1,34 @@
-Controller = ($scope, $log, $http, $location, Stories, Categories) ->
-  name = "[page:news]"
-  $log.log name, "initializing"
-  $scope.$emit "page:loaded"
+Controller = ($http, $location, $log, $scope, Categories, Stories) ->
+  logger = $log.init Controller.tag
+  logger.log "initializing"
+  $scope.$emit "page:initialize", needLogin: true
+  $scope.$emit "page:start"
 
   $scope.selectedCats = 0
-
   $scope.story = {}
+  $scope.categories = Categories.getAll() or []
+  cat.disableLink = true for cat in $scope.categories
+
 
   blockForm = -> $scope.formClasses = loading: $scope.formLoading = true
   unlockForm = -> $scope.formClasses = loading: $scope.formLoading = false
+
+
+  $scope.deselect = (cat) ->
+    logger.log "de-selected category"
+    logger.debug cat
+
+    cat.select = false
+    $scope.selectedCats--
+
+
+  $scope.select = (cat) ->
+    logger.log "selected category"
+    logger.debug cat
+
+    cat.select = true
+    $scope.selectedCats++
+
 
   # When requested to get the title, send the URL to our scrapper
   $scope.getTitle = ->
@@ -18,31 +38,34 @@ Controller = ($scope, $log, $http, $location, Stories, Categories) ->
     .finally unlockForm
 
 
-  $scope.categories = Categories.getAll()
-  cat.disableLink = true for cat in $scope.categories
 
-  $scope.deselect = (cat) ->
-    cat.select = false
-    $scope.selectedCats--
-
-  $scope.select = (cat) ->
-    cat.select = true
-    $scope.selectedCats++
-
+  ###
+    @param data {Object}
+  ###
   $scope.submit = (data) ->
     blockForm()
+    logger.log "submitting form"
+    logger.debug data
+
+    # Get the categories
+    data.categories = []
+    for category in $scope.categories
+      if category.select is true then data.categories.push category.id
+
+    # Send the request!
     Stories.create data
-    .then -> $location.path "/news/recent"
+    .success (story) -> $location.path "/story/#{story.slug}"
     .finally unlockForm
 
 
+Controller.tag = "page:news"
 Controller.$inject = [
-  "$scope"
-  "$log"
   "$http"
   "$location"
-  "models.news.stories"
-  "models.news.categories"
+  "$log"
+  "$scope"
+  "@models/news/categories"
+  "@models/news/stories"
 ]
 
 
