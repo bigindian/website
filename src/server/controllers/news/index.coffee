@@ -10,8 +10,9 @@ exports = module.exports = (Renderer, Stories) ->
         delete story.created_by.mailing_list_token
 
       options =
-        page: "news/top"
+        page: "news/index"
         data: stories
+        title: null
       Renderer request, response, options
     .catch (e) -> next e
 

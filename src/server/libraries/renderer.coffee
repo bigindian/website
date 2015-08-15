@@ -75,8 +75,10 @@ exports = module.exports = (settings, Cache) ->
     .catch ->
       if request.query.json? then return options.data
 
-      # Give the default page title
-      options.title ?= response.__ "#{options.page}:title"
+      # Give the default page title if title is undefined. If a title was
+      # defined but set to null, then don't do anything!
+      if options.title == undefined
+        options.title = response.__ "#{options.page}:title"
 
       # Setup options for the jade compiler and HTML compiler
       jadeOptions =
