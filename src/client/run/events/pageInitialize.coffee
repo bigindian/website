@@ -1,33 +1,33 @@
-exports = module.exports = ($ga, $location, $log, $root, $timeout, Users) ->
-  logger = $log.init "event:pageStart"
+EventHandler = ($ga, $location, $log, $root, Notifications, Users) ->
+  logger = $log.init EventHandler.tag
   logger.log "initialized"
 
-  body = document.body
 
   $root.$on "page:initialize", (event, value={}) ->
     logger.log "captured event!"
 
+    # If the login property is set then check if the user is logged in.
     if value.needLogin and not Users.isLoggedIn()
       logger.info "user needs to be logged in for this page"
-      url = $location.url()
-      $location.search
-        redirectTo: url
-        _warn: "need_login"
+
+      # Redirect the user to the login page
+      $location.search redirectTo: $location.url()
       $location.path "/login"
 
-    # # Set the header's backbutton accordingly.. FIXTHIS
-    # $root.bodyClasses["show-header-backbutton"] = historyIndex++ > 0 and
-    # not value.basePage
+      # Pop up a notification.
+      Notifications.warn "login_needed"
 
     # Send a pageview in google analytics
     $ga.sendPageView()
 
 
-exports.$inject = [
+EventHandler.tag = "event:pageStart"
+EventHandler.$inject = [
   "$google/analytics"
   "$location"
   "$log"
   "$rootScope"
-  "$timeout"
+  "@notifications"
   "@models/users"
 ]
+module.exports = EventHandler

@@ -1,8 +1,9 @@
 .story_liner
-  .upvoter
-    a(ng-click="upvote()", ng-class="{voted: hasVoted}")
+  .votes
+    .score {{ story.score || 0 | prettynumber }}
+    .voter
+      a(ng-click="upvote()", ng-class="{voted: hasVoted}")
   .details
-    span.score {{ story.score || 0 | prettynumber }}
     span.link
       span(ng-if="!story.is_gone")
         a(fn-route="{{ story.url }}") {{ story.title }}

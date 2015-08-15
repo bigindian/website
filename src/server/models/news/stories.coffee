@@ -75,6 +75,21 @@ exports = module.exports = (BaseModel, Users, Comments, NewsCategories) ->
 
 
 
+    create: (parameters) ->
+      categories = parameters.categories or []
+
+      delete parameters.categories
+      console.log categories
+
+      @model.forge(parameters).save()
+      .then (model) =>
+
+        insertQuery = (category: cat, story: model.id for cat in categories)
+        console.log insertQuery
+        @knex("news_story_category").insert insertQuery
+        .then -> model
+
+
     onCreate: (model) ->
       # First set the slug from the right variable.
       model.set "slug", @createSlug model.get "title"

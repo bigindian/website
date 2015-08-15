@@ -1,4 +1,4 @@
-Controller = ($scope, $log, $notifications, $http, $sce, Stories) ->
+Controller = ($http, $location, $log, $sce, $scope, Stories) ->
   logger = $log.init Controller.tag
   logger.log "initializing"
   $scope.$emit "page:initialize"
@@ -20,7 +20,7 @@ Controller = ($scope, $log, $notifications, $http, $sce, Stories) ->
     blockForm()
     Stories.createComment $scope.story.id, content: data
     .then ->
-      $notifications.success "Your comment has been posted successfully! Reload this page"
+      $location.search _success: "comment_posted"
       location.reload() # avoid using global fn.
     .finally unlockForm
 
@@ -29,13 +29,10 @@ Controller = ($scope, $log, $notifications, $http, $sce, Stories) ->
 Controller.tag = "page:news/single"
 Controller.$inject = [
   "$http"
+  "$location"
   "$log"
   "$sce"
   "$scope"
-
-  "@notifications"
   "@models/news/stories"
 ]
-
-
 module.exports = Controller

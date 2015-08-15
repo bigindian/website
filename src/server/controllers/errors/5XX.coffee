@@ -1,4 +1,4 @@
-exports = module.exports = (renderer, settings) ->
+exports = module.exports = (Renderer, settings) ->
   controller = (error, request, response, next) ->
     response.status error.status or 500
 
@@ -22,7 +22,7 @@ exports = module.exports = (renderer, settings) ->
         error: error
         message: error.message
         status: error.status or 500
-    renderer request, response, options
+    Renderer request, response, options
 
 
 exports["@require"] = [

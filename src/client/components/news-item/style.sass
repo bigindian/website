@@ -7,7 +7,7 @@ news-item
     font-weight: bold
     margin-right: 5px
     &:visited
-      color: #777
+      // color: #777
     &:hover
       text-decoration: none
   .story_liner
@@ -31,14 +31,14 @@ news-item
 
   .domain
     font-style: italic
-    color: blue
-    opacity: 0.6
+    color: #888
+    opacity: 1
 
   .details
     color: #888
     font-size: 8.5pt
     margin-top: 2px
-    // margin-left: 25px
+    margin-left: 50px
     span
       +single-transition
       &:hover
@@ -50,43 +50,41 @@ news-item
     &:hover
       text-decoration: underline
 
-  .upvoter
+  .votes
     float: left
-    margin-top: 2px
+    position: relative
+    .voter, .score
+      position: absolute
 
-    a
-      border-color: transparent transparent #CCC transparent
-      border-style: solid
-      border-width: 5px
-      border-bottom-width: 11px
-      display: block
-      height: 0
-      margin-bottom: 0px
-      margin-left: 5px
-      padding: 0
-      text-decoration: none
-      width: 0px
-      &:hover, &.voted
-        border-color: transparent transparent #000 transparent
-
-  .score
-    color: #CCC !important
-    display: inline-block
-    font-size: 11px
-    margin-top: 3px
-    text-align: center
-    font-weight: bold
-    min-width: 35px
+    .voter
+      left: 28px
+      top: 3px
+      a
+        border-color: transparent transparent #CCC transparent
+        border-style: solid
+        border-width: 4px
+        border-bottom-width: 9px
+        display: block
+        height: 0
+        margin-bottom: 0px
+        margin-left: 5px
+        padding: 0
+        text-decoration: none
+        width: 0px
+        &:hover, &.voted
+          border-color: transparent transparent #000 transparent
+    .score
+      top: 2px
+      left: 0
+      color: #CCC !important
+      display: inline-block
+      font-size: 12px
+      text-align: right
+      font-weight: bold
+      min-width: 25px
 
   .score, .details span, a
     +single-transition
 
-  &:hover
-    .comments_label
-      text-decoration: underline
-    .details span
-      color: #000
-    .domain
-      opacity: 1
-    .link a
-      color: #000
+  &:hover .link a
+    color: $news-color

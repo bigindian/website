@@ -1,0 +1,7 @@
+{
+  "comment_posted": "You comment has been posted",
+  "login_success": "You are now logged in!",
+  "login_invalid": "Wrong credentials. Please try again",
+  "logout_success": "You have logged out succesfully",
+  "login_needed": "You must be logged in!"
+}

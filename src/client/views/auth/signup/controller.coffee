@@ -1,4 +1,4 @@
-Controller = ($log, $scope, $window, notifications, Users) ->
+Controller = ($log, $scope, $window, Notifications, Users) ->
   logger = $log.init Controller.tag
   logger.log "initializing"
   $scope.$emit "page:initialize"
@@ -36,7 +36,7 @@ Controller = ($log, $scope, $window, notifications, Users) ->
         else error = "Signup failed. Please check your credentials or try
         again later"
 
-      notifications.error error, 7000
+      Notifications.error error, 7000
       logger.error response.data, response.status
     .finally -> $scope.formClasses = loading: $scope.formLoading = false
 

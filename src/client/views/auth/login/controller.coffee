@@ -1,4 +1,4 @@
-Controller = ($http, $location, $log, $scope, $window, notifications, Users) ->
+Controller = ($http, $location, $log, $scope, $window, Notifications, Users) ->
   logger = $log.init Controller.tag
   logger.log "initializing"
   $scope.$emit "page:initialize"
@@ -35,9 +35,9 @@ Controller = ($http, $location, $log, $scope, $window, notifications, Users) ->
       $location.url redirectURL
 
       # Give a notification for a succesful login.
-      notifications.success "login_success"
+      Notifications.success "login_success"
     .catch (response) ->
-      notifications.error "invalid_login"
+      Notifications.error "login_invalid"
       logger.error response.data, response.status
     .finally -> $scope.formClasses = loading: $scope.formLoading = false
 

@@ -138,7 +138,9 @@ exports = module.exports = (knex, Enum) ->
       @return {[type]}            [description]
     ###
     # create: (parameters) -> @model.forge(@filter parameters).save()
-    create: (parameters) -> @model.forge(parameters).save()
+    create: (parameters) ->
+      console.log parameters, 'asd'
+      @model.forge(parameters).save()
 
 
     ###

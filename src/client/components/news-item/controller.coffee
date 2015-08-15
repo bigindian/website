@@ -1,6 +1,6 @@
-exports = module.exports = ($scope, $log, Stories) ->
-  tag = "[component:news-item]"
-  $log.log tag, "initializing"
+Controller = ($scope, $log, Stories) ->
+  logger = $log.init Controller.tag
+  logger.log "initializing"
 
   $scope.hasVoted = false
   $scope.upvote = ->
@@ -10,8 +10,10 @@ exports = module.exports = ($scope, $log, Stories) ->
     Stories.upvote $scope.story.id
 
 
-exports.$inject = [
+Controller.tag = "component:news-item"
+Controller.$inject = [
   "$scope"
   "$log"
   "@models/news/stories"
 ]
+module.exports = Controller
