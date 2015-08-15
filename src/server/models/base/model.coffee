@@ -8,12 +8,10 @@ traverse          = require "traverse"
 validator         = require "validator"
 xss               = require "xss"
 
+Schema            = require "./schema"
 
-Schema    = require "./schema"
 
-
-exports = module.exports = (knex, Enum) ->
-
+BaseModel = (knex, Enum) ->
   bookshelf = Bookshelf knex
 
 
@@ -138,9 +136,7 @@ exports = module.exports = (knex, Enum) ->
       @return {[type]}            [description]
     ###
     # create: (parameters) -> @model.forge(@filter parameters).save()
-    create: (parameters) ->
-      console.log parameters, 'asd'
-      @model.forge(parameters).save()
+    create: (parameters) -> @model.forge(parameters).save()
 
 
     ###
@@ -164,9 +160,10 @@ exports = module.exports = (knex, Enum) ->
     query: (buildQuery, options) -> @model.forge().fetchPage buildQuery, options
 
 
-exports["@require"] = [
+BaseModel["@require"] = [
   "igloo/knex"
   "models/base/enum"
   "libraries/cache"
 ]
-exports["@singleton"] = true
+BaseModel["@singleton"] = true
+module.exports = BaseModel

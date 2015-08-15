@@ -9,7 +9,6 @@ exports = module.exports = (Renderer, Stories, Comments, NotFoundError) ->
     .then (story) ->
       if not story? then throw new NotFoundError
 
-      console.log story.toJSON()
       # Load the comments now
       story.related("comments").load "created_by"
       .then (comments) ->

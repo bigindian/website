@@ -33,6 +33,7 @@ exports = module.exports = (settings, Cache) ->
       url: settings.url
 
     cryptedData:
+      sitename: settings.sitename
       facebook:
         clientid: settings.facebook.clientid
       google:

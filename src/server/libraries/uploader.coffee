@@ -284,7 +284,6 @@ exports = module.exports = (settings) ->
           newFilename: newFilename
           oldFilename: file.name
 
-      console.log ret
       # Perform file operations to move the file from the temporary
       # storage into the public uploads folder.
       operate asyncTasks

@@ -1,13 +1,13 @@
 exports = module.exports = ($provide) ->
-  decorator = ($delegate, $sniffer, $window) ->
-    originalGet = $delegate.get
+  decorator = ($http, $sniffer, $window) ->
+    originalGet = $http.get
 
-    $delegate.pageAsJSON = ->
+    $http.pageAsJSON = ->
       url = $window.location.toString()
       url += if url.indexOf("?") > 1 then "&json" else "?json"
-      $delegate.get url
+      $http.get url
 
-    $delegate
+    $http
 
 
   decorator.$inject = [

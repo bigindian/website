@@ -7,7 +7,8 @@ Router = ($stateProvider, $locationProvider, $urlMatcher, $urlRouterProvider) ->
   _route = (page, route) ->
     templateUrl = "views/#{page}/template"
     $stateProvider.state "#{page}-#{index++}",
-      controller: "#{page}"
+      controller: page
+      page: page
       templateUrl: templateUrl
       url: route
       resolve:
