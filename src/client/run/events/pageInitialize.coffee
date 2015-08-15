@@ -21,7 +21,7 @@ EventHandler = ($ga, $location, $log, $root, Notifications, Users) ->
     $ga.sendPageView()
 
 
-EventHandler.tag = "event:pageStart"
+EventHandler.tag = "event:pageInitialize"
 EventHandler.$inject = [
   "$google/analytics"
   "$location"

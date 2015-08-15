@@ -1,5 +1,5 @@
 EventHandler = ($log, $root, $timeout) ->
-  logger = $log.init "event:pageStart"
+  logger = $log.init EventHandler.tag
   logger.log "initialized"
 
   $root.$on "page:start", (event) ->
@@ -9,6 +9,7 @@ EventHandler = ($log, $root, $timeout) ->
     $timeout (-> $root.bodyClasses.loading = false), 250
 
 
+EventHandler.tag = "event:pageStart"
 EventHandler.$inject = [
   "$log"
   "$rootScope"

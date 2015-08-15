@@ -46,7 +46,7 @@ exports = module.exports = (IoC, settings) ->
 
 
   # Add route for each of the sub-pages
-  route "",                                       "news/top"
+  route "",                                       "news/index"
   route "/categories",                            "news/categories"
   route "/login",                                 "auth/login"
   route "/login/forgot",                          "auth/login"
@@ -61,7 +61,7 @@ exports = module.exports = (IoC, settings) ->
   route "/n/([0-9]+)",                            "news/redirector"
   route "/newest",                                "news/index"
   route "/newest/page/([0-9]+)?",                 "news/index"
-  route "/page/([0-9]+)?",                        "news/top"
+  route "/page/([0-9]+)?",                        "news/index"
   route "/recent",                                "news/recent"
   route "/recent/page/([0-9]+)?",                 "news/recent"
   route "/rss",                                   "news/index"

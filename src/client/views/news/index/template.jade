@@ -1,7 +1,6 @@
 //- The stories list
 ul.stories
   li.story(ng-repeat="story in stories track by $index")
-    //- .index {{ (pagination.limit * (pagination.page - 1)) + ($index + 1)}}
     news-item(ng-model="story")
 
 //- //- The two page options (they get displayed only on the first page)

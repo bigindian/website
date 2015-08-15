@@ -1,4 +1,5 @@
-Controller = ($http, $location, $log, $scope, Categories, Stories) ->
+Controller = ($http, $location, $log, $scope, Notifications, Categories,
+Stories) ->
   logger = $log.init Controller.tag
   logger.log "initializing"
   $scope.$emit "page:initialize", needLogin: true
@@ -54,7 +55,10 @@ Controller = ($http, $location, $log, $scope, Categories, Stories) ->
 
     # Send the request!
     Stories.create data
-    .success (story) -> $location.path "/story/#{story.slug}"
+    .success (story) ->
+      Notifications.success "story_submit_success"
+      $location.path "/story/#{story.slug}"
+    .catch -> Notifications.success "story_submit_fail"
     .finally unlockForm
 
 
@@ -64,9 +68,8 @@ Controller.$inject = [
   "$location"
   "$log"
   "$scope"
+  "@notifications"
   "@models/news/categories"
   "@models/news/stories"
 ]
-
-
 module.exports = Controller

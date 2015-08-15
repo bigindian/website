@@ -7,9 +7,10 @@ Controller = ($http, $location, $log, $sce, $scope, Stories) ->
   $scope.story = {}
 
   $http.pageAsJSON().success (data) ->
-    $scope.story = data.story
+    $scope.story = data.story or {}
     $scope.description = $sce.trustAsHtml $scope.story.description
     $scope.$emit "page:start"
+    $scope.$emit "page:modify", title: $scope.story.title
 
 
   blockForm = -> $scope.formClasses = loading: $scope.formLoading = true

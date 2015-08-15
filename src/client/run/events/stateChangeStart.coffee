@@ -8,31 +8,18 @@ EventHandler = ($root, $log, $timeout, Environment, Language) ->
 
   $root.$on "$stateChangeStart",
     (event, toState, toParams, fromState, fromParams) ->
-      setTitle = ->
-        title = Language.translate "title", toState.page
-        if title == "" then document.title = "#{Environment.sitename}"
-        else document.title = "#{title} - #{Environment.sitename}"
 
-
-      $root.$on "model:language:change", setTitle
-      setTitle()
-
-
-      # document.title =
       logger.log "captured event!"
       logger.log "switching #{fromState.name} -> #{toState.name}"
       if stateClasses then $root.bodyClasses[stateClasses] = false
-
-      $root.$on
 
       # Set the loading class on the page
       $root.bodyClasses.loading = true
 
       # Give a proper id & class to the <body> tag
-      if (controller = toState.controller)?
-        document.body.id = controller.replace /\//g, "-"
-        stateClasses = controller.replace /\//g, " "
-        $root.bodyClasses[stateClasses] = true
+      document.body.id = toState.page.replace /\//g, "-"
+      stateClasses = toState.page.replace /\//g, " "
+      $root.bodyClasses[stateClasses] = true
 
 
 EventHandler.tag = "event:stateChangeStart"
