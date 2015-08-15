@@ -11,7 +11,8 @@
         | [Story removed by {{ story.is_moderated ? "moderator" : "original submitter" }}]
 
     span.cats(ng-if="!story.is_gone")
-      news-category(ng-model="cat", ng-repeat="cat in story.categories")
+      a(ng-repeat="cat in story.categories", fn-route="/category/{{ cat.slug }}")
+        news-category(ng-model="cat")
 
     a.domain(fn-route="{{ story.url }}") ({{ story.url | domain }})
     //- | &nbsp;&middot;&nbsp;

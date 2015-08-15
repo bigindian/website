@@ -24,16 +24,17 @@ form(name="form"
       .columns.category-selector(ng-if="story.url && selectedCats < 2")
         .title Choose two categories
         .options
-          span(ng-repeat="cat in categories")
-            news-category(ng-model="cat"
+          //- span()
+          news-category(ng-model="cat"
+              ng-repeat="cat in categories"
               ng-if="cat.select != true"
               ng-click="select(cat)")
 
       .columns.category-selected(ng-if="story.url")
         .title Selected categories
         .options
-          span(ng-repeat="cat in categories")
             news-category(ng-model="cat"
+              ng-repeat="cat in categories"
               ng-if="cat.select == true"
               ng-click="deselect(cat)")
 
@@ -136,4 +137,4 @@ form(name="form"
 
   .columns(ng-if="selectedCats == 2 && form.$valid")
     div(google-recaptcha, ng-model="form.gcaptcha", ng-if="!form.gcaptcha")
-    button(ng-click="submit(story)", ng-if="!form.gcaptcha") Submit
+    button(ng-click="submit(story)", ng-if="form.gcaptcha") Submit

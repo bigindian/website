@@ -18,7 +18,10 @@ Controller = ($scope, $root, $cookies, $log, $http, Categories) ->
     counters = data.counters or []
 
     for cat in $scope.categories then for counter in counters
-      if cat.id is counter.category then cat.counter = counter.stories
+      cat.counter = 0
+      if cat.id is counter.category
+        cat.counter = counter.stories
+        break
 
     $scope.$emit "page:start"
 
