@@ -9,7 +9,6 @@ news-item
     &:visited
       color: #777
     &:hover
-      color: $news-color
       text-decoration: none
   .story_liner
     padding: 4px 0
@@ -32,28 +31,30 @@ news-item
 
   .domain
     font-style: italic
+    color: blue
+    opacity: 0.6
 
   .details
     color: #888
     font-size: 8.5pt
     margin-top: 2px
-    margin-left: 40px
+    // margin-left: 25px
     span
       +single-transition
       &:hover
         color: #000
 
   a
-    +single-transition
+    // +single-transition
     text-decoration: none
     &:hover
       text-decoration: underline
-      color: $news-color
 
-  .voters
+  .upvoter
     float: left
+    margin-top: 2px
 
-    .upvoter
+    a
       border-color: transparent transparent #CCC transparent
       border-style: solid
       border-width: 5px
@@ -66,4 +67,26 @@ news-item
       text-decoration: none
       width: 0px
       &:hover, &.voted
-        border-color: transparent transparent $news-color transparent
+        border-color: transparent transparent #000 transparent
+
+  .score
+    color: #CCC !important
+    display: inline-block
+    font-size: 11px
+    margin-top: 3px
+    text-align: center
+    font-weight: bold
+    min-width: 35px
+
+  .score, .details span, a
+    +single-transition
+
+  &:hover
+    .comments_label
+      text-decoration: underline
+    .details span
+      color: #000
+    .domain
+      opacity: 1
+    .link a
+      color: #000

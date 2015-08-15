@@ -1,4 +1,4 @@
-name = "[boot]"
+tag = "[boot]"
 module.exports =
   initialize: ->
     # This block checks if the app has been booted properly (gives it 15s to
@@ -9,20 +9,20 @@ module.exports =
     # setTimeout() function will make sure the block below still executes
     # because of it's async nature.
     setTimeout ->
-      console.log name, "checking for BOOTSTRAP_OK"
+      console.log tag, "checking for BOOTSTRAP_OK"
       if not window.BOOTSTRAP_OK
-        console.warn name, "BOOTSTRAP_OK != true after 10s"
+        console.warn tag, "BOOTSTRAP_OK != true after 10s"
 
         # Check the flag
         if localStorage.getItem "boot:failed"
-          console.warn name, "not reloading page as previous attempt failed"
-          console.error name, "scripts failed to load"
+          console.warn tag, "not reloading page as previous attempt failed"
+          console.error tag, "scripts failed to load"
 
           # TODO: redirect to a maintenance page
           document.body.innerHTML = "The site is under maintenance or your Internet
           connection is really slow"
         else
-          console.warn name, "something wrong with loading scripts. Clearing cache now,
+          console.warn tag, "something wrong with loading scripts. Clearing cache now,
            setting a flag and reloading the page"
           # Clear the cache entirely!
           localStorage.clear()
@@ -34,14 +34,14 @@ module.exports =
           location.reload()
       else
         localStorage.removeItem "boot:failed"
-        console.log name, "BOOTSTRAP_OK set properly!"
+        console.log tag, "BOOTSTRAP_OK set properly!"
     , 15 * 1000
 
 
   start: (modulename) ->
     # Helper function to boot the angular App.
     boot = ->
-      console.log name, "initializing angular with module '#{modulename}'"
+      console.log tag, "initializing angular with module '#{modulename}'"
 
       # Remove the initializing class from the body element
       body = angular.element document.getElementsByTagName("body")[0]

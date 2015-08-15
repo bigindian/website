@@ -1,25 +1,17 @@
-name = "[component:news-item]"
-
-
-exports = module.exports = ($scope, $root, $log, $timeout, $location,
-Stories) ->
-  $log.log name, "initializing"
+exports = module.exports = ($scope, $log, Stories) ->
+  tag = "[component:news-item]"
+  $log.log tag, "initializing"
 
   $scope.hasVoted = false
-
   $scope.upvote = ->
     if $scope.hasVoted then return
-    $scope.hasVoted = true
     $scope.story.score += 1
+    $scope.hasVoted = true
     Stories.upvote $scope.story.id
 
 
 exports.$inject = [
   "$scope"
-  "$rootScope"
   "$log"
-  "$timeout"
-  "$location"
-
   "models.news.stories"
 ]

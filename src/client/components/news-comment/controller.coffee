@@ -1,8 +1,6 @@
-name = "[component:news-comment]"
-
-
 exports = module.exports = ($scope, $log, $sce) ->
-  $log.log name, "initializing"
+  tag = "[component:news-comment]"
+  $log.log tag, "initializing"
 
   $scope.$watch "comment.content_markdown", (value) ->
     $scope.markdown = $sce.trustAsHtml $scope.comment.content

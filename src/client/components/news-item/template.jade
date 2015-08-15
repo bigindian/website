@@ -1,8 +1,8 @@
 .story_liner
-  .voters
-    a.upvoter.hide-if-loggedin(fn-route="/login")
-    a.upvoter.show-if-loggedin(ng-click="upvote()", ng-class="{voted: hasVoted}")
+  .upvoter
+    a(ng-click="upvote()", ng-class="{voted: hasVoted}")
   .details
+    span.score {{ story.score || 0 | prettynumber }}
     span.link
       span(ng-if="!story.is_gone")
         a(fn-route="{{ story.url }}") {{ story.title }}
@@ -13,10 +13,10 @@
       news-category(ng-model="cat", ng-repeat="cat in story.categories")
 
     a.domain(fn-route="{{ story.url }}") ({{ story.url | domain }})
-    | &nbsp;&middot;&nbsp;
-    span {{ story.views || 0 }} views
-    | &nbsp;&middot;&nbsp;
-    span
+    //- | &nbsp;&middot;&nbsp;
+    //- span {{ story.views || 0 }} views
+    //- | &nbsp;&middot;&nbsp;
+    //- span
       | {{ story.score || 0 }} points by {{ story.created_by.username }}
     | &nbsp;&middot;&nbsp;
     span.comments_label
