@@ -12,9 +12,6 @@ Controller = ($http, $location, $log, $scope, $window, Notifications, Users) ->
     $scope.page = i
     promted = false
 
-  $scope.$watch "login.email", (value) ->
-    # TODO: Poll the server to see if email is valid
-    $scope.emailValid = value?
 
   $scope.$watch "login.username", (value) ->
     # TODO: Poll the server to see if username is valid
