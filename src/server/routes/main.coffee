@@ -69,6 +69,7 @@ exports = module.exports = (IoC, settings) ->
   route "/stories",                               "news/index"
   route "/stories/preview",                       "news/index"
   route "/story/([a-z0-9\-]+)",                   "news/single"
+  route "/info/terms-privacy",                    "info/terms-privacy"
   route "/submit",                                "news/submit"
 
   # If none of the routes matched, then route to the 404 controller!
