@@ -29,10 +29,10 @@ exports = module.exports = (BaseModel, Users, Comments, NewsCategories) ->
       updated_by: -> @belongsTo "users", "updated_by"
 
 
-    top: (options={}) ->
+    top: (buildQuery, options={}) ->
       options.order = hotness: "DESC"
       options.withRelated = ["created_by", "categories"]
-      @query null, options
+      @query buildQuery, options
 
 
     # Setup the enum types

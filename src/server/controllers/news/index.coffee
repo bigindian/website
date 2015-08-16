@@ -1,6 +1,6 @@
 exports = module.exports = (Renderer, Stories) ->
   controller = (request, response, next) ->
-    Stories.top(page: request.params[0] or 1).then (stories) ->
+    Stories.top(null, page: request.params[0] or 1).then (stories) ->
 
       # TODO find some other way for this..
       stories.collection = stories.collection.toJSON()

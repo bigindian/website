@@ -9,6 +9,7 @@ module.exports = (app) ->
   app.controller "auth/signup",      require "./auth/signup/controller"
 
   app.controller "news/categories",  require "./news/categories/controller"
+  app.controller "news/category",    require "./news/category/controller"
   app.controller "news/filters",     require "./news/filters/controller"
   app.controller "news/index",       require "./news/index/controller"
   app.controller "news/search",      require "./news/search/controller"
