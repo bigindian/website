@@ -12,17 +12,8 @@ nav#menu-header(ng-class="{'show-menuheader': showMenuHeader}"
       ng-class="{active: link.isActive}")
       span.icon(ng-if="link.children") &#xf105;
       a(fn-route="{{ link.url }}"
+        target="{{ link._self ? '_self' : ''}}"
         ng-if="link.slug") {{ link.name | translate:'header'}}
-
-
-//- This is the sub header. It gets set with the link's children from the main
-//- header
-nav#submenu-header
-  ul
-    li(ng-repeat="sublink in activeLink.children"
-      class="{{ activeLink.class }} {{ sublink.class }}"
-      ng-class="{active: sublink.isActive}")
-      a(fn-route="{{ sublink.url }}") {{ sublink.name | translate:'header' }}
 
 
 span.nav-cover(ng-click="closeHeader()", ng-mouseover="onCoverHover()")

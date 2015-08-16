@@ -69,14 +69,15 @@
   // }, {
     "class": "divider",
   }, {
-    "class": "about",
-    "slug": "about",
-    "name": "about",
-    "url": "/info/about",
-  }, {
+  //   "class": "about",
+  //   "slug": "about",
+  //   "name": "about",
+  //   "url": "/info/about",
+  // }, {
     "slug": "terms-privacy",
     "class": "terms-privacy",
     "name": "terms-privacy",
     "url": "/info/terms-privacy",
+    "_self": true
   }
 ];
