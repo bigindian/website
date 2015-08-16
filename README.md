@@ -9,7 +9,7 @@ The Big Indian News is [licensed](LICENSE.md) under the [GNU GPL v3](http://www.
 
 Contribute
 ----------
-We love you! Why not show us some love back? Contribute to the development of Kuwait & Me any way you possibly can. Developers can read the [contributions](CONTRIBUTION.md) file for more information on how to contribute.
+We love you! Why not show us some love back? Contribute to the development of the site any way you possibly can. Developers can read the [contributions](CONTRIBUTION.md) file for more information on how to contribute.
 
 Donations are accepted via [PayPal](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=VVPBN75GCJ854) and help keep our servers running for you.
 
