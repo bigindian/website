@@ -50,6 +50,11 @@ exports.seed = (knex, Promise) ->
       color: "#fffcd7"
     }
     {
+      title: "Venture"
+      description: "Ventures"
+      color: "#fffcd7"
+    }
+    {
       title: "Opinion"
       description: "Public opinion"
       color: "#fffcd7"
@@ -75,13 +80,18 @@ exports.seed = (knex, Promise) ->
       color: "#fffcd7"
     }
     {
-      title: "Arts"
-      description: "Artists, Collections & Galleries"
+      title: "Food"
+      description: "Cusines & Restaurants"
       color: "#fffcd7"
     }
     {
-      title: "Food"
-      description: "Cusines & Restaurants"
+      title: "Programming"
+      description: "Everything Software"
+      color: "#fffcd7"
+    }
+    {
+      title: "Privacy"
+      description: "Privacy and Safety"
       color: "#fffcd7"
     }
     {
@@ -105,18 +115,13 @@ exports.seed = (knex, Promise) ->
       color: "#fffcd7"
     }
     {
-      title: "Televison"
-      description: "Serials, Shows and everything TV"
-      color: "#F9DDDE"
-    }
-    {
       title: "Show"
-      description: "Show everyone something"
+      description: "Show something you made"
       color: "#ddebf9"
     }
     {
       title: "Ask"
-      description: "Ask anyone anything"
+      description: "Ask BigI anything"
       color: "#ddebf9"
     }
   ]
