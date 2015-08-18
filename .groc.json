@@ -1,0 +1,6 @@
+{
+  "glob": ["src/**/*.coffee", "lib/styles/*/*.jade"],
+  "out": "docs",
+  "highlighter-dis": "pygments",
+  "roots": "src"
+}

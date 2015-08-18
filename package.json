@@ -11,7 +11,7 @@
     "s": "NODE_ENV=development forever -c coffee start bin/server.coffee",
     "db-refresh": "npm run-script schema-down && npm run-script db-init",
     "init-config": "sh ./etc/init-config.sh",
-    "docs": "docker -n --ignore_hidden --colour_scheme emacs -m -i src -o docs --exclude *.sass,*.jade,public -w",
+    "docs": "groc",
     "start": "coffee ./bin/server.coffee",
     "test": "NODE_TLS_REJECT_UNAUTHORIZED=0 mocha src/server/mocha.coffee --compilers coffee:coffee-script/register --check-leaks --bail"
   },
@@ -150,10 +150,11 @@
     "browser-sync": "~2.8.1",
     "browser-sync-spa": "~1.0.2",
     "chalk": "~1.1.0",
-    "expect.js": "^0.3.1",
     "concat-stream": "~1.5.0",
     "del": "~1.2.0",
     "docker": "^0.2.14",
+    "expect.js": "^0.3.1",
+    "groc": "^0.8.0",
     "http-proxy": "~1.11.1",
     "jshint-stylish": "~2.0.1",
     "karma": "~0.13.3",
@@ -168,8 +169,8 @@
     "should": "^7.0.2",
     "uglify-save-license": "~0.4.1",
     "w3c-validate": "0.0.2",
-    "wiredep": "~3.0.0-beta",
     "webdriverio": "^3.1.0",
+    "wiredep": "~3.0.0-beta",
     "wrench": "~1.5.8"
   },
   "engines": {
