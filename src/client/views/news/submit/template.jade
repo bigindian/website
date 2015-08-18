@@ -22,7 +22,7 @@ form(name="form"
         button(ng-click="getTitle()") Get Title
 
       .columns.category-selector(ng-if="story.url && selectedCats < 3")
-        .title Choose 2-3 categories
+        .title Choose upto 3 categories
         .options
           //- span()
           news-category(ng-model="cat"
@@ -135,6 +135,6 @@ form(name="form"
           tt ![alt text](http://example.com/image.jpg) (only allowed in link text)
 
 
-  .columns(ng-if="selectedCats >= 2 && form.$valid")
+  .columns(ng-if="selectedCats >= 1 && form.$valid")
     div(google-recaptcha, ng-model="form.gcaptcha", ng-if="!form.gcaptcha")
     button(ng-click="submit(story)", ng-if="form.gcaptcha") Submit

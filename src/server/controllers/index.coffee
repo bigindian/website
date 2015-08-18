@@ -1,7 +1,6 @@
-# Description for the meta tag
-description = "Publish and Browse classifieds in Kuwait. Quick, easy and
-  absolutely free! Jobs, property, real estate, cars and classifieds in Kuwait.
-  Post an ad, browse ads, buy, sell or rent."
+#! Description for the meta tag
+description = "The Big Indian News is a news-aggregation site specifically
+  tailored for startups in India."
 
 # Cache options
 cache =
