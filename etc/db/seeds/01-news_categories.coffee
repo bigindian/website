@@ -16,12 +16,12 @@ exports.seed = (knex, Promise) ->
   categories = [
     {
       title: "Mobile"
-      description: "Android/iOS/Windows/Amazon Fire"
+      description: "&roid/iOS/Windows/Amazon Fire"
       color: "#fffcd7"
     }
     {
-      title: "Startup"
-      description: "Bitcoin & Blockchain"
+      title: "Startups"
+      description: "Startups"
       color: "#fffcd7"
     }
     {
@@ -36,22 +36,27 @@ exports.seed = (knex, Promise) ->
     }
     {
       title: "Education"
-      description: "School, Unversities, Exams..."
+      description: "Unversities & Education Inst."
+      color: "#fffcd7"
+    }
+    {
+      title: "Design"
+      description: "Design, UI, UX"
       color: "#fffcd7"
     }
     {
       title: "Business"
-      description: "Companies, Starups"
+      description: "Companies & Starups"
       color: "#fffcd7"
     }
     {
       title: "Politics"
-      description: "Government and organizations"
+      description: "Government & organizations"
       color: "#fffcd7"
     }
     {
-      title: "Economy"
-      description: "Money and Finance"
+      title: "Finance"
+      description: "Money & Finance"
       color: "#fffcd7"
     }
     {
@@ -65,38 +70,38 @@ exports.seed = (knex, Promise) ->
       color: "#fffcd7"
     }
     {
-      title: "Crowd-funding"
-      description: "Internet and technology"
+      title: "Crowdfunding"
+      description: "Crowdfunding & Crowdsourcing"
       color: "#fffcd7"
     }
     {
       title: "Tech"
-      description: "Internet and technology"
+      description: "Internet & technology"
       color: "#fffcd7"
     }
     {
       title: "Science"
-      description: "Science related news"
+      description: "Intereting science"
       color: "#fffcd7"
     }
     {
-      title: "Health"
-      description: "Lifestyle & Health tips"
+      title: "Book"
+      description: "Books"
       color: "#fffcd7"
     }
     {
       title: "Enterpreneur"
-      description: ""
+      description: "Enterpreneur"
       color: "#fffcd7"
     }
     {
       title: "Programming"
-      description: "Everything Software"
+      description: "General software development"
       color: "#fffcd7"
     }
     {
       title: "Privacy"
-      description: "Privacy and Safety"
+      description: "Privacy & Anonymity"
       color: "#fffcd7"
     }
     {
@@ -105,13 +110,23 @@ exports.seed = (knex, Promise) ->
       color: "#F9DDDE"
     }
     {
-      title: "Show"
-      description: "Show something you made"
+      title: "Law"
+      description: "Legal & Law"
+      color: "#fffcd7"
+    }
+    {
+      title: "Marketing"
+      description: "Social media & marketing"
+      color: "#fffcd7"
+    }
+    {
+      title: "Audio"
+      description: "Link to audio (podcast, interviews)"
       color: "#ddebf9"
     }
     {
-      title: "Ask"
-      description: "Ask BigI anything"
+      title: "Show"
+      description: "Show something you made"
       color: "#ddebf9"
     }
   ]
