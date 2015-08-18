@@ -15,13 +15,33 @@ exports.seed = (knex, Promise) ->
 
   categories = [
     {
-      title: "Mobile"
-      description: "&roid/iOS/Windows/Amazon Fire"
+      title: "Apps"
+      description: "Android, iOS, Windows .."
+      color: "#fffcd7"
+    }
+    {
+      title: "World"
+      description: "Travel, Cutures, News .."
       color: "#fffcd7"
     }
     {
       title: "Startups"
       description: "Startups"
+      color: "#fffcd7"
+    }
+    {
+      title: "eCommerce"
+      description: "Electronic commerce"
+      color: "#fffcd7"
+    }
+    {
+      title: "Entertainment"
+      description: "Entertainment"
+      color: "#fffcd7"
+    }
+    {
+      title: "Cloud"
+      description: "Cloud technologies"
       color: "#fffcd7"
     }
     {
@@ -75,7 +95,7 @@ exports.seed = (knex, Promise) ->
       color: "#fffcd7"
     }
     {
-      title: "Tech"
+      title: "Tech & Gadgets"
       description: "Internet & technology"
       color: "#fffcd7"
     }
@@ -115,9 +135,44 @@ exports.seed = (knex, Promise) ->
       color: "#fffcd7"
     }
     {
-      title: "Marketing"
-      description: "Social media & marketing"
+      title: "Giants"
+      description: "Apple, Facebook, Google, you know.."
       color: "#fffcd7"
+    }
+    {
+      title: "Funding"
+      description: "Funding"
+      color: "#fffcd7"
+    }
+    {
+      title: "Marketing"
+      description: "Marketing"
+      color: "#fffcd7"
+    }
+    {
+      title: "Social"
+      description: "Facebook, Twiiter, Instagram..."
+      color: "#fffcd7"
+    }
+    {
+      title: "Investing"
+      description: "Investing & Investors"
+      color: "#fffcd7"
+    }
+    {
+      title: "Security"
+      description: "Security & Safety"
+      color: "#fffcd7"
+    }
+    {
+      title: "Success Stories"
+      description: "Stories of success"
+      color: "#fffcd7"
+    }
+    {
+      title: "Images"
+      description: "Link to Images (gallery, photos)"
+      color: "#ddebf9"
     }
     {
       title: "Audio"
