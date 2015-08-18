@@ -8,7 +8,7 @@ Stories) ->
   $scope.selectedCats = 0
   $scope.story = {}
   $scope.categories = Categories.getAll() or []
-  cat.disableLink = true for cat in $scope.categories
+  cat.select = false for cat in $scope.categories
 
 
   blockForm = -> $scope.formClasses = loading: $scope.formLoading = true
