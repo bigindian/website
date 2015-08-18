@@ -48,6 +48,9 @@ exports = module.exports = (IoC) ->
   r "/logs",                                "logs",                      GET
   r "/news",                                "/news",                      GET
   r "/news/categories",                     "/news/categories",           GET
+  r "/news/comments",                       "/news/comments",             GET
+  r "/news/comments/([0-9]+)",              "/news/comments/:id",         GET
+  r "/news/comments/([0-9]+)/upvote",       "/news/comments/:id/upvote",  PUT
   r "/news/categories/counters",            "/news/categories/counters",  GET
   r "/news/recent",                         "/news/recent",               GET
   r "/news/scrape",                         "/news/scrape",               GET

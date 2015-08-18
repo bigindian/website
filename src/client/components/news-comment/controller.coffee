@@ -1,4 +1,4 @@
-exports = module.exports = ($scope, $log, $sce) ->
+exports = module.exports = ($scope, $log, $sce, Comments) ->
   tag = "[component:news-comment]"
   $log.log tag, "initializing"
 
@@ -9,11 +9,12 @@ exports = module.exports = ($scope, $log, $sce) ->
     if $scope.hasVoted then return
     $scope.hasVoted = true
     $scope.story.score += 1
-    Stories.upvote $scope.story.id
+    Comments.upvote $scope.comment.id
 
 
 exports.$inject = [
   "$scope"
   "$log"
   "$sce"
+  "@models/news/comments"
 ]

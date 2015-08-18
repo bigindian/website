@@ -18,6 +18,6 @@ section(ng-if="story.id")
         button(ng-click="submit(comment)") Submit
 
 
-  p(ng-repeat="comment in story.comments")
+  p(ng-repeat="comment in story.comments | orderBy : 'upvotes' : true")
     news-comment(ng-model="comment")
 
