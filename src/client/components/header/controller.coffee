@@ -9,28 +9,6 @@ Header = ($scope, $root, $log, $timeout, $location, Notifications) ->
 
   $scope.activeLink = null
 
-  # Grab a random quote from the list below
-  $scope.quote = do ->
-    quotes = [
-      "Indian" # ;)
-      "ambitious"
-      "competitive"
-      "confident"
-      "creative"
-      "curious"
-      "daring"
-      "determined"
-      "disciplined"
-      "expert"
-      "hard-working"
-      "passionate"
-      "positive"
-    ]
-    quotes[Math.floor Math.random() * quotes.length + 0]
-
-  # After 3 seconds hide the quote
-  $timeout(3000).then -> $scope.hideQuote = true
-
   $root.$on "$viewContentLoaded", ->
     try $scope.route = $location.path().split("/")[1] or ""
     catch e then $scope.route = ""
