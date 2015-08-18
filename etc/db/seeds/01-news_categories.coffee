@@ -20,18 +20,23 @@ exports.seed = (knex, Promise) ->
       color: "#fffcd7"
     }
     {
+      title: "Startup"
+      description: "Bitcoin & Blockchain"
+      color: "#fffcd7"
+    }
+    {
       title: "Bitcoin"
       description: "Bitcoin & Blockchain"
       color: "#fffcd7"
     }
     {
-      title: "National"
+      title: "India"
       description: "India in general"
       color: "#fffcd7"
     }
     {
       title: "Education"
-      description: "School, Unversities and Boards"
+      description: "School, Unversities, Exams..."
       color: "#fffcd7"
     }
     {
@@ -60,6 +65,11 @@ exports.seed = (knex, Promise) ->
       color: "#fffcd7"
     }
     {
+      title: "Crowd-funding"
+      description: "Internet and technology"
+      color: "#fffcd7"
+    }
+    {
       title: "Tech"
       description: "Internet and technology"
       color: "#fffcd7"
@@ -75,13 +85,8 @@ exports.seed = (knex, Promise) ->
       color: "#fffcd7"
     }
     {
-      title: "Sports"
-      description: "All about sports"
-      color: "#fffcd7"
-    }
-    {
-      title: "Food"
-      description: "Cusines & Restaurants"
+      title: "Enterpreneur"
+      description: ""
       color: "#fffcd7"
     }
     {
@@ -95,24 +100,9 @@ exports.seed = (knex, Promise) ->
       color: "#fffcd7"
     }
     {
-      title: "Travel"
-      description: "Tourism, Vactioning"
-      color: "#fffcd7"
-    }
-    {
       title: "Video"
       description: "Link to a video"
       color: "#F9DDDE"
-    }
-    {
-      title: "Music"
-      description: "Rap, Classical, Rock and more"
-      color: "#F9DDDE"
-    }
-    {
-      title: "Books"
-      description: "Novels, Magazines and Authors"
-      color: "#fffcd7"
     }
     {
       title: "Show"
