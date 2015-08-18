@@ -1,4 +1,4 @@
-Controller = ($http, $location, $log, $sce, $scope, Stories) ->
+Controller = ($http, $log, $sce, $scope, Notifications, Stories) ->
   logger = $log.init Controller.tag
   logger.log "initializing"
   $scope.$emit "page:initialize"
@@ -6,11 +6,14 @@ Controller = ($http, $location, $log, $sce, $scope, Stories) ->
 
   $scope.story = {}
 
-  $http.pageAsJSON().success (data) ->
-    $scope.story = data.story or {}
-    $scope.description = $sce.trustAsHtml $scope.story.description
-    $scope.$emit "page:start"
-    $scope.$emit "page:modify", title: $scope.story.title
+  downloadPage = ->
+    $http.pageAsJSON().success (data) ->
+      $scope.story = data.story or {}
+      $scope.description = $sce.trustAsHtml $scope.story.description
+      $scope.$emit "page:start"
+      $scope.$emit "page:modify", title: $scope.story.title
+
+  downloadPage()
 
 
   blockForm = -> $scope.formClasses = loading: $scope.formLoading = true
@@ -21,8 +24,8 @@ Controller = ($http, $location, $log, $sce, $scope, Stories) ->
     blockForm()
     Stories.createComment $scope.story.id, content: data
     .then ->
-      $location.search _success: "comment_posted"
-      location.reload() # avoid using global fn.
+      Notifications.success "comment_posted"
+      downloadPage()
     .finally unlockForm
 
 
@@ -30,10 +33,10 @@ Controller = ($http, $location, $log, $sce, $scope, Stories) ->
 Controller.tag = "page:news/single"
 Controller.$inject = [
   "$http"
-  "$location"
   "$log"
   "$sce"
   "$scope"
+  "@notifications"
   "@models/news/stories"
 ]
 module.exports = Controller

@@ -8,7 +8,7 @@ table(cellspacing="0")
     th.center(width="13%") {{ "table.tag" | translate:"news/categories" }}
     th(width="65%") {{ "table.desc" | translate:"news/categories" }}
     th.center(width="5%") {{ "table.stories" | translate:"news/categories" }}
-  tr(ng-repeat="category in categories | orderBy : 'counter' : true")
+  tr(ng-repeat="category in categories | orderBy : 'slug'")
     //- td.center
       input(type="checkbox", ng-model="filters[category.id]")
     td

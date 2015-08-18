@@ -2,6 +2,9 @@
 ul.stories
   li.story(ng-repeat="story in stories track by $index")
     news-item(ng-model="story")
+  li(ng-if="pagination.total == 0")
+    | There are no stories yet :( Post one&nbsp;
+    a.blue(fn-route="/submit") here!
 
 //- //- The two page options (they get displayed only on the first page)
 //- .page-option(ng-if="pagination.page == 1")
