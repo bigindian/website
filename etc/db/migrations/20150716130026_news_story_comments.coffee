@@ -6,7 +6,7 @@ exports.up = (knex, Promise) ->
     table.string("slug").unique().index().notNull().defaultTo ""
     table.integer("upvotes").notNull().defaultTo 0
     table.integer("downvotes").notNull().defaultTo 0
-    table.decimal("confidence", 20, 19).index().notNull().defaultTo 0.0
+    table.decimal("hotness", 20, 10).index().notNull().defaultTo 0.0
     table.integer("parent").references("id").inTable "news_comments"
     table.boolean("is_deleted").defaultTo false
     table.boolean("is_moderated").defaultTo false
