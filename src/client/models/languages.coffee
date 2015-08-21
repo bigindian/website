@@ -2,6 +2,8 @@ Model = ($root, Enum) ->
   class Languages extends Enum
     data: {}
     tag: Model.tag
+    md5Key: "locale:en"
+
     downloadUrl: -> "/api/language/en"
 
 

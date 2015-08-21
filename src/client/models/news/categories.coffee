@@ -1,12 +1,13 @@
 Model = ($http, Enum) ->
-  class Categories extends Enum
+  new class Categories extends Enum
     downloadUrl: -> "/api/news/categories"
     tag: "model:news/categories"
+    md5Key: "model:news_categories"
 
     ###
-      This function returns the category (child or parent) given only it's slug.
-      For this function to work flawlessly, it assumes that all slugs (both
-      parent and child combined) are unique.
+    This function returns the category (child or parent) given only it's slug.
+    For this function to work flawlessly, it assumes that all slugs (both
+    parent and child combined) are unique.
     ###
     findBySlug: (slug) ->
       for cat in @getAll()
@@ -23,9 +24,6 @@ Model = ($http, Enum) ->
         counters = response.data
         counter.stories = Number counter.stories for counter in counters
         counters
-
-
-  new Categories
 
 
 Model.$inject = [

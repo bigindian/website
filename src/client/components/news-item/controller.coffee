@@ -12,9 +12,9 @@ Controller = ($scope, $log, Stories, Categories, Settings) ->
 
     $scope.story.parsedCategories = categories
 
-  onSettingsUpdate = ->
-    console.log 's', Settings.get "storyInNewTab"
-    $scope.openNewTab = Settings.get "storyInNewTab"
+
+  onSettingsUpdate = -> $scope.openNewTab = Settings.get "storyInNewTab"
+
 
   $scope.$on "settings:change", onSettingsUpdate
   onSettingsUpdate()

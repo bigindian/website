@@ -52,6 +52,10 @@ BaseModel = (knex, Enum, Cache, Settings) ->
     knex: knex
 
 
+    fullCache: false
+    enableMD5: false
+
+
     bookshelf: Bookshelf knex
 
 
@@ -109,7 +113,7 @@ BaseModel = (knex, Enum, Cache, Settings) ->
 
       #! If caching was enabled then we load the entire table into the cache
       #! right away! (Calling this function does that)
-      if @full_cache then @getAll()
+      if @fullCache then @getAll()
 
 
     onCreate: (model) -> null
@@ -192,7 +196,7 @@ BaseModel = (knex, Enum, Cache, Settings) ->
 
       #! If caching was enabled, then we operate this entire table from the
       #! cache.
-      if @full_cache
+      if @fullCache
         key = "model:#{@tableName}"
 
         Cache.get key
@@ -208,7 +212,7 @@ BaseModel = (knex, Enum, Cache, Settings) ->
             #! If we were asked to keep an MD5 hash of the model (used for
             #! versioning client-side data in localStorage) then generate it and
             #! update the settings variable.
-            if @enable_md5 then Settings.md5[key] = Md5 json
+            if @enableMD5 then Settings.md5[key] = Md5 json
 
             #! Set the new data into the cache.
             Cache.set key, json

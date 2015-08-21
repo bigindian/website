@@ -2,6 +2,7 @@ Model = ($http, $log, $q, Environment, Storage) ->
   class Enum
     tag: "enum"
     cache: true
+    md5Key: "insert-md5-key"
     _downloadedFlag: false
 
     constructor: ->
@@ -30,13 +31,23 @@ Model = ($http, $log, $q, Environment, Storage) ->
 
       url = @downloadUrl()
       cacheKey = "enum:#{url}"
+      md5CacheKey = "md5:#{@md5Key}"
 
       @logger.debug "downloading from", url
 
-      # Now check for the data in cache if it exists
-      Storage.local cacheKey
+      Storage.local(md5CacheKey).then (md5Hash) =>
+        #! If the md5 key changes then we clear the cache so that it reloads
+        if md5Hash != Environment.md5[@md5Key]
+          @logger.log "local md5 hash is different; flushing cache"
+          Storage.local cacheKey, null
+        else @logger.log "local md5 hash is the same; not flushing cache"
+
+        #! Now check for the data in cache if it exists
+        Storage.local cacheKey
+
       .then (cache) =>
         @logger.log "retrieved from cache"
+
 
         $q (resolve, reject) =>
           if @cache and cache?
@@ -47,12 +58,14 @@ Model = ($http, $log, $q, Environment, Storage) ->
 
       # Something went wrong while parsing the cached data or there was nothing
       # in the cache. No problem, we'll retrieve it from the API.
-      .catch =>
+      .catch (error) =>
         @logger.log "retrieving from API"
         $http.get @url()
-        .success (@data) => Storage.local cacheKey, angular.toJson @data
+        .success (@data) =>
+          Storage.local md5CacheKey, Environment.md5[@md5Key]
+          Storage.local cacheKey, angular.toJson @data
 
-      .then =>
+      .then (data) =>
         @_downloadedFlag = true
         @onChange @date
         @logger.log "downloaded"
