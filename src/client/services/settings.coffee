@@ -8,7 +8,7 @@ SettingsService = ($log, $q, $root, $window, Storage) ->
     constructor: ->
       logger.log "initializing"
       Storage.local @storageKey
-      .then (settings) => @setAll angular.fromJson settings
+      .then (settings) => @setAll angular.fromJson(settings) or {}
 
     get: (key) -> @current[key]
     set: (key, value) ->
