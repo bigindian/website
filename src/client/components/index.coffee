@@ -8,5 +8,6 @@ module.exports = (app) ->
   app.directive "newsComment",     require "./news-comment/directive"
   app.directive "newsItem",        require "./news-item/directive"
   app.directive "notifications",   require "./notifications/directive"
+  app.directive "formCheckbox",   require "./form/checkbox/directive"
 
   app.service   "@notifications",  require "./notifications/service"

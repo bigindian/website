@@ -67,6 +67,7 @@ exports = module.exports = (IoC, settings) ->
   route "/rss",                                   "news/index"
   route "/search",                                "news/index"
   route "/stories",                               "news/index"
+  route "/settings",                              "news/settings"
   route "/stories/preview",                       "news/index"
   route "/story/([a-z0-9\-]+)",                   "news/single"
   route "/info/terms-privacy",                    "info/terms-privacy"

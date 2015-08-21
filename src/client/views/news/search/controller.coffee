@@ -10,6 +10,4 @@ Controller.$inject = [
   "$scope"
   "$log"
 ]
-
-
 module.exports = Controller

@@ -168,49 +168,58 @@ nav#submenu-header
 
 
 
-.show-header
-  header
-    #menu-header
-      opacity: 1
-
-      -webkit-transform: translate3D(0,0,0)
-      -ms-transform: translate3D(0,0,0)
-      transform: translate3D(0,0,0)
-    #main-header
-      -webkit-transform: translate3D($subHeaderWidth, 0, 0)
-      -ms-transform: translate3D($subHeaderWidth, 0, 0)
-      transform: translate3D($subHeaderWidth, 0, 0)
-    #submenu-header
-      -webkit-transform: translate3D(-$subHeaderWidth, 0, 0)
-      -ms-transform: translate3D(-$subHeaderWidth, 0, 0)
-      transform: translate3D(-$subHeaderWidth, 0, 0)
-    .nav-cover
-      bottom: 0
-      left: $subHeaderWidth
+body
+  &.stickHeader
+    header
       position: fixed
-      right: 0
       top: 0
-      z-index: 200
+    main
+      padding-top: $headerHeight !important
+  &.show-header
+    header
+      #menu-header
+        opacity: 1
 
-  main, footer
-    opacity: 0.2
+        -webkit-transform: translate3D(0,0,0)
+        -ms-transform: translate3D(0,0,0)
+        transform: translate3D(0,0,0)
+      #main-header
+        -webkit-transform: translate3D($subHeaderWidth, 0, 0)
+        -ms-transform: translate3D($subHeaderWidth, 0, 0)
+        transform: translate3D($subHeaderWidth, 0, 0)
+      #submenu-header
+        -webkit-transform: translate3D(-$subHeaderWidth, 0, 0)
+        -ms-transform: translate3D(-$subHeaderWidth, 0, 0)
+        transform: translate3D(-$subHeaderWidth, 0, 0)
+      .nav-cover
+        bottom: 0
+        left: $subHeaderWidth
+        position: fixed
+        right: 0
+        top: 0
+        z-index: 200
 
-    -webkit-transform: translate3D(50px, 0, 0)
-    -ms-transform: translate3D(50px, 0, 0)
-    transform: translate3D(50px, 0, 0)
+    main, footer
+      opacity: 0.2
 
-  &.show-subheader
-    #submenu-header
-      opacity: 1
-      -webkit-transform: translate3D(0,0,0)
-      -ms-transform: translate3D(0,0,0)
-      transform: translate3D(0,0,0)
-    #main-header
-      -webkit-transform: translate3D($subHeaderWidth * 2, 0, 0)
-      -ms-transform: translate3D($subHeaderWidth * 2, 0, 0)
-      transform: translate3D($subHeaderWidth * 2, 0, 0)
-    header .nav-cover
-      left: $subHeaderWidth * 2
+      -webkit-transform: translate3D(50px, 0, 0)
+      -ms-transform: translate3D(50px, 0, 0)
+      transform: translate3D(50px, 0, 0)
+
+    &.show-subheader
+      #submenu-header
+        opacity: 1
+        -webkit-transform: translate3D(0,0,0)
+        -ms-transform: translate3D(0,0,0)
+        transform: translate3D(0,0,0)
+      #main-header
+        -webkit-transform: translate3D($subHeaderWidth * 2, 0, 0)
+        -ms-transform: translate3D($subHeaderWidth * 2, 0, 0)
+        transform: translate3D($subHeaderWidth * 2, 0, 0)
+      header .nav-cover
+        left: $subHeaderWidth * 2
+
+
 
 @media print
   header

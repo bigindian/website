@@ -1,4 +1,4 @@
-EventHandler = ($root, $log, $timeout, Environment, Language) ->
+EventHandler = ($log, $root, $timeout, Environment, Language, Settings) ->
   logger = $log.init EventHandler.tag
   logger.log "initialized"
 
@@ -21,13 +21,16 @@ EventHandler = ($root, $log, $timeout, Environment, Language) ->
       stateClasses = toState.page.replace /\//g, " "
       $root.bodyClasses[stateClasses] = true
 
+      Settings.update()
+
 
 EventHandler.tag = "event:stateChangeStart"
 EventHandler.$inject = [
-  "$rootScope"
   "$log"
+  "$rootScope"
   "$timeout"
   "@environment"
   "@models/languages"
+  "@settings"
 ]
 module.exports = EventHandler

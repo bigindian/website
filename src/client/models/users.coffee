@@ -132,6 +132,13 @@ Model = ($http, $root, $log, $q, environment, storage) ->
       .then updateUser
 
 
+    getSettings: ->
+      if @isLoggedIn() then settings = @getCurrent().get "settings"
+      else
+        settings =
+          storyHideDomain: true
+      settings
+
 
     # Performs an API call to signup the user using Email.
     signup: (details, headers) ->

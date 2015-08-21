@@ -1,8 +1,6 @@
-name = "[component:news-comment]"
-
-
-exports = module.exports = ($scope, $log, $sce) ->
-  $log.log name, "initializing"
+Controller = ($scope, $log, $sce) ->
+  logger = $log.init Controller.tag
+  logger.log "initializing"
 
   $scope.$watch "comment.content_markdown", (value) ->
     $scope.markdown = $sce.trustAsHtml $scope.comment.content
@@ -14,8 +12,10 @@ exports = module.exports = ($scope, $log, $sce) ->
     Stories.upvote $scope.story.id
 
 
-exports.$inject = [
+Controller.tag = "component:news-category"
+Controller.$inject = [
   "$scope"
   "$log"
   "$sce"
 ]
+module.exports = Controller

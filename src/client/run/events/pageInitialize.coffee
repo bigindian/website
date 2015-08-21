@@ -2,6 +2,7 @@ EventHandler = ($ga, $location, $log, $root, Notifications, Users) ->
   logger = $log.init EventHandler.tag
   logger.log "initialized"
 
+  $root.bodyClasses ?= {}
 
   $root.$on "page:initialize", (event, value={}) ->
     logger.log "captured event!"

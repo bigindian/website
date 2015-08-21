@@ -79,7 +79,7 @@ StorageService = ($log, $q, $window, environment) ->
       @tmp = createFallbackStorage()
 
       # Check if HTML5 localStorage is supported.
-      if supportsHTML5storage() and false
+      if supportsHTML5storage()
         logger.log "setting up local and session storage"
 
         # Create the getter and setter methods for local and session...

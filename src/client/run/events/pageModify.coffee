@@ -2,6 +2,8 @@ EventHandler = ($log, $root, $state, $timeout, Environment, Languages) ->
   logger = $log.init EventHandler.tag
   logger.log "initialized"
 
+  $root.bodyClasses ?= {}
+
   handler = (event, value={}) ->
     logger.log "captured event!"
     setTitle = ->

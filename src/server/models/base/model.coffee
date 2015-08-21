@@ -103,7 +103,9 @@ BaseModel = (knex, Enum) ->
       @return {Promise(Bookshelf.Model)}   A promise which resolves to the
                                            matching rows.
     ###
-    findOne: (parameters, options) -> @model.forge(parameters).fetch(options)
+    findOne: (parameters, options={}) ->
+      options.require = true
+      @model.forge(parameters).fetch options
 
 
     ###
@@ -113,7 +115,7 @@ BaseModel = (knex, Enum) ->
      @return {[type]}    [description]
      @todo fix sql injection
     ###
-    get: (id, options) -> @findOne(id: id, options)
+    get: (id, options) -> @findOne id: id, options
 
 
     ###
@@ -123,7 +125,7 @@ BaseModel = (knex, Enum) ->
       @return {[type]}      [description]
       @todo fix sql injection
     ###
-    getBySlug: (slug, options) -> @model.forge(slug: slug).fetch(options)
+    getBySlug: (slug, options) -> @model.forge(slug: slug).fetch options
 
 
     getAll: (options) -> @model.forge().fetchAll(options)

@@ -19,7 +19,7 @@ Model = ($http, $log, $q, Environment, Storage) ->
     get: (key) -> @data[key]
 
 
-    findById: (id) -> for obj in @data then if obj._id is id then return obj
+    findById: (id) -> for obj in @data then if obj.id is id then return obj
 
 
     onChange: -> null

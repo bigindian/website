@@ -6,22 +6,26 @@
   .details
     span.link
       span(ng-if="!story.is_gone")
-        a(fn-route="{{ story.url }}") {{ story.title }}
+        a(fn-route="{{ story.url }}"
+          target="{{ openNewTab ? '_blank' : ''}}") {{ story.title }}
       span(ng-if="story.is_gone")
         | [Story removed by {{ story.is_moderated ? "moderator" : "original submitter" }}]
 
     span.cats(ng-if="!story.is_gone")
-      a(ng-repeat="cat in story.categories", fn-route="/category/{{ cat.slug }}")
+      a(ng-repeat="cat in story.parsedCategories track by $index"
+        fn-route="/category/{{ cat.slug }}")
         news-category(ng-model="cat")
 
-    a.domain(fn-route="{{ story.url }}") ({{ story.url | domain }})
-    //- | &nbsp;&middot;&nbsp;
-    //- span {{ story.views || 0 }} views
-    //- | &nbsp;&middot;&nbsp;
-    //- span
-      | {{ story.score || 0 }} points by {{ story.created_by.username }}
-    | &nbsp;&middot;&nbsp;
-    span.comments_label
-      a(fn-route="/story/{{ story.slug }}") {{ story.comments_count }} {{ story.comments_count == 1 ? "comment" : "comments" }}
-    | &nbsp;&middot;&nbsp;
-    span.timestamp {{ story.created_at | prettydate }}
+    span.meta
+      span.domain
+        a(fn-route="{{ story.url }}"
+          target="{{ openNewTab ? '_blank' : ''}}") ({{ story.url | domain }})
+      //- | &nbsp;&middot;&nbsp;
+      //- span {{ story.views || 0 }} views
+      //- | &nbsp;&middot;&nbsp;
+      //- span
+        | {{ story.score || 0 }} points by {{ story.created_by.username }}
+      span.comments_label
+        a(fn-route="/story/{{ story.slug }}") {{ story.comments_count }} {{ story.comments_count == 1 ? "comment" : "comments" }}
+      //- | &nbsp;&middot;&nbsp;
+      span.timestamp {{ story.created_at | prettydate }}

@@ -1,10 +1,7 @@
-exports = module.exports = (renderer) ->
+exports = module.exports = (Renderer) ->
   controller = (request, response, next) ->
-    args =
-      page: "info/donate"
-      # title: response.__ "title.contact"
-
-    renderer request, response, args, true
+    args = page: "info/donate"
+    Renderer request, response, args, true
 
 
 exports["@require"] = ["libraries/renderer"]

@@ -35,9 +35,7 @@ Model = (BaseModel, Comments, NewsCategories, NewsVotes, Users) ->
 
 
     extends:
-      categories: ->
-        @belongsToMany "news_categories", "news_story_category", "story",
-          "category"
+      categories: -> @hasMany "news_story_category", "story"
       comments: -> @hasMany "news_comments", "story"
       created_by: -> @belongsTo "users", "created_by"
       updated_by: -> @belongsTo "users", "updated_by"

@@ -47,6 +47,13 @@
   }, {
     "class": "divider",
   }, {
+    "slug": "settings",
+    "class": "settings",
+    "name": "settings",
+    "url": "/settings",
+  }, {
+    "class": "divider",
+  }, {
     "slug": "login",
     "class": "hide-if-loggedin",
     "name": "login",
