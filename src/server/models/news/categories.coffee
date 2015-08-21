@@ -8,6 +8,7 @@ Model = (BaseModel) ->
   new class CategoryModel extends BaseModel
     tableName: "news_categories"
     full_cache: true
+    enable_md5: true
 
     # ## getStoryCount()
     #

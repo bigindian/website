@@ -19,6 +19,7 @@ Model = (BaseModel, Comments, NewsCategories, NewsVotes, Users) ->
   # **ACTIVITY_WEIGHT** Amount that any activity inside of the story gets.
   ACTIVITY_WEIGHT = 2
 
+
   # **CREATION_WINDOW** The window variable is used narrow down how effective the creation date is
   # when the post's hotness is calculated. A smaller window allows lesser
   # activity before the post makes it to the front page. A bigger window allows
@@ -162,13 +163,10 @@ Model = (BaseModel, Comments, NewsCategories, NewsVotes, Users) ->
 
 
     ###
-    **top()** Returns the top stories.
+    **top()** Returns the top stories. Works similar to the query function
+
 
     ```
-    buildQueryFn = (qb) ->
-      qb.where "id", 1
-      qb.where "status", 3
-
     Stories.top(buildQueryFn, {}).then (storyCollection) ->
     ```
     ###
