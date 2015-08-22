@@ -4,12 +4,12 @@ h1 {{ "maintitle" | translate:"news/categories" }}
 
 table(cellspacing="0")
   tr.head
-    //- th.center(width="7%") {{ "table.hide" | translate:"news/categories" }}
-    th.center(width="13%") {{ "table.tag" | translate:"news/categories" }}
+    th.center(width="7%") {{ "table.hide" | translate:"news/categories" }}
+    th(width="13%") {{ "table.tag" | translate:"news/categories" }}
     th(width="65%") {{ "table.desc" | translate:"news/categories" }}
     th.center(width="5%") {{ "table.stories" | translate:"news/categories" }}
   tr(ng-repeat="category in categories | orderBy : 'slug'")
-    //- td.center
+    td.center
       input(type="checkbox", ng-model="filters[category.id]")
     td
       a(fn-route="/category/{{ category.slug }}")

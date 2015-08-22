@@ -10,15 +10,20 @@ news-item
       color: #777
     &:hover
       text-decoration: none
+    @media #{$small-only}
+      display: block
+
   .story_liner
     padding: 4px 0
+
 
   news-category
     margin-right: 0.25em
     span
       +radius(3px)
-      margin-left: 5px
-      margin-right: 3px
+      // margin-left: 5px
+      margin-right: 5px
+      margin-bottom: 5px
       font-size: 10px
       // vertical-align: middle
       padding: 0px 0.5em 1px 0.5em
@@ -28,6 +33,10 @@ news-item
       &, &:hover
         color: #555
         text-decoration: none
+
+      @media #{$small-only}
+        margin-top: 5px
+      // display: inline-block;
 
   .domain a
     font-style: italic
@@ -51,6 +60,8 @@ news-item
       text-decoration: underline
 
   .meta
+    // @media #{$small-only}
+    //   display: block
     span
       &:after
         content: '\b7'
