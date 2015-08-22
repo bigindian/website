@@ -41,7 +41,7 @@ module.exports =
     coffeePattern: "src/client/**/*.{coffee,js,json}"
     jadePattern: "src/client/**/*.jade"
     sassPattern: "src/client/**/*.{sass,scss}"
-    serverPattern: "src/server/views/components/footer-scripts/*.coffee"
+    serverPattern: "src/server/views/*.coffee"
 
 
   docs:
