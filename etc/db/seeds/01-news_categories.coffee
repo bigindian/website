@@ -86,7 +86,7 @@ exports.seed = (knex, Promise) ->
     }
     {
       title: "Opinion"
-      description: "Public opinion"
+      description: "Public opinion & Advice"
       color: "#fffcd7"
     }
     {
@@ -183,6 +183,11 @@ exports.seed = (knex, Promise) ->
       title: "Show"
       description: "Show something you made"
       color: "#ddebf9"
+    }
+    {
+      title: "Resource"
+      description: "Resources useful for you"
+      color: "#fffcd7"
     }
   ]
 

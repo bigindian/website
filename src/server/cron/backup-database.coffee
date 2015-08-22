@@ -10,7 +10,7 @@ exports = module.exports = (IoC, settings) ->
 
 
   ###
-    This function simply wraps our exec function inside a Promise
+  This function simply wraps our exec function inside a Promise
   ###
   execPromise = (cmd) -> new Promise (resolve, reject) ->
     exec cmd, (error, stdout, stderr) ->
@@ -21,7 +21,7 @@ exports = module.exports = (IoC, settings) ->
 
 
   ###
-    Helper function to create the timestamp.
+  Helper function to create the timestamp.
   ###
   createTimestamp = ->
     date = new Date
@@ -32,12 +32,12 @@ exports = module.exports = (IoC, settings) ->
 
 
   ###
-    Runs a postgres command to perform a SQL dump. For this function to run
-    properly, the password used to authenticate during the dump must be
-    saved in the ~/.pgpass file.
+  Runs a postgres command to perform a SQL dump. For this function to run
+  properly, the password used to authenticate during the dump must be
+  saved in the ~/.pgpass file.
 
-    See http://www.postgresql.org/docs/current/static/libpq-pgpass.html
-    and http://www.postgresql.org/docs/8.1/static/backup.html
+  See http://www.postgresql.org/docs/current/static/libpq-pgpass.html
+  and http://www.postgresql.org/docs/8.1/static/backup.html
   ###
   doBackup = ->
     logger.info name, "running"
