@@ -1,17 +1,17 @@
 ###
 Checks the JS version from the server side and setups the local storage
 based on it. If the JS version from the local and the server are
-different, then reset the local storage. Otherwise have the local storage
+different, then reset the local Storage. Otherwise have the local storage
 cache every page template that it downloads.
 
 Also, if the browser does not support localStorage uses fallback temporary
-storage. (which technically doesn't really help.. but whatever..)
+Storage. (which technically doesn't really help.. but whatever..)
 ###
-exports = module.exports = ($http, $timeout, $window, $log, $storage,
-$environment) ->
-  name = "[run:cacheScripts]"
+CacheScripts = ($http, $timeout, $window, $log, $q, Storage, Environment) ->
+  logger = $log.init CacheScripts.tag
+
   fallback = false
-  md5 = $environment.md5 or {}
+  md5 = Environment.md5 or {}
 
   ###
   This function checks the version of the different kinds of data that is
@@ -20,7 +20,7 @@ $environment) ->
   itself with the new version.
   ###
   checkVersions = ->
-    $log.log name, "checking cache version"
+    logger.log "checking cache version"
     storageKeys = []
 
     # Now start iterating through every key in the localStorage
@@ -31,9 +31,9 @@ $environment) ->
       if keyParts[0] is "md5"
         filename = keyParts[1]
         # If the MD5 sum does not match then clear the localStorage cache
-        if md5[filename] != $storage.local storageKey
-          $log.log name, "clearing cache for file:", filename
-          $storage.local storageKey, null
+        # if md5[filename] != Storage.local storageKey
+        #   logger.log "clearing cache for file:", filename
+        #   Storage.local storageKey, null
 
 
 
@@ -49,44 +49,54 @@ $environment) ->
   ###
   cacheStartupScripts = ->
     if fallback then return
-    $log.log name, "caching startup scripts via async"
+    logger.log "caching startup scripts via async"
 
     # The list of scripts is accessible to us by the global variable "scripts"
     for script in $window.scripts then do (script) ->
-      storageId = "script:#{script.id}"
+      if not script.local? then return
+
+      cacheKey = "script:#{script.id}"
       md5ID = "md5:#{script.id}"
 
-      localMD5 = $storage.local md5ID
+      localMD5 = null
       remoteMD5 = md5[script.id]
 
-      # Check if the script already exists in the cache
-      cache = $storage.local storageId
-      if script.local and not localMD5
 
-        # If the script was not in cache then start fetching the local version
-        # of the script asynchronously, and then save it into the cache.
-        $log.log name, "caching script:", script.id
-        ajax = (storageId, url) ->
-          try
-            $http.get url
-            .then (response) ->
-              # Update the script and the MD5 hash of it
-              $storage.local storageId, response.data
-              $storage.local md5ID, remoteMD5
-              $log.log name, "cached script:", script.id
+      Storage.local(md5ID).then (localMD5) ->
+        logger.log "md5 for script '#{script.id}' exists"
+        # logger.log localMD5, remoteMD5
 
-          catch e
-            $log.error name, "could not cache script", script.id
-            $log.error name, "url was", url
-            $log.error e.stack
-        ajax storageId, script.local
+        #! If the md5 hashes don't match then clear then clear the storage
+        if localMD5 != remoteMD5
+          logger.log "md5 for script '#{script.id}' don't match"
+          Storage.local cacheKey, null
+
+        #! Check if the script already exists in the cache
+        Storage.local cacheKey
+        .then -> logger.log "script '#{script.id}' exists in cache"
+
+      #! If the script was not in cache then start fetching the local version
+      #! of the script asynchronously, and then save it into the cache.
+      .catch (error) ->
+        logger.log "script could not be found in cache, caching:", script.id
+        try
+          #! Update the script and the MD5 hash of it
+          $http.get(script.local).success (data) ->
+            Storage.local cacheKey, data
+            Storage.local md5ID, remoteMD5
+            logger.log "cached script:", script.id
+
+        catch e
+          logger.error "could not cache script", script.id
+          logger.error "url was", url
+          logger.error e.stack
 
 
   new ->
-    $log.log name, "initializing"
+    logger.log "initializing"
 
     # Check if localStorage is supported
-    fallback = false or $storage.fallback
+    fallback = false or Storage.fallback
     if fallback then return
 
     # Cache the startup scripts for the next time the user visits the
@@ -96,11 +106,14 @@ $environment) ->
     $timeout cacheStartupScripts, 1000
 
 
-exports.$inject = [
+CacheScripts.tag = "cache-scripts"
+CacheScripts.$inject = [
   "$http"
   "$timeout"
   "$window"
   "$log"
-  "$storage"
-  "$environment"
+  "$q"
+  "@storage"
+  "@environment"
 ]
+module.exports = CacheScripts

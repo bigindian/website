@@ -66,10 +66,23 @@ StorageService = ($log, $q, $window, environment) ->
                                for the get method.
     ###
     _operate: (storage, key, value) ->
-      $q (resolve) ->
+      $q (resolve, reject) ->
+        #! If value and key was set to null then the function was had no
+        #! arguments. So we clear the storage!
         if key == null and value == null then resolve storage.clear()
-        else if typeof value is "undefined" then resolve storage.getItem key
+
+        #! If a key was set but the value was undefined, then we request data
+        #! from the storage.
+        else if typeof value is "undefined"
+          cache = storage.getItem key
+          if cache? then resolve cache else reject cache
+
+        #! If a key and a value was set then we request data to be saved with
+        #! the key value pair in the storage.
         else if value? then resolve storage.setItem key, value
+
+        #! If the key was set and the value was specifically 'null' then we
+        #! remove the key-value pair from the storage.
         else resolve storage.removeItem key
 
 
