@@ -10,6 +10,6 @@ exports = module.exports = (Stories, NeedAuthError) ->
 
 exports["@require"] = [
   "models/news/stories"
-  "errors/NeedAuthenticationError"
+  "libraries/errors/NeedAuthenticationError"
 ]
 exports["@singleton"] = true

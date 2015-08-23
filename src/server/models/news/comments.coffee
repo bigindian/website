@@ -52,7 +52,7 @@ exports = module.exports = (NotFoundError, BaseModel, NewsStories, NewsVotes) ->
 
 
 exports["@require"] = [
-  "errors/NotFoundError"
+  "libraries/errors/NotFoundError"
   "models/base/model"
   "models/news/stories"
   "models/news/votes"

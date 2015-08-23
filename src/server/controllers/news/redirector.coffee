@@ -38,6 +38,6 @@ exports = module.exports = (Stories, NotFoundError) ->
 
 exports["@require"] = [
   "models/news/stories"
-  "errors/NotFoundError"
+  "libraries/errors/NotFoundError"
 ]
 exports["@singleton"] = true

@@ -47,8 +47,7 @@ exports = module.exports = (settings, Cache) ->
   ###
   TODO: Write this...
   ###
-  Renderer = (filePath, options, callback) ->
-    console.log filePath
+  Middleware = (filePath, options, callback) ->
     #! Setup the cache variables
     cacheKey = "never-set"
 
@@ -56,10 +55,10 @@ exports = module.exports = (settings, Cache) ->
 
     #! If cache is set then setup cache variables, if this was a JSON request
     #! then don't look in the cache. (We cache only rendered HTML)
-    if options.cache? and not options.json? and false
+    if options.cache?
       cacheEnable = true
-      cacheKey = "renderer@#{options.cache.key}"
-      cacheTimeout = options.cache.timeout
+      cacheKey = "renderer@#{filePath}"
+      cacheTimeout = null#options.cache.timeout
 
     #! Everything has been set so now check the cache for the HTML of this page
     Cache.get cacheKey
@@ -105,16 +104,15 @@ exports = module.exports = (settings, Cache) ->
       the HTML code, so the next promise function will definitely receive
       HTML one way or the other
       ###
-      if cacheTimeout then return Cache.set cacheKey, html, cacheTimeout
+      if cacheTimeout? then return Cache.set cacheKey, html, cacheTimeout
       else if cacheEnable then return Cache.set cacheKey, html
       else return html
 
     #! Finally write to the response!
     .then (data) -> callback null, data
 
-  Renderer::render = (filePath) -> console.log filePath
 
-  Renderer
+  Middleware
 
 exports["@require"] = [
   "igloo/settings"

@@ -17,7 +17,7 @@ Walk      = require "fs-walk"
 path     = require "path"
 
 
-exports = module.exports = (IoC, Renderer) ->
+exports = module.exports = (IoC) ->
   app = this
   router = Express.Router()
   logger = IoC.create "igloo/logger"
@@ -111,8 +111,5 @@ exports = module.exports = (IoC, Renderer) ->
   app.use router
 
 
-exports["@require"] = [
-  "$container"
-  "libraries/renderer"
-]
+exports["@require"] = ["$container"]
 exports["@singleton"] = true

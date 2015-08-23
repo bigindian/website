@@ -28,6 +28,6 @@ exports = module.exports = (IoC, settings, Renderer) ->
 exports["@require"] = [
   "$container"
   "igloo/settings"
-  "libraries/renderer"
+  "libraries/middleware/renderer"
 ]
 exports["@singleton"] = true

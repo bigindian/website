@@ -14,7 +14,7 @@ exports = module.exports = (settings) ->
     if request.url.indexOf("/api") > -1 then return response.json error.message
 
     # Handle 404 errors separately.
-    template = if error.status is 404 then next() #"404" else "error"
+    # template = if error.status is 404 then next() #"404" else "error"
 
     response.render "main/errors/5XX",
       page: "errors/5XX"
