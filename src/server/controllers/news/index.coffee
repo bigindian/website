@@ -18,11 +18,12 @@ exports = module.exports = (Cache, Stories) ->
           delete story.created_by.mailing_list_token
 
         json = JSON.stringify stories
-        Cache.set "main/news/index", json, true
+        Cache.set "main/news/index", json
+
 
     .then (stories) ->
       response.render "main/news/index",
-        cache: "main/news/index"
+        cache: true
         data: JSON.parse stories
         title: null
 

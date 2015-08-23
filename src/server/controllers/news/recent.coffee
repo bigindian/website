@@ -15,7 +15,7 @@ exports = module.exports = (Stories) ->
         delete story.created_by.mailing_list_token
 
       response.render "main/news/recent",
-        cache: "main/news/recent"
+        cache: true
         data: stories
         title: null
 
