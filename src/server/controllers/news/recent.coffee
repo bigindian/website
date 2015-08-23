@@ -1,6 +1,11 @@
-exports = module.exports = (Renderer, Stories) ->
-  controller = (request, response, next) ->
-    Stories.recent(page: request.params[0] or 1).then (stories) ->
+exports = module.exports = (Stories) ->
+  routes: [
+    "/recent"
+    "/recent/page/([0-9]+)"
+  ]
+
+  controller: (request, response, next) ->
+    Stories.recent(null, page: request.params[0] or 1).then (stories) ->
 
       # TODO find some other way for this..
       stories.collection = stories.collection.toJSON()
@@ -9,15 +14,13 @@ exports = module.exports = (Renderer, Stories) ->
         delete story.created_by.rss_token
         delete story.created_by.mailing_list_token
 
-      options =
-        page: "news/recent"
+      response.render "main/news/recent",
+        cache: "main/news/recent"
         data: stories
-      Renderer request, response, options
+        title: null
+
     .catch (e) -> next e
 
 
-exports["@require"] = [
-  "libraries/renderer"
-  "models/news/stories"
-]
+exports["@require"] = ["models/news/stories"]
 exports["@singleton"] = true

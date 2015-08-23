@@ -1,7 +1,7 @@
 exports = module.exports = (Renderer) ->
-  controller = (request, response, next) ->
-    options = page: "auth/signup"
-    Renderer request, response, options, false
+  routes: ["/signup"]
+  controller: (request, response, next) ->
+    response.render "main/auth/signup", cache: true
 
 
 exports["@require"] = ["libraries/renderer"]

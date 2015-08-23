@@ -1,10 +1,8 @@
-exports = module.exports = (Renderer) ->
-  controller = (request, response, next) ->
-    args = page: "news/submit"
+exports = module.exports = ->
+  routes: ["/submit"]
 
-    Renderer request, response, args, true
-    .catch (e) -> next e
+  controller: (request, response, next) ->
+    response.render "main/news/submit", cache: true
 
 
-exports["@require"] = ["libraries/renderer"]
 exports["@singleton"] = true

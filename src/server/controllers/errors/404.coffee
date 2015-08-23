@@ -1,12 +1,6 @@
-exports = module.exports = (Renderer) ->
-  controller = (request, response, next) ->
-    response.status 404
-
-    options =
-      page: "errors/404"
-      title: "Page not found"
-    Renderer request, response, options
+exports = module.exports = (NotFoundError) ->
+  controller: (request, response, next) -> next new NotFoundError
 
 
-exports["@require"] = ["libraries/renderer"]
+exports["@require"] = ["errors/NotFoundError"]
 exports["@singleton"] = true

@@ -1,4 +1,4 @@
-exports = module.exports = (Renderer, settings) ->
+exports = module.exports = (settings) ->
   controller = (error, request, response, next) ->
     response.status error.status or 500
 
@@ -6,8 +6,9 @@ exports = module.exports = (Renderer, settings) ->
 
     # In production, no stack-traces leaked to user
     if isProduction then error.stack = null
+
     # In development, display the error on console
-    else console.error error.trace
+    else console.error error
 
     # For API request just return a JSON version of the message
     if request.url.indexOf("/api") > -1 then return response.json error.message
@@ -15,18 +16,14 @@ exports = module.exports = (Renderer, settings) ->
     # Handle 404 errors separately.
     template = if error.status is 404 then next() #"404" else "error"
 
-    options =
+    response.render "main/errors/5XX",
       page: "errors/5XX"
       title: "Something freaky happened!"
       data:
         error: error
         message: error.message
         status: error.status or 500
-    Renderer request, response, options
 
 
-exports["@require"] = [
-  "libraries/renderer"
-  "igloo/settings"
-]
+exports["@require"] = ["igloo/settings"]
 exports["@singleton"] = true

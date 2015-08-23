@@ -1,27 +1,33 @@
 ###
-  This file is mainly responsible for setting up all the different routes for
-  the App. You'll find routes for the Meetups, Forums and other components
-  of the site get defined here.
+This file is mainly responsible for setting up all the different routes for
+the App. You'll find routes for the Meetups, Forums and other components
+of the site get defined here.
 
-  The routes here get defined by a function which takes care of any i18n
-  issues. There is a helper function defined below (function route(..)) that
-  is used to define all the routes. This function takes care of initializing
-  the controller using electrolyte and automatically creates the regex version
-  of the route.
+The routes for the files are not listed here, but rather the controller folder
+is recursively walked and the controllers are picked up and set with the
+routes defined in them. If you want to know which controller gets called on
+which route then either
+  - watch the console.debug for statements about controller and route
+    assignments
+  - go through each file inside of the controller folder and find the route
+    that matches the url you are looking for.
 ###
-express   = require "express"
+Express   = require "express"
+Walk      = require "fs-walk"
+path     = require "path"
 
-exports = module.exports = (IoC, settings) ->
+
+exports = module.exports = (IoC, Renderer) ->
   app = this
-  router = express.Router()
-
+  router = Express.Router()
+  logger = IoC.create "igloo/logger"
 
   ###
-    Function to properly set the language based on the language slug. This
-    function acts more as a custom middleware.
+  Function to properly set the language based on the language slug. This
+  function acts more as a custom middleware.
 
-    @todo This function is not implemented as we don't really have i18n
-    support yet.
+  *TODO: This function is not implemented as we don't really have i18n support
+  yet.*
   ###
   setLanguage = (request, response, next) ->
     # If the language cookie was not set, then set it.
@@ -33,57 +39,80 @@ exports = module.exports = (IoC, settings) ->
 
 
   ###
-    This helper function shortens the long line of writings routes and calling
-    the dependency injector.
+  **_route()** This helper function shortens the long line of writings routes
+  and calls the dependency injector.
 
-    @param  String url           The url to match
-    @param  String controller    The controller to include
+  Modify this if you want to customize how routes and controllers get added.
   ###
-  route = (url, controller) ->
-    if typeof controller is "string"
-      controller = IoC.create "controllers/#{controller}"
-    router.get (new RegExp "^#{url}/?$"), controller
+  _route = (url, controller) ->
+    #! If a string was passed to us, then we instansiate the controller
+    #! manually.
+    if typeof controller is "string" then controller = getController controller
+
+    #! This url matcher will take care of trailing back-slashes. Modify this
+    #! if you want to add a prefix.
+    urlRegex = new RegExp "^#{url}/?$"
+
+    #! Finally add the route to Express's router! `controller.controller` will
+    #! refer to the controller function specified in the controller file.
+    router.get urlRegex, controller.controller
 
 
-  # Add route for each of the sub-pages
-  route "",                                       "news/index"
-  route "/categories",                            "news/categories"
-  route "/login",                                 "auth/login"
-  route "/login/forgot",                          "auth/login"
-  route "/login/reset",                           "auth/login"
-  route "/signup",                                "auth/signup"
-  route "/category/[a-z\-]+-([0-9]+)/page/([0-9]+)",  "news/category/index"
-  route "/category/[a-z\-]+-([0-9]+)",                "news/category/index"
-  route "/comments",                              "news/index"
-  route "/comments/page/([0-9]+)",                "news/index"
-  route "/hottest",                               "news/index"
-  route "/moderations",                           "news/index"
-  route "/n/([0-9]+)",                            "news/redirector"
-  route "/newest",                                "news/index"
-  route "/newest/page/([0-9]+)?",                 "news/index"
-  route "/page/([0-9]+)?",                        "news/index"
-  route "/recent",                                "news/recent"
-  route "/recent/page/([0-9]+)?",                 "news/recent"
-  route "/rss",                                   "news/index"
-  route "/search",                                "news/index"
-  route "/stories",                               "news/index"
-  route "/settings",                              "news/settings"
-  route "/stories/preview",                       "news/index"
-  route "/story/([a-z0-9\-]+)",                   "news/single"
-  route "/info/terms-privacy",                    "info/terms-privacy"
-  route "/submit",                                "news/submit"
+  ###
+  **getController()** This function fetches the controller given it's name.
 
-  # If none of the routes matched, then route to the 404 controller!
-  route ".*",            "errors/404"
+  Modify this function if you want to customize where the controller are
+  located. IoC's loader knows where the contrller are because of the
+  ```
+    IoC.loader "controllers", _library "controllers"
+  ```
+  line in the [app.coffee](../app.coffee) file.
 
-  # Finally attach the router into the app
-  app.use                router
+  ###
+  getController = (name) -> IoC.create "controllers/#{name}"
+
+
+  ###
+  **isController()** This function is used to determine if a given filename
+  is a valid controller (for us to instantiate and add to the route) or not.
+
+  This function's main responsiblity is to filter out test files and files
+  not ending with '.coffee'.
+  ###
+  isController = (fn) -> fn.indexOf("test") is -1 and /coffee$/.test(fn)
+
+
+  #! Now start walking!
+  walkPath = path.join __dirname, "../controllers"
+  Walk.walkSync walkPath, (basedir, filename, stat) ->
+    #! If the filename does not match the rules for a controller then we skip.
+    if not isController filename then return
+
+    #! Now we get the proper controller name from which we can pass on to IoC.
+    file = path.join basedir, filename.split(".coffee")[0]
+    relativePath = path.relative walkPath, file
+
+    #! Invoke IoC and get an instance of our controller
+    controller = getController relativePath
+
+    #! Now if this controller does not have any routes then we skip it!
+    if not controller.routes? then return
+
+    #! If it did have routes set, then we set it for each of its routes
+    for route in controller.routes
+      logger.debug "adding #{relativePath}\t= GET #{route}"
+      _route route, controller
+
+
+  #! If none of the routes matched, then route to the 404 controller!
+  _route ".*",                                     "errors/404"
+
+  #! Finally attach the router into the app
+  app.use router
 
 
 exports["@require"] = [
   "$container"
-  "igloo/settings"
+  "libraries/renderer"
 ]
 exports["@singleton"] = true
-
-

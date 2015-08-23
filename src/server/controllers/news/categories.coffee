@@ -1,20 +1,19 @@
 Promise = require "bluebird"
 
 
-exports = module.exports = (Renderer, Categories) ->
-  controller = (request, response, next) ->
+exports = module.exports = (Categories) ->
+  routes: ["/categories"]
+
+  controller: (request, response, next) ->
     Promise.props
       counters: Categories.getStoryCount()
       categories: Categories.getAll()
     .then (results) ->
-      options =
-        page: "news/categories"
+      response.render "main/news/categories",
         data: results
-      Renderer request, response, options
+        cache: "news/categories"
+        title: 'df'
 
 
-exports["@require"] = [
-  "libraries/renderer"
-  "models/news/categories"
-]
+exports["@require"] = ["models/news/categories"]
 exports["@singleton"] = true

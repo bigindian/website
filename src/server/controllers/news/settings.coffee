@@ -1,11 +1,8 @@
-exports = module.exports = (Renderer, Categories) ->
-  controller = (request, response, next) ->
-    options = page: "news/settings"
-    Renderer request, response, options
+exports = module.exports = ->
+  routes: ["/settings"]
+
+  controller: (request, response, next) ->
+    response.render "main/news/settings", cache: true
 
 
-exports["@require"] = [
-  "libraries/renderer"
-  "models/news/categories"
-]
 exports["@singleton"] = true

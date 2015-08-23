@@ -189,6 +189,11 @@ exports.seed = (knex, Promise) ->
       description: "Resources useful for you"
       color: "#fffcd7"
     }
+    {
+      title: "Hardware"
+      description: "Machines and things"
+      color: "#fffcd7"
+    }
   ]
 
 

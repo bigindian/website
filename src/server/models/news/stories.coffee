@@ -221,10 +221,10 @@ Model = (BaseModel, Comments, NewsCategories, NewsVotes, Users) ->
     Stories.recent().then (storyCollection) ->
     ```
     ###
-    recent: (options={}) ->
+    recent: (buildQuery, options={}) ->
       options.withRelated = ["created_by", "categories"]
       options.order = created_at: "DESC"
-      @model.forge().fetchPage null, options
+      @model.forge().fetchPage buildQuery, options
 
 
     ###
