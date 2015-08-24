@@ -1,19 +1,22 @@
-API - Documentation
-===================
+API
+===
 
-This file documents the different components of the API. The API is used primarily to communicate with the Angular.js frontend and mobile application. Because of the vast number of API functions, each of them has  documentation in it's own folder. 
-
-A brief description about each route and explanation about the file hierarchy is explained here.
+This file documents the different components of the API. The API is used primarily to communicate with the Angular.js frontend and other 3rd-party applications.
 
 
-List of routes
---------------
-- [```/api/auth/```](./auth/README.md) Authentication and session management
-- [```/api/logs/```](./auth/README.md) 
-- [```/api/forums/```](./auth/README.md) 
-- [```/api/lang/```](./auth/README.md) 
-- [```/api/locations/```](./auth/README.md) 
-- [```/api/messages/```](./auth/README.md) 
-- [```/api/notifications/```](./auth/README.md) 
-- [```/api/sharing/```](./auth/README.md) 
-- [```/api/sharing/```](./auth/README.md) 
+File naming convention
+----------------------
+Each of the files here follow a simple naming convention. Each sub-folder represent a part of the url and the filename inside the folder will represent for which type of method the controller will be called.
+
+
+For example:
+```
+GET   /api/users    -> /api/users/get.coffee
+POST  /news/stories -> /news/stories/post.coffee
+```
+
+File contents
+-------------
+Each file gets initialized by `eletrolyte (IoC)` and not `require`. The object returned by each file should be an object that has a `routes` and `controller` parameter (see a [sample file](./users/get.coffee) for an example).
+
+The `routes` parameter should contain an array of all the possible routes the controller should match for. The `controller` parameter is the actual controller itself. Keep in mind that all routes get appended with a `/api` in the [route file](../routes/api.coffee).

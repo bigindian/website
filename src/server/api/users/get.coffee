@@ -1,5 +1,6 @@
 exports = module.exports = (Users) ->
   routes: ["/users"]
+
   controller: (request, response, next) ->
     Users.query().then (users) ->
       users = users.toJSON()

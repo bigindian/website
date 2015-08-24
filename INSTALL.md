@@ -13,9 +13,9 @@ If you don't want to read through all of the steps below, then we recommend simp
 
 Once the above commands succeeds, you should have a shell inside of the box. Start the project by running the following commands inside the box.
 
-    [vagrant@kuwaitandme ~]$ cd /vagrant
-    [vagrant@kuwaitandme ~]$ npm run-script init-config
-    [vagrant@kuwaitandme ~]$ npm start
+    [vagrant@thebigindian ~]$ cd /vagrant
+    [vagrant@thebigindian ~]$ npm run-script init-config
+    [vagrant@thebigindian ~]$ npm start
 
 Because of the shared folders, vagrant will share the current project files so you can easily edit the files and view the changes in the box itself. The box has been set to have the app running on port 6902 of your browser. [http://localhost:6902](http://localhost:6902)
 
@@ -143,6 +143,6 @@ All frontend files are compiled using [gulp](https://gulpjs.com). There are diff
 Good job! The app is all set to run now.
 
     NODE_ENV=production npm start # For production
-    nodeenv -w src/server         # For development
+    nodemon -w src/server         # For development
 
 I know this readme is just too long, but I'm more than happy to take suggestions from anyone how would like to share on ways to shorten the installation process or at the very least this doc ;).
