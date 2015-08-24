@@ -1,5 +1,4 @@
 exports = module.exports = (Stories) ->
-
   routes: [
     "/category/[a-z\-]+-([0-9]+)"
     "/category/[a-z\-]+-([0-9]+)/page/([0-9]+)"
@@ -32,7 +31,10 @@ exports = module.exports = (Stories) ->
         delete story.created_by.mailing_list_token
 
       response.render "main/news/categories",
-        cache: "news/categories-#{categoryID}"
+        cache:
+          suffix: categoryID
+          enable: true
+          timeout: 60 * 10 # 10 minute cache
         data: stories
         title: null
 

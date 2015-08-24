@@ -1,7 +1,6 @@
-Promise = require "bluebird"
-
 exports = module.exports = (Categories, Cache) ->
-  controller = (request, response, next) ->
+  routes: ["/news/categories/counters"]
+  controller: (request, response, next) ->
     CacheKey = "route:api/news/categories/counters"
     CacheTimeout = 1 * 5 # 5min
 

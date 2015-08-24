@@ -1,8 +1,7 @@
-exports = module.exports = (Renderer) ->
+exports = module.exports = ->
   routes: ["/signup"]
   controller: (request, response, next) ->
-    response.render "main/auth/signup", cache: true
+    response.render "main/auth/signup", cache: enable: true
 
 
-exports["@require"] = ["libraries/renderer"]
 exports["@singleton"] = true

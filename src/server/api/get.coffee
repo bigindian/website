@@ -1,5 +1,6 @@
-exports = module.exports = (settings, Locations, Categories, Classifieds, Users) ->
-  controller = (request, response, next) ->
+exports = module.exports = (settings) ->
+  routes: [""]
+  controller: (request, response, next) ->
     data =
       version: "2.0.0"
       authors: [
@@ -14,11 +15,4 @@ exports = module.exports = (settings, Locations, Categories, Classifieds, Users)
     response.json data
 
 
-exports["@require"] = [
-  "igloo/settings"
-
-  "models/locations"
-  "models/categories"
-  "models/classifieds"
-  "models/users"
-]
+exports["@require"] = ["igloo/settings"]

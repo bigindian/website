@@ -3,16 +3,17 @@ fs      = Promise.promisifyAll require "fs"
 
 
 ###
-  This function returns a JSON of all the strings for the given language. The
-  language is specified in the URL as shown below.
+This function returns a JSON of all the strings for the given language. The
+language is specified in the URL as shown below.
 
-  GET /api/lang/en
-
-  @method api.lang.get
-  @return JSON
+```
+GET /api/language/en
+```
 ###
 exports = module.exports = (settings, Cache) ->
-  controller = (request, response, next) ->
+  routes: ["/language/([a-z]+)"]
+
+  controller: (request, response, next) ->
     response.contentType "application/json"
     lang = request.params[0]
 
@@ -21,10 +22,11 @@ exports = module.exports = (settings, Cache) ->
       response.status 404
       return response.json "language not found"
 
-    # Check in cache
+    #! Check in cache
     Cache.get "route:api/lang/#{lang}"
+
+    #! Language was not cached, so query and then save in cache
     .catch ->
-      # Language was not cached, so query and then save in cache
       fs.readFileAsync "#{settings.localeDest}/#{lang}.json"
       .then (data) -> Cache.set "route:api/lang/#{lang}", data.toString()
 

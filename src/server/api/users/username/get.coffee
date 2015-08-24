@@ -3,7 +3,8 @@ validator = require "validator"
 
 
 exports = module.exports = (Users) ->
-  controller = (request, response, next) ->
+  routes: ["/users/username/([0-9a-zA-Z\_]+)"]
+  controller: (request, response, next) ->
     Users.findByUsernameOrEmail request.params[0]
     .then (user) ->
       if not user? then throw new Error

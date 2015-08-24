@@ -1,8 +1,6 @@
-Promise = require "bluebird"
-validator = require "validator"
-
-
 exports = module.exports = (Story) ->
+  routes: ["/news/stories/([0-9]+)/comments"]
+
   controller = (request, response, next) ->
     Story.comments request.params[0], request.query.page
     .then (data) ->

@@ -1,5 +1,7 @@
-module.exports = ->
-  controller = (request, response, next) ->
+exports = module.exports = ->
+  routes: ["/users/current"]
+
+  controller: (request, response, next) ->
     user = request.user
     json = {}
 

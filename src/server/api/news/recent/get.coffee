@@ -1,8 +1,6 @@
-Promise = require "bluebird"
-validator = require "validator"
-
-
 exports = module.exports = (Stories) ->
+  routes: ["/news/recent"]
+
   controller = (request, response, next) ->
     Stories.recent().then (stories) ->  response.json stories
     .catch (e) ->

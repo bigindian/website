@@ -11,8 +11,7 @@ exports = module.exports = (Categories) ->
     .then (results) ->
       response.render "main/news/categories",
         data: results
-        cache: "news/categories"
-        title: 'df'
+        cache: enable: true
 
 
 exports["@require"] = ["models/news/categories"]

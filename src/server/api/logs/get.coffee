@@ -2,8 +2,9 @@ util = require "util"
 zpad = require "zpad"
 
 exports = module.exports = (Logs) ->
-  controller = (request, response, next) ->
+  routes: ["/logs"]
 
+  controller: (request, response, next) ->
     # Prints out the events in a CSV style format
     Logs.query(request.query).then (events) ->
       output = ""

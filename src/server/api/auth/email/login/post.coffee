@@ -20,7 +20,9 @@ passport = require "passport"
   @author Steven Enamakel <me@steven.pw>
 ###
 exports = module.exports = (Events) ->
-  (request, response, next) ->
+  routes: ["/auth/email/login"]
+
+  controller: (request, response, next) ->
     finish = (error, user) ->
       if error or not user
         response.status 400

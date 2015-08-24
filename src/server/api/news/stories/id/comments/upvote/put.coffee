@@ -1,8 +1,6 @@
-Promise = require "bluebird"
-validator = require "validator"
-
-
 exports = module.exports = (Stories) ->
+  routes: ["/news/stories/([0-9]+)/comments/upvote"]
+
   controller = (request, response, next) ->
     Stories.get request.params[0]
     .then (model) -> model.upvote request.user.id

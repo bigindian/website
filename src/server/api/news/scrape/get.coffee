@@ -1,11 +1,11 @@
-Promise = require "bluebird"
 cheerio = require "cheerio"
 Request = require "request"
-validator = require "validator"
 
 
 exports = module.exports = (Stories) ->
-  controller = (request, response, next) ->
+  routes: ["/news/scrape"]
+
+  controller: (request, response, next) ->
     url = request.query.u or ""
 
     Request
@@ -20,10 +20,10 @@ exports = module.exports = (Stories) ->
 
         if title is "" then title = ":("
 
-        # Return!
+        #! Return!
         response.json url: url, title: title
 
-      # Something wicked happened! Return..
+      #! Something wicked happened! Return..
       else response.json url: url, title: ":("
 
 

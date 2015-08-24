@@ -1,7 +1,6 @@
 ###
 This file is mainly responsible for setting up all the different routes for
-the App. You'll find routes for the Meetups, Forums and other components
-of the site get defined here.
+the App. You'll find routes for the the non-api controllers defined here.
 
 The routes for the files are not listed here, but rather the controller folder
 is recursively walked and the controllers are picked up and set with the
@@ -100,8 +99,10 @@ exports = module.exports = (IoC) ->
 
     #! If it did have routes set, then we set it for each of its routes
     for route in controller.routes
-      logger.debug "adding #{relativePath}\t= GET #{route}"
       _route route, controller
+
+      if route == "" then route = "/"
+      logger.debug "GET\t#{route} -> #{relativePath}"
 
 
   #! If none of the routes matched, then route to the 404 controller!

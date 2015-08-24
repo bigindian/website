@@ -1,7 +1,3 @@
-Promise = require "bluebird"
-validator = require "validator"
-
-
 exports = module.exports = (Stories) ->
   controller = (request, response, next) ->
     Stories.get request.params[0]

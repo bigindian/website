@@ -1,5 +1,6 @@
 jade = require "jade"
 _    = require "underscore"
+path = require "path"
 
 
 ###
@@ -56,9 +57,9 @@ exports = module.exports = (settings, Cache) ->
     #! If cache is set then setup cache variables, if this was a JSON request
     #! then don't look in the cache. (We cache only rendered HTML)
     if options.cache?
-      cacheEnable = true
+      cacheEnable = options.cache.enable
       cacheKey = "renderer@#{filePath}"
-      cacheTimeout = null#options.cache.timeout
+      cacheTimeout = options.cache.timeout
 
     #! Everything has been set so now check the cache for the HTML of this page
     Cache.get cacheKey
@@ -75,8 +76,12 @@ exports = module.exports = (settings, Cache) ->
 
       #! Give the default page title if title is undefined. If a title was
       #! defined but set to null, then don't do anything!
-      # if options.title == undefined
-        # options.title = response.__ "#{options.page}:title"
+      if options.title == undefined
+        page = path.relative settings.views.dir, filePath.replace "main/", ""
+        page = page.replace ".jade", ""
+        subTitle = __ "#{page}:title"
+        options.title = "#{subTitle} - #{settings.sitename}"
+      else options.title = settings.sitename
 
       #! Setup options for the jade compiler and HTML compiler
       jadeOptions =
@@ -111,8 +116,6 @@ exports = module.exports = (settings, Cache) ->
     #! Finally write to the response!
     .then (data) -> callback null, data
 
-
-  Middleware
 
 exports["@require"] = [
   "igloo/settings"

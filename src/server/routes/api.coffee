@@ -1,73 +1,112 @@
-express   = require "express"
+###
+This file is mainly responsible for setting up all the different routes for the
+API.
+
+The routes for the files are not listed here, but rather the controller folder
+is recursively walked and the controllers are picked up and set with the
+routes defined in them. If you want to know which controller gets called on
+which route then either
+  - watch the console.debug for statements about controller and route
+    assignments
+  - go through each file inside of the controller folder and find the route
+    that matches the url you are looking for.
+
+The API follows a RESTful interface and the route files follow a simple naming
+convention to implement this.
+  - All delete requests will be served from the `delete.coffee` file
+  - All get requests will be served from the `get.coffee` file
+  - All post requests will be served from the `post.coffee` file
+  - All put requests will be served from the `put.coffee` file
+###
+Express   = require "express"
+Walk      = require "fs-walk"
+path     = require "path"
 
 
 exports = module.exports = (IoC) ->
   app = this
-  router = express.Router()
+  router = Express.Router()
+  logger = IoC.create "igloo/logger"
 
-  # These variable are only used to initialize the route. The number are used to
-  # uniquely identify them in the switch statement in the function below.
-  DELETE = 0
-  GET = 1
-  PATCH = 2
-  POST = 3
-  PUT = 4
 
   ###
-    A helper function to initialize API routes. Because we want to avoid
-    repetitive code, we use this function which shorten down things to nice
-    clean statements.
+  **_route()** This helper function shortens the long line of writings routes
+  and calls the dependency injector.
 
-
-    @param  String url           A regular expression string that matches the
-                                 route
-    @param  String controller    Local path of the api's controller (relative
-                                 from the /controllers/api folder).
-    @param  Number method        A number representing the type of request we
-                                 should use.
+  Modify this if you want to customize how routes and controllers get added.
   ###
-  r = (url, controller, method=GET) ->
-    api = (controller) -> IoC.create "api/#{controller}"
+  _route = (url, controller, method) ->
+    #! If a string was passed to us, then we instansiate the controller
+    #! manually.
+    if typeof controller is "string" then controller = getController controller
+
+    #! This url matcher will take care of trailing back-slashes. Modify this
+    #! if you want to add a prefix.
+    urlRegex = new RegExp "^#{url}/?$"
+
+    #! Finally add the route to Express's router! `controller.controller` will
+    #! refer to the controller function specified in the controller file.
     switch method
-      when POST
-        router.post   (new RegExp "^#{url}/?$"), api "#{controller}/post"
-      when PUT
-        router.put    (new RegExp "^#{url}/?$"), api "#{controller}/put"
-      when DELETE
-        router.delete (new RegExp "^#{url}/?$"), api "#{controller}/delete"
-      when GET
-        router.get    (new RegExp "^#{url}/?$"), api "#{controller}/get"
+      when "DELETE" then router.delete urlRegex, controller.controller
+      when "GET"    then router.get    urlRegex, controller.controller
+      when "POST"   then router.post   urlRegex, controller.controller
+      when "PUT"    then router.put    urlRegex, controller.controller
 
-  # r "",                                     ".",                         GET
-  # r "/auth/email",                          "auth/email",                PUT
-  # r "/auth/email/activate/([0-9]+)",        "auth/email/activate",       GET
-  r "/auth/email/login",                    "auth/email/login",          POST
-  r "/auth/email/signup",                   "auth/email/signup",         POST
-  r "/auth/logout",                         "auth/logout",               GET
-  r "/language/([a-z]+)",                   "language",                  GET
-  r "/logs",                                "logs",                      GET
-  r "/news",                                "/news",                      GET
-  r "/news/categories",                     "/news/categories",           GET
-  r "/news/comments",                       "/news/comments",             GET
-  r "/news/comments/([0-9]+)",              "/news/comments/:id",         GET
-  r "/news/comments/([0-9]+)/upvote",       "/news/comments/:id/upvote",  PUT
-  r "/news/categories/counters",            "/news/categories/counters",  GET
-  r "/news/recent",                         "/news/recent",               GET
-  r "/news/scrape",                         "/news/scrape",               GET
-  r "/news/stories",                        "/news/stories",              POST
-  r "/news/stories/([0-9]+)",               "/news/stories/:id",          GET
-  r "/news/stories/([0-9]+)/comments",      "/news/stories/:id/comments", GET
-  r "/news/stories/([0-9]+)/comments",      "/news/stories/:id/comments", POST
-  r "/news/stories/([0-9]+)/upvote",        "/news/stories/:id/upvote",   PUT
-  r "/news/top",                            "/news/top",                  GET
-  r "/users",                               "users",                      GET
-  r "/users/([0-9]+)?",                     "users/:id",                  GET
-  r "/users/current",                       "users/current",              GET
-  r "/users/username/([0-9a-zA-Z\_]+)",     "users/username",             GET
 
+  ###
+  **getController()** This function fetches the controller given it's name.
+
+  Modify this function if you want to customize where the controller are
+  located. IoC's loader knows where the contrller are because of the
+  ```
+    IoC.loader "controllers", _library "controllers"
+  ```
+  line in the [app.coffee](../app.coffee) file.
+
+  ###
+  getController = (name) -> IoC.create "api/#{name}"
+
+
+  ###
+  **isController()** This function is used to determine if a given filename
+  is a valid controller (for us to instantiate and add to the route) or not.
+
+  This function's main responsiblity is to filter out test files and files
+  not ending with '.coffee'.
+  ###
+  isController = (fn) -> fn.indexOf("test") is -1 and /coffee$/.test(fn)
+
+
+  getHTTPMethod = (filename) -> filename.split(".coffee")[0].toUpperCase()
+
+
+  #! Now start walking!
+  walkPath = path.join __dirname, "../api"
+  Walk.walkSync walkPath, (basedir, filename, stat) ->
+    #! If the filename does not match the rules for a controller then we skip.
+    if not isController filename then return
+
+    #! Now we get the proper controller name from which we can pass on to IoC.
+    file = path.join basedir, filename.split(".coffee")[0]
+    relativePath = path.relative walkPath, file
+
+    #! Invoke IoC and get an instance of our controller
+    controller = getController relativePath
+
+    #! Now if this controller does not have any routes then we skip it!
+    if not controller.routes? then return
+
+    #! If it did have routes set, then we set it for each of its routes
+    for route in controller.routes
+      method = getHTTPMethod filename
+      _route route, controller, getHTTPMethod filename
+
+      logger.debug "#{method}\tapi#{route} -> api/#{relativePath}"
+
+
+  #! Finally attach the router into the app
   app.use "/api", router
 
 
 exports["@require"] = ["$container"]
 exports["@singleton"] = true
-
