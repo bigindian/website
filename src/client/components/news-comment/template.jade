@@ -1,8 +1,10 @@
 .story_comment
   .voters
-    a.upvoter.hide-if-loggedin(fn-route="/login")
-    a.upvoter.show-if-loggedin(ng-click="upvote()", ng-class="{voted: hasVoted}")
-    .score {{ comment.score }}
+  .votes(ng-if="!settings.storyHideScore")
+    .score {{ comment.score || 0 | prettynumber }}
+    .voter(ng-if="!hasVoted")
+      a(ng-click="upvote()", ng-class="{voted: hasVoted}")
+
   .details
     a.author(fn-route-dis="/user/@{{ comment.created_by.username }}") {{ comment.created_by.username }}
     | &nbsp;&middot;&nbsp;

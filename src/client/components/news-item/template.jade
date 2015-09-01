@@ -1,7 +1,7 @@
 .story_liner
   .votes(ng-if="!settings.storyHideScore")
     .score {{ story.score || 0 | prettynumber }}
-    .voter
+    .voter(ng-if="!hasVoted")
       a(ng-click="upvote()", ng-class="{voted: hasVoted}")
   .details
     span.link

@@ -1,6 +1,6 @@
 news-comment
   .content, .details
-    margin-left: 40px
+    margin-left: 50px
 
   .content
     margin-top: 5px
@@ -16,25 +16,36 @@ news-comment
     font-size: 12px
     margin-top: 2px
 
-  .voters
+  .votes
     float: left
-    margin-left: 10px
-    color: #888
+    position: relative
+    .voter, .score
+      position: absolute
 
-    .upvoter
-      border-color: transparent transparent #CCC transparent
-      border-style: solid
-      border-width: 5px
-      border-bottom-width: 11px
-      display: block
-      height: 0
-      margin-bottom: 0px
-      padding: 0
-      text-decoration: none
-      width: 0px
-      &:hover, &.voted
-        border-color: transparent transparent $news-color transparent
-
+    .voter
+      left: 28px
+      top: 3px
+      a
+        border-color: transparent transparent #CCC transparent
+        border-style: solid
+        border-width: 4px
+        border-bottom-width: 9px
+        display: block
+        height: 0
+        margin-top: -2px
+        margin-bottom: 0px
+        margin-left: 5px
+        padding: 0
+        text-decoration: none
+        width: 0px
+        &:hover, &.voted
+          border-color: transparent transparent #000 transparent
     .score
+      top: 2px
+      left: 0
+      color: #CCC !important
+      display: inline-block
       font-size: 11px
-      text-align: center
+      text-align: right
+      font-weight: bold
+      min-width: 25px

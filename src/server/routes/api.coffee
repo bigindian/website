@@ -85,7 +85,6 @@ exports = module.exports = (IoC) ->
   Walk.walkSync walkPath, (basedir, filename, stat) ->
     #! If the filename does not match the rules for a controller then we skip.
     if not isController filename then return
-
     #! Now we get the proper controller name from which we can pass on to IoC.
     file = path.join basedir, filename.split(".coffee")[0]
     relativePath = path.relative walkPath, file
@@ -94,6 +93,7 @@ exports = module.exports = (IoC) ->
     controller = getController relativePath
 
     #! Now if this controller does not have any routes then we skip it!
+    console.log relativePath, controller
     if not controller.routes? then return
 
     #! If it did have routes set, then we set it for each of its routes
