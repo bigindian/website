@@ -5,9 +5,13 @@ exports = module.exports = (Cache, Stories) ->
   ]
 
   controller: (request, response, next) ->
-    Cache.get "main/news/index"
+    page = request.params[0] or 1
+    cacheKey = "main/news/index/#{page}"
+
+    Cache.get cacheKey
     .catch ->
-      Stories.top null, page: request.params[0] or 1
+      # console.log request.params[0]
+      Stories.top null, page: page
       .then (stories) ->
 
         # TODO find some other way for this..
@@ -18,7 +22,10 @@ exports = module.exports = (Cache, Stories) ->
           delete story.created_by.mailing_list_token
 
         json = JSON.stringify stories
-        Cache.set "main/news/index", json
+
+        #! Cache only the first three pages!
+        if 0 <= page and page >= 3 then Cache.set cacheKey, json, 60 * 1
+        else json
 
 
     .then (stories) ->

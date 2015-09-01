@@ -17,4 +17,6 @@ ul.stories
 //-     span &nbsp;results per page
 
 .page-links
-  a(fn-route="/news/page/{{ pagination.next }}", ng-if="pagination.next") More
+  a(fn-route="/page/{{ pagination.prev }}", ng-if="pagination.prev") Page {{ pagination.prev }}
+  span(ng-if="pagination.prev && pagination.next") &nbsp;&middot;&nbsp;
+  a(fn-route="/page/{{ pagination.next }}", ng-if="pagination.next") Page {{ pagination.next }}
