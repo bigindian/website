@@ -1,5 +1,5 @@
-jade = require "jade"
 _    = require "underscore"
+jade = require "jade"
 path = require "path"
 
 
@@ -21,7 +21,6 @@ exports = module.exports = (settings, Cache) ->
 
     data: {}
     environment: settings.server.env
-    settings: settings
     staticUrl: settings.staticUrl
     url: settings.url
     cache: {}
@@ -88,6 +87,7 @@ exports = module.exports = (settings, Cache) ->
         cache: cacheEnable
         pretty: defaults.environment is "development"
       htmlOptions = _.extend defaults, options or {}
+      htmlOptions.settings = settings
 
       ###
       Set the MD5 variables into the publicData field. We set this value

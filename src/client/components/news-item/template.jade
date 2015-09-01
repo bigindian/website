@@ -21,15 +21,12 @@
         span.domain(ng-if="!settings.storyHideDomain")
           a(fn-route="{{ story.url }}"
             target="{{ openNewTab ? '_blank' : ''}}") {{ story.url | domain }}
-        //- | &nbsp;&middot;&nbsp;
-        //- span {{ story.views || 0 }} views
-        //- | &nbsp;&middot;&nbsp;
         span.
           by {{ story.created_by.username }}
         span.timestamp(ng-if="!settings.storyHideDate").
           {{ story.created_at | prettydate }}
         span.comments_label(ng-if="story.comments_count == 0 && !settings.storyHideComments")
-          a.underline(fn-route="/story/{{ story.slug }}") discuss
+          .atunderline(fn-route="/story/{{ story.slug }}") discuss
         span.comments_label(ng-if="story.comments_count != 0 && !settings.storyHideComments")
-          a(fn-route="/story/{{ story.slug }}") {{ story.comments_count }} {{ story.comments_count == 1 ? "comment" : "comments" }}
-        //- | &nbsp;&middot;&nbsp;
+          a(fn-route="/story/{{ story.slug }}").
+            {{ story.comments_count }} {{ story.comments_count == 1 ? "comment" : "comments" }}

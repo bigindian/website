@@ -24,91 +24,11 @@ exports = module.exports = ->
       enabled: true
       requireActivation: true
 
-    facebook:
-      enabled: true
-      supportMeta: true
-      oauth:
-        clientID: "XXXXXXXXXX"
-        clientSecret: "XXXXXXXXXX"
-      scope: ["email"]
-
-    twitter:
-      enabled: false
-      supportMeta: true
-      user: "@twitteraccount"
-      oauth:
-        consumerKey: "XXXXXXXXXX"
-        consumerSecret: "XXXXXXXXXX"
-
     google:
-      enabled: true
       reCaptcha:
         siteKey: "XXXXXXXXXX"
         siteSecret: "XXXXXXXXXX"
       analyticsCode: "UA-XXXXXXXXXX-X"
-      oauth:
-        clientID: "XXXXXXXXXX"
-        clientSecret: "XXXXXXXXXX"
-      scope: [
-        "https://www.googleapis.com/auth/userinfo.email"
-        "https://www.googleapis.com/auth/userinfo.profile"
-      ]
-
-    windowslive:
-      enabled: true
-      oauth:
-        clientID: "XXXXXXXXXX"
-        clientSecret: "XXXXXXXXXX"
-      scope: [
-        "wl.basic"
-        "wl.emails"
-      ]
-
-    openid:
-      enabled: true
-      oauth:
-        relam: "https://development.kuwaitandme.com"
-
-    wordpress:
-      enabled: true
-      clientID: "XXXXXXXXXX"
-      clientSecret: "XXXXXXXXXX"
-
-    linkedin:
-      enabled: true
-      scope: [
-        "r_basicprofile"
-        "r_emailaddress"
-      ]
-      oauth:
-        consumerKey: "XXXXXXXXXX"
-        consumerSecret: "XXXXXXXXXX"
-        profileFields: [
-          "id"
-          "email-address"
-          "first-name"
-          "last-name"
-        ]
-
-    amazon:
-      enabled: true
-      scope: ["profile"]
-      oauth:
-        clientID: "XXXXXXXXXX"
-        clientSecret: "XXXXXXXXXX"
-
-    reddit:
-      enabled: true
-      clientID: "XXXXXXXXXX"
-      clientSecret: "XXXXXXXXXX"
-
-    paypal:
-      client_id: "XXXXXXXXXX",
-      client_secret: "XXXXXXXXXX"
-      enabled: true
-      host: "api.sandbox.paypal.com"
-      port: ""
-      currency: "USD"
 
     phonegap: csrfBypassKey: "XXXXXXXXX"
 
