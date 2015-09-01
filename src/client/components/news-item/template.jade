@@ -17,16 +17,17 @@
         fn-route="/category/{{ cat.slug }}")
         news-category(ng-model="cat")
 
-      span.meta
-        span.domain(ng-if="!settings.storyHideDomain")
-          a(fn-route="{{ story.url }}"
-            target="{{ openNewTab ? '_blank' : ''}}") {{ story.url | domain }}
-        span.
-          by {{ story.created_by.username }}
-        span.timestamp(ng-if="!settings.storyHideDate").
-          {{ story.created_at | prettydate }}
-        span.comments_label(ng-if="story.comments_count == 0 && !settings.storyHideComments")
-          .atunderline(fn-route="/story/{{ story.slug }}") discuss
-        span.comments_label(ng-if="story.comments_count != 0 && !settings.storyHideComments")
-          a(fn-route="/story/{{ story.slug }}").
-            {{ story.comments_count }} {{ story.comments_count == 1 ? "comment" : "comments" }}
+    span.domain(ng-if="!settings.storyHideDomain")
+      a(fn-route="{{ story.url }}"
+        target="{{ openNewTab ? '_blank' : ''}}") {{ story.url | domain }}
+
+    .meta
+      span.
+        by {{ story.created_by.username }}
+      span.timestamp(ng-if="!settings.storyHideDate").
+        {{ story.created_at | prettydate }}
+      span.comments_label(ng-if="story.comments_count == 0 && !settings.storyHideComments")
+        a(fn-route="/story/{{ story.slug }}") discuss
+      span.comments_label(ng-if="story.comments_count != 0 && !settings.storyHideComments")
+        a(fn-route="/story/{{ story.slug }}").
+          {{ story.comments_count }} {{ story.comments_count == 1 ? "comment" : "comments" }}
