@@ -63,10 +63,10 @@ exports = module.exports = (IoC, settings) ->
         request.body["g-recaptcha-response"] or
         request.headers["x-recaptcha"]
 
-      # Prepare the data to be sent to the API
+      #! Prepare the data to be sent to the API
       APIdata = remoteip: remoteIP, response: captchaData
 
-      # Send the request to the Google reCaptcha API
+      #! Send the request to the Google reCaptcha API
       callAPI APIdata
       .catch (error) ->
         logger.debug name, "captcha failed"

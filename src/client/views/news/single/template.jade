@@ -18,5 +18,5 @@ section(ng-if="story.id")
         button(ng-click="submit()") Submit
 
 
-  p(ng-repeat="c in story.comments | orderBy : 'upvotes' : true")
+  p(ng-repeat="c in story.comments | orderBy : 'hotness'")
     news-comment(ng-model="c")

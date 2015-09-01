@@ -30,9 +30,9 @@ exports = module.exports = (Cache, Stories) ->
 
     .then (stories) ->
       response.render "main/news/index",
-        cache:
-          enable: true
-          timeout: 60 * 1 # 1 minute cache
+        # cache:
+          # enable: true
+          # timeout: 60 * 1 # 1 minute cache
         data: JSON.parse stories
         title: null
 

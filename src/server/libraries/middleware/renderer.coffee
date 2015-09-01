@@ -109,9 +109,9 @@ exports = module.exports = (settings, Cache) ->
       the HTML code, so the next promise function will definitely receive
       HTML one way or the other
       ###
-      if cacheTimeout? then return Cache.set cacheKey, html, cacheTimeout
-      else if cacheEnable then return Cache.set cacheKey, html
-      else return html
+      # if cacheTimeout? then return Cache.set cacheKey, html, cacheTimeout
+      # else if cacheEnable then return Cache.set cacheKey, html
+      return html
 
     #! Finally write to the response!
     .then (data) -> callback null, data
