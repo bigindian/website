@@ -86,7 +86,7 @@ exports.seed = (knex, Promise) ->
     }
     {
       title: "Opinion"
-      description: "Public opinion & Advice"
+      description: "Public opinion"
       color: "#fffcd7"
     }
     {
@@ -192,6 +192,31 @@ exports.seed = (knex, Promise) ->
     {
       title: "Hardware"
       description: "Machines and things"
+      color: "#fffcd7"
+    }
+    {
+      title: "Hackathon"
+      description: "Hackathons"
+      color: "#fffcd7"
+    }
+    {
+      title: "Culture"
+      description: "Startup culture"
+      color: "#fffcd7"
+    }
+    {
+      title: "College"
+      description: "HSC, Colleges & Unversities"
+      color: "#fffcd7"
+    }
+    {
+      title: "Advice"
+      description: "Help or Advice"
+      color: "#fffcd7"
+    }
+    {
+      title: "Hiring"
+      description: "Jobs & Hiring"
       color: "#fffcd7"
     }
   ]
