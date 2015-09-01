@@ -2,6 +2,8 @@ Controller = ($scope, $log, Stories, Categories, Settings) ->
   logger = $log.init Controller.tag
   logger.log "initializing"
 
+  $scope.settings = {}
+
   $scope.getCategory = (id) -> Categories.findById id
 
   $scope.$watch "story", (story={}) ->
@@ -13,7 +15,9 @@ Controller = ($scope, $log, Stories, Categories, Settings) ->
     $scope.story.parsedCategories = categories
 
 
-  onSettingsUpdate = -> $scope.openNewTab = Settings.get "storyInNewTab"
+  onSettingsUpdate = ->
+    $scope.settings = Settings.getAll()
+    $scope.openNewTab = Settings.get "storyInNewTab"
 
 
   $scope.$on "settings:change", onSettingsUpdate

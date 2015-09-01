@@ -1,5 +1,5 @@
 .story_liner
-  .votes
+  .votes(ng-if="!settings.storyHideScore")
     .score {{ story.score || 0 | prettynumber }}
     .voter
       a(ng-click="upvote()", ng-class="{voted: hasVoted}")
@@ -8,24 +8,28 @@
       span(ng-if="!story.is_gone")
         a(fn-route="{{ story.url }}"
           target="{{ openNewTab ? '_blank' : ''}}") {{ story.title }}
-      span(ng-if="story.is_gone")
-        | [Story removed by {{ story.is_moderated ? "moderator" : "original submitter" }}]
+      span(ng-if="story.is_gone").
+        [Story removed by {{ story.is_moderated ? "moderator" : "original submitter" }}]
+
 
     span.cats(ng-if="!story.is_gone")
       a(ng-repeat="cat in story.parsedCategories track by $index"
         fn-route="/category/{{ cat.slug }}")
         news-category(ng-model="cat")
 
-    span.meta
-      span.domain
-        a(fn-route="{{ story.url }}"
-          target="{{ openNewTab ? '_blank' : ''}}") ({{ story.url | domain }})
-      //- | &nbsp;&middot;&nbsp;
-      //- span {{ story.views || 0 }} views
-      //- | &nbsp;&middot;&nbsp;
-      //- span
-        | {{ story.score || 0 }} points by {{ story.created_by.username }}
-      span.comments_label
-        a(fn-route="/story/{{ story.slug }}") {{ story.comments_count }} {{ story.comments_count == 1 ? "comment" : "comments" }}
-      //- | &nbsp;&middot;&nbsp;
-      span.timestamp {{ story.created_at | prettydate }}
+      span.meta
+        span.domain(ng-if="!settings.storyHideDomain")
+          a(fn-route="{{ story.url }}"
+            target="{{ openNewTab ? '_blank' : ''}}") {{ story.url | domain }}
+        //- | &nbsp;&middot;&nbsp;
+        //- span {{ story.views || 0 }} views
+        //- | &nbsp;&middot;&nbsp;
+        span.
+          by {{ story.created_by.username }}
+        span.timestamp(ng-if="!settings.storyHideDate").
+          {{ story.created_at | prettydate }}
+        span.comments_label(ng-if="story.comments_count == 0 && !settings.storyHideComments")
+          a.underline(fn-route="/story/{{ story.slug }}") discuss
+        span.comments_label(ng-if="story.comments_count != 0 && !settings.storyHideComments")
+          a(fn-route="/story/{{ story.slug }}") {{ story.comments_count }} {{ story.comments_count == 1 ? "comment" : "comments" }}
+        //- | &nbsp;&middot;&nbsp;
