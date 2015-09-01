@@ -1,12 +1,10 @@
 news-item
   +clearfix
   display: block
-  margin-bottom: 3px
 
   .link
     a
       @extend .font-bitter
-      // font-family: "helvetica neue", arial, sans-serif
       color: #000
       font-size: 10pt
       font-weight: bold
@@ -15,31 +13,12 @@ news-item
         color: #444
       &:hover
         text-decoration: none
-      // @media #{$small-only}
-      //   display: block
 
   .story_liner
-    padding: 4px 0
+    padding: 3px 0
 
   .cats
     margin-right: 5px
-
-  // news-category
-  //   margin-right: 0.25em
-  //   span
-  //     +radius(3px)
-  //     background: #fffcd7
-  //     border: 1px solid rgba(0,0,0,0.1)
-  //     display: inline-block
-  //     font-size: 10px
-  //     margin-right: 5px
-  //     // padding: 0px 0.5em 1px 0.5em
-
-  //     &, &:hover
-  //       color: #555
-  //       text-decoration: none
-  //     // @media #{$small-only}
-  //       // margin-top: 5px
 
   .domain a
     font-style: italic
@@ -58,7 +37,6 @@ news-item
         color: #000
 
   a
-    // +single-transition
     text-decoration: none
     &.underline
       text-decoration: underline
