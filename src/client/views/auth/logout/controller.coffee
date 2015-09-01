@@ -2,10 +2,9 @@ Controller = ($location, $log, Notifications, Users) ->
   logger = $log.init Controller.tag
   logger.log "initializing"
 
-
+  Users.logout()
   Notifications.success "logout_success"
   $location.path "/"
-  Users.logout()
 
 
 Controller.tag = "page:auth/logout"

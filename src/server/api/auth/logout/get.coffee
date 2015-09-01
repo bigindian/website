@@ -1,5 +1,5 @@
 exports = module.exports = ->
-  routes: ["/auth/email/login"]
+  routes: ["/auth/logout"]
 
   controller: (request, response, next) ->
     request.session.destroy()

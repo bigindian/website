@@ -6,6 +6,7 @@ exports = module.exports = (Stories, Comments) ->
     data = {}
 
     slug = request.params[0]
+    console.log slug
 
     # First get the story by the slug
     Stories.getBySlug slug, withRelated: ["created_by", "categories", "comments"]

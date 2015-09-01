@@ -4,6 +4,7 @@ exports = module.exports = ($provide) ->
 
     $http.pageAsJSON = ->
       url = $window.location.toString()
+      url = url.replace $window.location.hash, ""
       url += if url.indexOf("?") > 1 then "&json" else "?json"
       $http.get url
 

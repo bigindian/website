@@ -4,7 +4,7 @@ section(ng-if="story.id")
   .row.collapse
     form.row.collapse(name="form", ng-class="formClasses")
       .columns
-        textarea.field.main-commentbox.show-if-loggedin(ng-model="comment"
+        textarea.field.main-commentbox.show-if-loggedin(ng-model="story.comment"
           ng-disabled="formLoading"
           maxlength=3000
           placeholder="Comment on this link."
@@ -15,9 +15,8 @@ section(ng-if="story.id")
             disabled)
 
       .columns(ng-if="form.$valid")
-        button(ng-click="submit(comment)") Submit
+        button(ng-click="submit()") Submit
 
 
-  p(ng-repeat="comment in story.comments | orderBy : 'upvotes' : true")
-    news-comment(ng-model="comment")
-
+  p(ng-repeat="c in story.comments | orderBy : 'upvotes' : true")
+    news-comment(ng-model="c")

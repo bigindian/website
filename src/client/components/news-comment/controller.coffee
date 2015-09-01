@@ -6,6 +6,8 @@ Controller = ($location, $log, $sce, $scope, Notifications, Comments, Users) ->
     $scope.markdown = $sce.trustAsHtml $scope.comment.content
 
 
+  $scope.path = $location.path()
+
   $scope.upvote = ->
     #! User needs to be logged in
     if not Users.isLoggedIn()
