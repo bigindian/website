@@ -9,9 +9,10 @@ Model = ($http, $log, Environment) ->
       $http.get "#{API}"
 
 
-    create: (data) ->
+    create: (data, headers={}) ->
       $http
         data: data
+        headers: headers
         method: "POST"
         url: "#{Environment.url}/api/news/stories"
 
@@ -20,9 +21,10 @@ Model = ($http, $log, Environment) ->
         method: "PUT"
         url: "#{Environment.url}/api/news/stories/#{id}/upvote"
 
-    createComment: (id, data) ->
+    createComment: (id, data, headers={}) ->
       $http
         data: data
+        headers: headers
         method: "POST"
         url: "#{Environment.url}/api/news/stories/#{id}/comments"
 

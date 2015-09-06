@@ -28,7 +28,7 @@ form(name="form", ng-class="formClasses", ng-init="page = 1")
       required="true"
       ng-disabled="formLoading")
 
-    .columns.captcha(ng-if="form.$valid")
+    .columns.captcha(ng-if="form.$valid && signup.password")
       div(google-recaptcha, ng-model="form.gcaptcha", ng-if="!form.gcaptcha")
 
       button.submit(ng-click="doSignup(signup)", ng-if="form.gcaptcha") Sign Up

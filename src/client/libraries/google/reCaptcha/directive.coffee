@@ -3,4 +3,4 @@ exports = module.exports = ->
   scope: true
   require: "ngModel"
   controller: require "./controller"
-  replace: true
+  templateUrl: "libraries/google/reCaptcha/template"

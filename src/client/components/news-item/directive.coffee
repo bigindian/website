@@ -1,4 +1,4 @@
-exports = module.exports = ->
+module.exports = Directive = ->
   controller: require "./controller"
   require: "ngModel"
   link: require "./link"

@@ -1,13 +1,13 @@
 section(ng-if="story.id")
   news-item(ng-model="story")
-  .description(ng-bind-html="description")
+  .description(ng-bind-html="description", ng-if="description")
   .row.collapse
     form.row.collapse(name="form", ng-class="formClasses")
       .columns
         textarea.field.main-commentbox.show-if-loggedin(ng-model="story.comment"
           ng-disabled="formLoading"
           maxlength=3000
-          placeholder="Comment on this link."
+          placeholder="comment on this link."
           required)
         a.hide-if-loggedin(fn-route="/login")
           textarea.field.main-commentbox(
@@ -15,8 +15,9 @@ section(ng-if="story.id")
             disabled)
 
       .columns(ng-if="form.$valid")
-        button(ng-click="submit()") Submit
+        google-recaptcha(ng-model="data.gcaptcha", ng-if="!data.gcaptcha")
+        button(ng-click="submit()", ng-if="data.gcaptcha") Submit
 
 
-  p(ng-repeat="c in story.comments | orderBy : 'hotness'")
-    news-comment(ng-model="c")
+  p#comments(ng-repeat="comment in comments | orderBy : 'hotness'")
+    news-comment(ng-model="comment")

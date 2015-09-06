@@ -53,8 +53,10 @@ Stories) ->
     for category in $scope.categories
       if category.select is true then data.categories.push category.id
 
+    headers = "x-recaptcha": $scope.form.gcaptcha
+
     # Send the request!
-    Stories.create data
+    Stories.create data, headers
     .success (story) ->
       Notifications.success "story_submit_success"
       $location.path "/story/#{story.slug}"

@@ -5,7 +5,7 @@ Controller = ($location, $log, $sce, $scope, Notifications, Comments, Users) ->
   $scope.$watch "comment.content_markdown", (value) ->
     $scope.markdown = $sce.trustAsHtml $scope.comment.content
 
-
+  $scope.data = {}
   $scope.path = $location.path()
 
   $scope.upvote = ->
@@ -19,6 +19,27 @@ Controller = ($location, $log, $sce, $scope, Notifications, Comments, Users) ->
 
     $scope.comment.score += 1
     Comments.upvote $scope.comment.id
+
+
+  blockForm = -> $scope.formClasses = loading: $scope.formLoading = true
+  unlockForm = -> $scope.formClasses = loading: $scope.formLoading = false
+
+  $scope.submit = ->
+    blockForm()
+
+    id = $scope.comment.id
+    body = content: $scope.data.child_comment
+    headers = "x-recaptcha": $scope.data.gcaptcha
+
+    Comments.createChildComment id, body, headers
+    .then ->
+      logger.log "comment posted!"
+      $scope.story.comment = ""
+
+      $scope.$emit "refresh"
+      Notifications.success "comment_posted"
+    .catch (error) -> logger.error error
+    .finally unlockForm
 
 
 Controller.tag = "component:news-comment"

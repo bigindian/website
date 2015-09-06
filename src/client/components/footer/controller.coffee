@@ -20,7 +20,7 @@ Footer = ($scope, $log, $timeout) ->
   ].sort (a,b) -> parseInt( Math.random()*10 ) % 2
 
   # Grab a random quote from the list below
-  startIndex = Math.floor Math.random() * quotes.length + 0
+  startIndex = Math.floor Math.random() * quotes.length
   randomQuote = -> quotes[++startIndex % quotes.length]
 
   change = ->
