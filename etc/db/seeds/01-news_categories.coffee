@@ -42,9 +42,9 @@ exports.seed = (knex, Promise) ->
     { title: "Hiring", description: "Jobs & Hiring", color: "#fffcd7" }
     { title: "Hotels", description: "Hotels", color: "#fffcd7" }
     { title: "Images", description: "Link to Images (gallery, photos)", color: "#ddebf9" }
-    { title: "Innovative", description: "Innovateive ideas", color: "#ddebf9" }
-    { title: "International", description: "Things aroung the world", color: "#ddebf9" }
-    { title: "Internet", description: "Anything and everything about the net", color: "#ddebf9" }
+    { title: "Innovative", description: "Innovateive ideas", color: "#fffcd7" }
+    { title: "International", description: "Things aroung the world", color: "#fffcd7" }
+    { title: "Internet", description: "Anything and everything about the net", color: "#fffcd7" }
     { title: "Investing", description: "Investing & Investors", color: "#fffcd7" }
     { title: "Law", description: "Legal & Law", color: "#fffcd7" }
     { title: "Marketing", description: "Marketing", color: "#fffcd7" }
