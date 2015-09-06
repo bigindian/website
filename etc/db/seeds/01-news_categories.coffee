@@ -41,6 +41,7 @@ exports.seed = (knex, Promise) ->
     { title: "Hiring", description: "Jobs & Hiring", color: "#fffcd7" }
     { title: "Hotels", description: "Hotels", color: "#fffcd7" }
     { title: "Images", description: "Link to Images (gallery, photos)", color: "#ddebf9" }
+    { title: "Innovative", description: "Innovateive ideas", color: "#ddebf9" }
     { title: "Internet", description: "Anything and everything about the net", color: "#ddebf9" }
     { title: "Investing", description: "Investing & Investors", color: "#fffcd7" }
     { title: "Law", description: "Legal & Law", color: "#fffcd7" }
