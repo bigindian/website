@@ -15,6 +15,7 @@ exports = module.exports = (Stories) ->
         delete story.created_by.mailing_list_token
 
       response.render "main/news/recent",
+        metaRobots: "noarchive"
         cache:
           enable: true
           timeout: 60 * 1 # 1 minute cache

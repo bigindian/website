@@ -11,6 +11,7 @@ exports = module.exports = (Categories) ->
     .then (results) ->
       response.render "main/news/categories",
         data: results
+        metaRobots: "noarchive"
         cache: enable: true
 
 

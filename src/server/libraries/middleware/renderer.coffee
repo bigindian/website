@@ -79,7 +79,7 @@ exports = module.exports = (settings, Cache) ->
         page = page.replace ".jade", ""
         subTitle = __ "#{page}:title"
         options.title = "#{subTitle} - #{settings.sitename}"
-      else options.title = settings.sitename
+      else if options.title == null then options.title = settings.sitename
 
       #! Setup options for the jade compiler and HTML compiler
       jadeOptions =

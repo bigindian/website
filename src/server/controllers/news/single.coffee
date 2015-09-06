@@ -36,6 +36,7 @@ exports = module.exports = (Stories, Comments) ->
 
       response.render "main/news/single",
         title: story.title
+        metaRobots: "nofollow"
         data:
           noFollow: true
           story: story

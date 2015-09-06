@@ -4,12 +4,6 @@ html(lang= lang, dir= dir, data-ng-strict-di)
   head
     block meta
     include ./include/head.jade
-    if data.noIndex
-      meta(name="robots" content="noindex")
-    else if data.noFollow
-      meta(name="robots" content="index, nofollow")
-    else
-      meta(name="robots" content="index, nofollow")
 
   body.initializing(itemscope
     itemtype="http://schema.org/WebSite"

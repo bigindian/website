@@ -31,7 +31,8 @@ exports = module.exports = (Stories) ->
         delete story.created_by.mailing_list_token
 
       response.render "main/news/categories",
-        cache:
+        metaRobots: "noarchive"
+        cache: #! DO for pages!
           suffix: categoryID
           enable: true
           timeout: 60 * 10 # 10 minute cache

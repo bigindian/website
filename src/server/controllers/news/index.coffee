@@ -34,6 +34,7 @@ exports = module.exports = (Cache, Stories) ->
           # enable: true
           # timeout: 60 * 1 # 1 minute cache
         data: JSON.parse stories
+        metaRobots: "noarchive"
         title: null
 
     .catch (e) -> next e
