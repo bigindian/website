@@ -71,6 +71,8 @@ exports.seed = (knex, Promise) ->
     { title: "Video", description: "Link to a video", color: "#F9DDDE" }
     { title: "Website", description: "Websites", color: "#fffcd7" }
     { title: "World", description: "Travel, Cutures, News ..", color: "#fffcd7" }
+
+    { title: "Tips", description: "Tips and Suggestions", color: "#fffcd7" }
   ]
 
 
