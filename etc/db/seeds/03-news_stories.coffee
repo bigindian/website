@@ -1,52 +1,55 @@
 exports.seed = (knex, Promise) ->
   post1 =
-    id: 1
-    title: "This is the first link"
+    comments_count: 1
+    created_by: 1
     description: "This is sometings cool"
     description_markdown: "<p>This is sometings cool</p>"
-    slug: "this-is-something-1"
-    url: "https://github.com/jcs/lobsters"
-    upvotes: 0
+    domain: "github.com"
     downvotes: 0
     hotness: -11088.4732896
-    comments_count: 1
+    id: 1
     is_expired: false
     is_moderated: true
-    created_by: 1
     merged_story: 1
+    slug: "this-is-something-1"
+    title: "This is the first link"
+    upvotes: 0
+    url: "https://github.com/jcs/lobsters"
 
   post2 =
-    id: 2
-    title: "What’s Your Pain Threshold?"
+    comments_count: 1
+    created_by: 1
     description: "This is sometings cool"
     description_markdown: "<p>This is sometings cool</p>"
-    slug: "this-is-something-2"
-    url: "https://github.com/jcs/lobsters"
-    upvotes: 0
+    domain: "github.com"
     downvotes: 0
     hotness: -11088.4732896
-    comments_count: 1
+    id: 2
     is_expired: false
     is_moderated: true
-    created_by: 1
     merged_story: 1
+    slug: "this-is-something-2"
+    title: "What’s Your Pain Threshold?"
+    upvotes: 0
+    url: "https://github.com/jcs/lobsters"
 
 
   post3 =
-    id: 3
-    title: "This is the third link"
+    comments_count: 1
+    created_by: 1
     description: "This is sometings cool"
     description_markdown: "<p>This is sometings cool</p>"
-    slug: "this-is-something-3"
-    url: "https://github.com/jcs/lobsters"
-    upvotes: 0
+    domain: "github.com"
     downvotes: 0
     hotness: -11088.4732896
-    comments_count: 1
+    id: 3
     is_expired: false
     is_moderated: true
-    created_by: 1
     merged_story: 1
+    slug: "this-is-something-3"
+    title: "This is the third link"
+    upvotes: 0
+    url: "https://github.com/jcs/lobsters"
 
 
   knex("news_stories").insert post1
