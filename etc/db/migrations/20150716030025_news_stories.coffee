@@ -1,11 +1,12 @@
 exports.up = (knex, Promise) ->
   knex.schema.createTable "news_stories", (table) ->
     table.increments().primary()
-    table.string("title", 150).notNull().defaultTo ""
-    table.text("description")
-    table.text("description_markdown")
+    table.string("title", 150).notNull()
+    table.string("domain", 150).notNull()
+    table.text("description").defaultTo ""
+    table.text("description_markdown").defaultTo ""
     table.string("slug").index().notNull().defaultTo ""
-    table.string("url", 250).index().defaultTo ""
+    table.string("url", 250).defaultTo ""
     table.integer("upvotes").notNull().defaultTo 0
     table.integer("downvotes").notNull().defaultTo 0
     table.integer("comments_count").notNull().defaultTo 0
