@@ -29,12 +29,9 @@ a non-blocking manner (This means that you need to make sure that you have
 some inline styles on the page otherwise the page will look ugly when the
 CSS has not yet fully loaded. See more about render-blocking CSS).
 ###
-_addScript = (urlsOrCode, isCSS, isCode) ->
+_addScript = (urlsOrCode, isCSS) ->
   if isCSS
-    #! IMPORTANT: CSS code should be placed in the "<style></style>"
-    #! tag and not inside "<link/>".
-    if isCode then $fileref = document.createElement "style"
-    else $fileref = document.createElement "link"
+    $fileref = document.createElement "link"
     $fileref.rel = "stylesheet"
     $fileref.type = "text/css"
 
@@ -52,13 +49,9 @@ _addScript = (urlsOrCode, isCSS, isCode) ->
     $fileref.type = "text/javascript"
 
   #! Populate the element with our cached code
-  if isCode
-    #! This line makes sure that our render-blocking hack is reverted..
-    $fileref.media = "all"
-    $fileref.innerHTML = urlsOrCode
-  else #! Load the script from the URL
-    if isCSS then $fileref.href = urlsOrCode
-    else $fileref.src = urlsOrCode
+  #! Load the script from the URL
+  if isCSS then $fileref.href = urlsOrCode
+  else $fileref.src = urlsOrCode
   $fileref.async = false
 
   #! Setup our listeners for when the script/css has been inserted
@@ -79,45 +72,16 @@ This function processes the given script and attempts to load it either from
 the cache or from the remote URL..
 ###
 processScript = (script) ->
-  isCode = false
   isCSS = (script.id.substr -3) == "css"
   urlsOrCode = script.remote
 
-  #! If HTML5 localStorage is supported, attempt to load the scripts from
-  #! the application cache. If we are in development mode then don't load from
-  #! the cache at all!
-  if Storage? and script.local? #and not isDevelopment
-    cacheID = "script:#{script.id}"
-    md5ID = "md5:#{script.id}"
-
-    #! Check if local and remote version of the libraries differ
-    localVersion = String localStorage.getItem md5ID
-    remoteVersion = String window.publicData.md5[script.id]
-
-    #! Check for the script in our cache
-    scriptCache = localStorage.getItem cacheID
-
-    #! If versions differ, then don't load from cache and instead load
-    #! the script normally. The frontend App will eventually clear out the cache
-    #! and update it with the new version.
-    if localVersion != remoteVersion or localVersion is "null"
-      console.log "avoiding #{script.id} from cache"
-      scriptCache = null
-
-    #! If the cache exists, then read from it and set a flag to let our
-    #! helper functions know to that we are sending it raw code..
-    if scriptCache
-      console.log "fetching from cache:", script.id
-      urlsOrCode = [scriptCache]
-      isCode = true
-
   #! If we are in development mode, then we simply load the local scripts
   #! to avoid delays from the remote servers.
-  if isDevelopment and not isCode and script.local?
+  if isDevelopment and script.local?
     urlsOrCode = [script.local]
 
   #! Finally!! load the processed script into the DOM.
-  _addScript urlOrCode, isCSS, isCode for urlOrCode in urlsOrCode
+  _addScript urlOrCode, isCSS for urlOrCode in urlsOrCode
 
 
 #! Now that all our helper functions have been defined, we start processing each
