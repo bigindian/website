@@ -5,7 +5,7 @@ module.exports = Controller = ($scope, $log) ->
   $scope.$emit "page:start"
 
 
-Controller.tag = "page:info/contact"
+Controller.tag = "page:info/contribute"
 Controller.$inject = [
   "$scope"
   "$log"

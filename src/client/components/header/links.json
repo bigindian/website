@@ -6,7 +6,7 @@
     "slug": "contribute",
     "class": "contribute",
     "name": "contribute",
-    "url": "https://github.com/enamakel/thebigindian.news/blob/master/CONTRIBUTION.md",
+    "url": "/info/contribute",
     "color": "#F60"
   }, {
     "class": "divider",
@@ -84,7 +84,6 @@
     "slug": "terms-privacy",
     "class": "terms-privacy",
     "name": "terms-privacy",
-    "url": "/info/terms-privacy",
-    "_self": true
+    "url": "/info/terms-privacy"
   }
 ];

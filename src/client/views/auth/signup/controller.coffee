@@ -24,8 +24,10 @@ Controller = ($log, $scope, $window, Notifications, Users) ->
 
   # Function to perform user registration
   $scope.signup = {}
-  $scope.doSignup = (data) ->
+  $scope.doSignup = (data={}) ->
     $scope.formClasses = loading: $scope.formLoading = true
+    data["gcaptcha"] = $scope.form.gcaptcha
+
     Users.signup data
     .then (response) -> $scope.page = 2
     .catch (response) ->
