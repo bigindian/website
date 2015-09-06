@@ -5,9 +5,10 @@
 Promise   = require "bluebird"
 validator = require "validator"
 markdown  = require("markdown").markdown
+url       = require "url"
 
 
-Model = (BaseModel, Comments, NewsCategories, NewsVotes, Users) ->
+Model = (Elasticsearch, BaseModel, Comments, NewsCategories, NewsVotes, Users) ->
   # **MAX_EDIT_MINS** After this many minutes, a story cannot be edited.
   MAX_EDIT_MINS = 90
 
@@ -191,10 +192,12 @@ Model = (BaseModel, Comments, NewsCategories, NewsVotes, Users) ->
     create: (parameters) ->
       categories = parameters.categories or []
 
+      parameters.domain = url.parse(parameters.url).hostname
+
       delete parameters.categories
 
       #! First set the slug from the right variable.
-      parameters.slug = @createSlug parameters.title
+      parameters.slug = @createSlug()
 
       #! Then parse the description!
       if description = parameters.description
@@ -207,8 +210,18 @@ Model = (BaseModel, Comments, NewsCategories, NewsVotes, Users) ->
         #! for the insert query.
         insertQuery = (category: cat, story: model.id for cat in categories)
 
+        promise = Elasticsearch.create "stories", model.id,
+          comments_count: model.get "comments_count"
+          content: model.get "description_markdown"
+          created_at: model.get "created_at"
+          created_by: model.get "created_by"
+          doman: model.get "domain"
+          hotness: model.get "hotness"
+          title: model.get "title"
+
         #! Simultaneously update the hotness and the add the categories!
         Promise.all([
+          promise
           model.updateHotness().save()
           @knex("news_story_category").insert insertQuery
         ]).then -> model
@@ -256,6 +269,7 @@ Model = (BaseModel, Comments, NewsCategories, NewsVotes, Users) ->
 
 Model["@singleton"] = true
 Model["@require"] = [
+  "libraries/elasticsearch"
   "models/base/model"
   "models/comments"
   "models/news/categories"

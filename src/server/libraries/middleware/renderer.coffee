@@ -33,9 +33,8 @@ exports = module.exports = (settings, Cache) ->
     cryptedData:
       sitename: settings.sitename
       google:
-        analyticsCode: settings.google.analyticsCode
-        clientID: settings.google.clientID
-        reCaptchaKey: settings.google.reCaptcha.siteKey
+        analyticsCode: settings.analyticsCode
+        reCaptchaKey: settings.reCaptcha.siteKey
 
 
   #! Base64 encode the crypted data key.. (it gets decoded in the client side,

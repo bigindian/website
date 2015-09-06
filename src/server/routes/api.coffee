@@ -93,7 +93,6 @@ exports = module.exports = (IoC) ->
     controller = getController relativePath
 
     #! Now if this controller does not have any routes then we skip it!
-    console.log relativePath, controller
     if not controller.routes? then return
 
     #! If it did have routes set, then we set it for each of its routes

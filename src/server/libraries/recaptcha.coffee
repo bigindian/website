@@ -6,25 +6,27 @@ querystring    = require "querystring"
 
 exports = module.exports = (IoC, settings) ->
   logger = IoC.create "igloo/logger"
-  name = "[reCaptcha]"
+  tag = "[reCaptcha]"
 
   API_END_POINT = "/recaptcha/api/siteverify"
   API_HOST      = "www.google.com"
-  siteKey       = settings.google.reCaptcha.siteKey
-  siteSecret    = settings.google.reCaptcha.siteSecret
+  siteKey       = settings.reCaptcha.siteKey
+  siteSecret    = settings.reCaptcha.serverKey
 
-  # A helper function to send a call to the reCaptcha API. This function returns
-  # a Promise with the result of the captcha validation.
+  ###
+    A helper function to send a call to the reCaptcha API. This function returns
+    a Promise with the result of the captcha validation.
+  ###
   callAPI = (APIdata) -> new Promise (resolve, reject) ->
     dataToSend =
       remoteip: APIdata.remoteip
       response: APIdata.response
       secret: siteSecret
 
-    # Generate the query string.
+    #! Generate the query string.
     data_qs = querystring.stringify dataToSend
 
-    # Prepare the request parameters which we will send to the Google reCaptcha.
+    #! Prepare the request parameters which we will send to the Google reCaptcha.
     req_options =
       host: API_HOST
       method: "POST"
@@ -34,7 +36,7 @@ exports = module.exports = (IoC, settings) ->
         "Content-Length": data_qs.length
         "Content-Type": "application/x-www-form-urlencoded"
 
-    # Finally, send the request to the API
+    #! Finally, send the request to the API
     request = https.request req_options, (response) ->
       body = ""
       response.on "data", (chunk) -> body += chunk
@@ -52,15 +54,26 @@ exports = module.exports = (IoC, settings) ->
     # request if the captcha successfully validated. It throws an error if
     # the captcha failed.
     verify: (request) ->
-      logger.debug name, "checking captcha"
-      # Disable re-captcha for now...
-      if not settings.reCaptcha or true then return Promise.resolve request
-      # if not settings.reCaptcha then return Promise.resolve request
+      #! If the captcha is not set in the settings then ignore it.
+      if not settings.reCaptcha.enabled then return Promise.resolve request
 
-      # Get the ip and the user's captcha response.
+      #! Check if we are allowed to bypass the captcha.
+      bypass_counter = request.session.recaptcha_bypass_counter or 0
+      if bypass_counter > 0
+        logger.debug tag, "bypassing reCaptcha"
+
+        #! Reduce the bypass counter and resolve with the request
+        request.session.recaptcha_bypass_counter--
+        return Promise.resolve request
+
+      #! If not then start checking the captcha!
+      else logger.debug tag, "checking reCaptcha"
+
+      #! Get the ip and the user's captcha response.
       remoteIP = request.connection.remoteAddress
       captchaData = request.query.captcha or
         request.body["g-recaptcha-response"] or
+        request.body["gcaptcha"] or
         request.headers["x-recaptcha"]
 
       #! Prepare the data to be sent to the API
@@ -69,8 +82,12 @@ exports = module.exports = (IoC, settings) ->
       #! Send the request to the Google reCaptcha API
       callAPI APIdata
       .catch (error) ->
-        logger.debug name, "captcha failed"
+        logger.debug tag, "captcha failed"
         throw error
+      .then ->
+        #! Once succesful, then reset the bypass counter!
+        request.session.recaptcha_bypass_counter = 4
+        request
 
 
 exports["@singleton"] = true

@@ -43,8 +43,7 @@ exports = module.exports = (IoC, Email, reCaptcha, Users) ->
 
   routes: ["/auth/email/signup"]
   controller: (request, response, next) ->
-    # reCaptcha.verify request
-    Promise.resolve request
+    reCaptcha.verify request
     .then validateRequest
     .then createNewUserObject
     .then (newUser) -> Users.create newUser

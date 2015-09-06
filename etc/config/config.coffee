@@ -2,12 +2,14 @@ path      = require "path"
 
 # Setup the different directory variables
 parentDir    = path.join __dirname, "../.."
+
 appDir       = path.join parentDir, "src/server"
 assetsDir    = path.join parentDir, "src/public"
-publicDir    = path.join parentDir, "src/public"
 backupDir    = path.join parentDir, "var/backups"
-viewsDir     = path.join appDir,    "views"
 modelsDir    = path.join parentDir, "etc/db"
+publicDir    = path.join parentDir, "src/public"
+
+viewsDir     = path.join appDir,    "views"
 templatesDir = path.join viewsDir,  "emails"
 
 
@@ -19,27 +21,24 @@ knexConfig   = require "./knexfile"
 
 exports = module.exports = ->
   defaults:
-    sitename: "SITENAME-GOES-HERE"
+    sitename: "The Big Indian News"
+
     emailAuth:
       enabled: true
       requireActivation: true
-
-    google:
-      reCaptcha:
-        siteKey: "XXXXXXXXXX"
-        siteSecret: "XXXXXXXXXX"
-      analyticsCode: "UA-XXXXXXXXXX-X"
 
     phonegap: csrfBypassKey: "XXXXXXXXX"
 
     appDir: appDir
     assetsDir: assetsDir
+    backupDir: backupDir
     cache: false
+    modelsDir: modelsDir
     pkg: pkg
     publicDir: publicDir
-    modelsDir: modelsDir
-    backupDir: backupDir
+
     showStack: true
+    analyticsCode: "UA-XXXXXXXXXX-X"
 
     reCaptcha:
       enabled: false
@@ -69,7 +68,7 @@ exports = module.exports = ->
 
     session:
       cookie: maxAge: maxAge
-      # key: "s"
+      key: "s"
       resave: true
       saveUninitialized: false
       secret: "change-me"
@@ -90,7 +89,7 @@ exports = module.exports = ->
         enabled: false
         options: {}
 
-    cookieParser: "kme-change-me"
+    cookieParser: "bigi-change-me"
 
     csrf:
       enabled: true
@@ -102,10 +101,12 @@ exports = module.exports = ->
       host: "localhost"
       maxAge: maxAge
       port: 6379
+
     output:
       colorize: true
       handleExceptions: true
       prettyPrint: false
+
     logger:
       console: true
       file: false
@@ -113,7 +114,9 @@ exports = module.exports = ->
       mongo: false
       requests: true
       slack: false
+
     knex: client: "postgres"
+
     jade: amd:
       path: "/js/tmpl/"
       options: {}
@@ -121,12 +124,12 @@ exports = module.exports = ->
   # Testing-specific options
   test:
     knex: knexConfig["staging"]
-    staticUrl: "http://localhost:5000"
-    url: "http://localhost:5000"
+    staticUrl: "http://localhost:4000"
+    url: "http://localhost:4000"
     server:
       env: "test"
-      port: 5000
-    redis: prefix: "kme-testing:"
+      port: 4000
+    redis: prefix: "bigi-testing:"
     logger:
       console: true
       requests: false
@@ -141,16 +144,15 @@ exports = module.exports = ->
     server:
       env: "development"
       port: 3000
-    redis: prefix: "kme-development:"
+    redis: prefix: "bigi-development:"
     output: level: "debug"
-    paypal: host: "api.sandbox.paypal.com"
 
   # Production specific options
   production:
     cache: true
     knex: knexConfig["production"]
     staticUrl: "http://localhost:5000"
-    url: "http://localhost:3080"
+    url: "http://localhost:5000"
     password:
       minStrength: 1
       limitAttempts: true
@@ -158,9 +160,9 @@ exports = module.exports = ->
     updateNotifier: enabled: false
     server:
       env: "production"
-      port: 3080
+      port: 5000
       cluster: true
-    redis: prefix: "kme:"
+    redis: prefix: "bigi:"
     output:
       handleExceptions: false
       colorize: false
