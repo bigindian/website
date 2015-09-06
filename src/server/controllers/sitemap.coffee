@@ -1,13 +1,13 @@
-generate_xml_sitemap (urls) = ->
-  # this is the source of the URLs on your site, in this case we use a simple
-  # array, actually it could come from the database
-  urls = [
-    "about.html"
-    "javascript.html"
-    "css.html"
-    "html5.html"
-  ]
+# this is the source of the URLs on your site, in this case we use a simple
+# array, actually it could come from the database
+urls = [
+  "about.html"
+  "javascript.html"
+  "css.html"
+  "html5.html"
+]
 
+generateSitemap = (urls) ->
   # the root of your website - the protocol and the domain name with a trailing
   # slash
   root_path = "http://www.example.com/"
@@ -35,10 +35,8 @@ module.exports = Controller = (Stories) ->
   routes: ["/sitemap.xml"]
 
   controller: (request, response, next) ->
-
-    sitemap = generate_xml_sitemap()
     response.header "Content-Type", "text/xml"
-    response.send sitemap
+    response.send generateSitemap urls
 
 
 Controller["@require"] = ["models/news/stories"]
