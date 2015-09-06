@@ -1,7 +1,7 @@
 section(ng-if="story.id")
   news-item(ng-model="story")
   .description(ng-bind-html="description", ng-if="description")
-  .row.collapse
+  .comment-box.row.collapse
     form.row.collapse(name="form", ng-class="formClasses")
       .columns
         textarea.field.main-commentbox.show-if-loggedin(ng-model="story.comment"
