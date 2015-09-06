@@ -1,8 +1,8 @@
 .row
   .columns.quotes(ng-class="{fadeout: hideQuote}") {{ quote }}
   .columns.info
-    a Moderation Log
+    //- a Moderation Log
+    //- span &nbsp;&middot;&nbsp;
+    a(fn-route="/info/terms-privacy") Privacy
     span &nbsp;&middot;&nbsp;
-    a Privacy
-    span &nbsp;&middot;&nbsp;
-    a About
+    a(fn-route="/info/about") About
