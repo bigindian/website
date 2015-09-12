@@ -13,6 +13,9 @@ nav#menu-header(ng-class="{'show-menuheader': showMenuHeader}"
       span.icon(ng-if="link.children") &#xf105;
       a(fn-route="{{ link.url }}"
         ng-if="link.slug") {{ link.name | translate:'header'}}
+    li.logo
+      img(src!="<%= staticUrl %>/images/favicon/favicon-32x32.png")
+
 
 
 span.nav-cover(ng-click="closeHeader()", ng-mouseover="onCoverHover()")
