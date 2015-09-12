@@ -1,4 +1,4 @@
-Controller = ($log, $scope, $window, Notifications, Users) ->
+Controller = ($location, $log, $scope, $window, Notifications, Users) ->
   logger = $log.init Controller.tag
   logger.log "initializing"
   $scope.$emit "page:initialize"
@@ -11,6 +11,8 @@ Controller = ($log, $scope, $window, Notifications, Users) ->
   $scope.goto = (i) ->
     $scope.page = i
     promted = false
+
+  $scope.goLogin = -> $location.path "/login"
 
   $scope.$watch "signup.email", (value) ->
     # TODO: Poll the server to see if email is valid
@@ -45,6 +47,7 @@ Controller = ($log, $scope, $window, Notifications, Users) ->
 
 Controller.tag = "page:auth/signup"
 Controller.$inject = [
+  "$location"
   "$log"
   "$scope"
   "$window"

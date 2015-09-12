@@ -6,7 +6,11 @@ Stories) ->
   $scope.$emit "page:start"
 
   $scope.selectedCats = 0
-  $scope.story = {}
+
+  $scope.story =
+    title: $location.search().title or ""
+    url: $location.search().url or ""
+
   $scope.categories = Categories.getAll() or []
   cat.select = false for cat in $scope.categories
 

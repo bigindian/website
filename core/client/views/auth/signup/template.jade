@@ -36,9 +36,7 @@ form(name="form", ng-class="formClasses", ng-init="page = 1")
       h4(ng-if="form.$valid") By creating an account, you agree that you have read our <a href="/info/terms-privacy">terms and services</a>
 
     .other-options.columns(ng-if="!hideLogin")
-      h4
-        | Already have an account? then&nbsp;
-        a(fn-route="/login") login!
+      h4 Already have an account? then <a ng-click="goLogin()">login!</a>
 
 #page-3.page.row(ng-if="page == 2")
   h1 You have been registered
@@ -47,10 +45,8 @@ form(name="form", ng-class="formClasses", ng-init="page = 1")
     p.
       Yeah... We keep getting <a href="http://mailinator.com/" target="_blank">Mailinator</a> trolls so
       we're not going to trouble you with an activation email.
-  p.
-    So go ahead, submit your first link <a fn-route="/submit">here</a>.
-  p.
-    Welcome to the community :)
+  p So go ahead, submit your first link <a fn-route="/submit">here</a>.
+  p Welcome to the community :)
   //- h2
     | Your account now needs to be <b>activated</b>. To activate it, click on
     | the link in the email we just sent you.

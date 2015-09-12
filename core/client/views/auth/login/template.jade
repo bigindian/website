@@ -21,7 +21,4 @@ form(name="form", ng-class="formClasses")
     .other-options.columns
       h4
         | If you don't have an account, then&nbsp;
-        a(fn-route="/signup") signup!
-      //- h4
-      //-   | Forgot your password? Reset it&nbsp;
-      //-   a(fn-route="/login/forgot") here.
+        a(ng-click="goSignup()") signup!

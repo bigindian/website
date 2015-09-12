@@ -18,6 +18,9 @@ Controller = ($http, $location, $log, $scope, $window, Notifications, Users) ->
     $scope.usernameValid = value?
 
 
+  $scope.goSignup = -> $location.path "/signup"
+
+
   $scope.doLogin = (data) ->
     $scope.formClasses = loading: $scope.formLoading = true
 
@@ -29,7 +32,7 @@ Controller = ($http, $location, $log, $scope, $window, Notifications, Users) ->
       logger.info "redirecting to", redirectURL
 
       # Redirect!
-      $location.url redirectURL
+      $location.url decodeURIComponent redirectURL
 
       # Give a notification for a succesful login.
       Notifications.success "login_success"

@@ -12,7 +12,7 @@ EventHandler = ($ga, $location, $log, $root, Notifications, Users) ->
       logger.info "user needs to be logged in for this page"
 
       # Redirect the user to the login page
-      $location.search redirectTo: $location.url()
+      $location.search redirectTo: encodeURIComponent $location.url()
       $location.path "/login"
 
       # Pop up a notification.
