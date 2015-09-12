@@ -6,5 +6,4 @@ exports = module.exports = ->
       metaRobots: "nofollow"
 
 
-
 exports["@singleton"] = true

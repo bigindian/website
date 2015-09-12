@@ -8,7 +8,7 @@ Steven Enamakel <me@steven.pw>
 ###
 Promise     = require "bluebird"
 async       = require "async"
-colorThief  = require "color-thief"
+# colorThief  = require "color-thief"
 formidable  = require "formidable"
 fs          = require "fs"
 gm          = require "gm"

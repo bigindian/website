@@ -4,10 +4,10 @@ path      = require "path"
 parentDir    = path.join __dirname, "../.."
 
 appDir       = path.join parentDir, "src/server"
-assetsDir    = path.join parentDir, "src/public"
+assetsDir    = path.join parentDir, "content"
 backupDir    = path.join parentDir, "var/backups"
 modelsDir    = path.join parentDir, "etc/db"
-publicDir    = path.join parentDir, "src/public"
+publicDir    = path.join parentDir, "content"
 
 viewsDir     = path.join appDir,    "views"
 templatesDir = path.join viewsDir,  "emails"

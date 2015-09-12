@@ -1,37 +1,37 @@
 module.exports =
   coffee:
-    dest: "src/public/build"
+    dest: "content/build"
     src: "src/client/main.coffee"
     targetFilename: "app.js"
     targetFilenameMin: "app.js"
 
 
   sass:
-    dest: "src/public/build"
+    dest: "content/build"
     src: "src/client/style.sass"
     targetFilename: "style.css"
     targetFilenameMin: "style.css"
 
 
   md5:
-    src: "src/public/build/*.{js,css}"
-    dest: "src/public/build/md5"
+    dest: "content/build/md5"
+    src: "content/build/*.{js,css}"
 
 
   checksum:
-    src: "src/public/build/*.{js,css}"
+    dest: "content/build"
     filename: "checksums"
     hash: "md5"
-    dest: "src/public/build"
+    src: "content/build/*.{js,css}"
 
 
   minify:
-    jsSrc: "src/public/build/*.js"
-    jsDest: "src/public/build/"
+    jsDest: "content/build/"
+    jsSrc: "content/build/*.js"
 
 
   jade:
-    dest: "src/public/build"
+    dest: "content/build"
     src: "src/client/**/*.jade"
     targetFilename: "templates.js"
     targetFilenameMin: "templates.js"
@@ -45,13 +45,13 @@ module.exports =
 
 
   docs:
-    hostname: "http://localhost:8000"
     backend:
       dest: "docs/server"
       src: "src/server/**/*.coffee"
     frontend:
       dest: "docs/client"
       src: "src/client/**/*.coffee"
+    hostname: "http://localhost:8000"
 
 
   server:
@@ -65,5 +65,5 @@ module.exports =
 
 
   bower:
-    dest: "src/public/build/"
+    dest: "content/build/"
     targetFilename: "libraries.js"
