@@ -10,7 +10,6 @@ IoC.loader "igloo", require "igloo"
 
 logger = IoC.create "igloo/logger"
 
-
 cluster.run()
 
 

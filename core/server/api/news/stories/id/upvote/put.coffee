@@ -1,4 +1,5 @@
 exports = module.exports = (Stories) ->
+  routes: ["/news/stories/([0-9]+)/upvote"]
   controller = (request, response, next) ->
     Stories.get request.params[0]
     .then (model) -> model.upvote request.user.id
