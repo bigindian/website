@@ -73,6 +73,9 @@ exports.seed = (knex, Promise) ->
     { title: "World", description: "Travel, Cutures, News ..", color: "#fffcd7" }
 
     { title: "Tips", description: "Tips and Suggestions", color: "#fffcd7" }
+    { title: "Competition", description: "Competitions", color: "#fffcd7" }
+    { title: "Survey", description: "Surveys", color: "#fffcd7" }
+    { title: "Reviews", description: "Reviews about anything", color: "#fffcd7" }
   ]
 
 
