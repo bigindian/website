@@ -1,14 +1,14 @@
 module.exports =
   coffee:
     dest: "content/build"
-    src: "src/client/main.coffee"
+    src: "core/client/main.coffee"
     targetFilename: "app.js"
     targetFilenameMin: "app.js"
 
 
   sass:
     dest: "content/build"
-    src: "src/client/style.sass"
+    src: "core/client/style.sass"
     targetFilename: "style.css"
     targetFilenameMin: "style.css"
 
@@ -32,36 +32,36 @@ module.exports =
 
   jade:
     dest: "content/build"
-    src: "src/client/**/*.jade"
+    src: "core/client/**/*.jade"
     targetFilename: "templates.js"
     targetFilenameMin: "templates.js"
 
 
   watch:
-    coffeePattern: "src/client/**/*.{coffee,js,json}"
-    jadePattern: "src/client/**/*.jade"
-    sassPattern: "src/client/**/*.{sass,scss}"
-    serverPattern: "src/server/views/*.coffee"
+    coffeePattern: "core/client/**/*.{coffee,js,json}"
+    jadePattern: "core/client/**/*.jade"
+    sassPattern: "core/client/**/*.{sass,scss}"
+    serverPattern: "core/server/views/*.coffee"
 
 
   docs:
     backend:
       dest: "docs/server"
-      src: "src/server/**/*.coffee"
+      src: "core/server/**/*.coffee"
     frontend:
       dest: "docs/client"
-      src: "src/client/**/*.coffee"
+      src: "core/client/**/*.coffee"
     hostname: "http://localhost:8000"
 
 
   server:
     footer:
-      dest: "src/server/views/"
-      src: "src/server/views/**/*.coffee"
+      dest: "core/server/views/"
+      src: "core/server/views/**/*.coffee"
     db:
-      dest: "src/server/db"
+      dest: "core/server/db"
       filename: "populate.js"
-      src: "src/server/db/*.coffee"
+      src: "core/server/db/*.coffee"
 
 
   bower:

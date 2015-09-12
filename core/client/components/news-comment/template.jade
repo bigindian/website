@@ -1,5 +1,4 @@
 .story_comment(id="c_{{ comment.slug }}")
-  .voters
   .votes(ng-if="!settings.storyHideScore")
     .score {{ comment.score || 0 | prettynumber }}
     .voter(ng-if="!hasVoted")
