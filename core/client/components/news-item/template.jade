@@ -12,7 +12,7 @@
         [Story removed by {{ story.is_moderated ? "moderator" : "original submitter" }}]
 
 
-    span.cats(ng-if="!story.is_gone")
+    span.cats(ng-if="!story.is_gone && !settings.storyHideCategories")
       a(ng-repeat="cat in story.parsedCategories track by $index"
         fn-route="/category/{{ cat.slug }}")
         news-category(ng-model="cat")
@@ -22,7 +22,7 @@
         target="{{ openNewTab ? '_blank' : ''}}") {{ story.url | domain }}
 
     .meta
-      span.
+      span(ng-if="!settings.storyHideAuthor").
         by {{ story.created_by.username }}
       span.timestamp(ng-if="!settings.storyHideDate").
         {{ story.created_at | prettydate }}

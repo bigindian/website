@@ -78,6 +78,12 @@ form(name="form")
 
   .row.collapse
     .small-6.medium-9.columns
+      div Hide the author.
+    .small-6.medium-3.columns.input
+      form-checkbox(ng-model="settings.storyHideAuthor")
+
+  .row.collapse
+    .small-6.medium-9.columns
       div Hide the date posted.
     .small-6.medium-3.columns.input
       form-checkbox(ng-model="settings.storyHideDate")
