@@ -20,11 +20,12 @@ exports.seed = (knex, Promise) ->
     { title: "Bitcoin", description: "Bitcoin & Blockchain", color: "#fffcd7" }
     { title: "Book", description: "Books", color: "#fffcd7" }
     { title: "Business", description: "Just Business, you know", color: "#fffcd7" }
-    { title: "CEOs", description: "All about CEos", color: "#fffcd7" }
+    { title: "CEO", description: "All about CEos", color: "#fffcd7" }
     { title: "Charity", description: "Charity & Donations", color: "#fffcd7" }
     { title: "Cloud", description: "Cloud technologies", color: "#fffcd7" }
     { title: "College", description: "HSC, Colleges & Unversities", color: "#fffcd7" }
     { title: "Community", description: "Community related", color: "#fffcd7" }
+    { title: "Competition", description: "Competitions", color: "#fffcd7" }
     { title: "Crowdfunding", description: "Crowdfunding & Crowdsourcing", color: "#fffcd7" }
     { title: "Culture", description: "Startup culture", color: "#fffcd7" }
     { title: "Design", description: "Design, UI, UX", color: "#fffcd7" }
@@ -33,7 +34,9 @@ exports.seed = (knex, Promise) ->
     { title: "Enterpreneur", description: "Enterpreneur", color: "#fffcd7" }
     { title: "Entertainment", description: "Entertainment", color: "#fffcd7" }
     { title: "Finance", description: "Money & Finance", color: "#fffcd7" }
+    { title: "Food", description: "All about food", color: "#fffcd7" }
     { title: "Funding", description: "Funding", color: "#fffcd7" }
+    { title: "Funny", description: "Jokes and other funny stuff", color: "#fffcd7" }
     { title: "Giants", description: "Apple, Facebook, Google, you know..", color: "#fffcd7" }
     { title: "Government", description: "Government", color: "#fffcd7" }
     { title: "Green", description: "Green & Eco-friendly", color: "#fffcd7" }
@@ -45,6 +48,7 @@ exports.seed = (knex, Promise) ->
     { title: "Innovative", description: "Innovateive ideas", color: "#fffcd7" }
     { title: "International", description: "Things aroung the world", color: "#fffcd7" }
     { title: "Internet", description: "Anything and everything about the net", color: "#fffcd7" }
+    { title: "Interviews", description: "interviews and whatnot", color: "#fffcd7" }
     { title: "Investing", description: "Investing & Investors", color: "#fffcd7" }
     { title: "Law", description: "Legal & Law", color: "#fffcd7" }
     { title: "Marketing", description: "Marketing", color: "#fffcd7" }
@@ -55,6 +59,7 @@ exports.seed = (knex, Promise) ->
     { title: "Privacy", description: "Privacy & Anonymity", color: "#fffcd7" }
     { title: "Programming", description: "General software development", color: "#fffcd7" }
     { title: "Resource", description: "Resources useful for you", color: "#fffcd7" }
+    { title: "Reviews", description: "Reviews about anything", color: "#fffcd7" }
     { title: "Science", description: "Intereting science", color: "#fffcd7" }
     { title: "Security", description: "Security & Safety", color: "#fffcd7" }
     { title: "Shopping", description: "Shopping", color: "#fffcd7" }
@@ -63,19 +68,22 @@ exports.seed = (knex, Promise) ->
     { title: "Software", description: "Software", color: "#fffcd7" }
     { title: "Space", description: "Universe, Space & rockets", color: "#fffcd7" }
     { title: "Stories", description: "Stories about startups", color: "#ddebf9" }
+    { title: "Study", description: "Study about something", color: "#fffcd7" }
     { title: "Success Stories", description: "Stories of success", color: "#fffcd7" }
+    { title: "Survey", description: "Surveys", color: "#fffcd7" }
     { title: "Taxi", description: "Taxi", color: "#fffcd7" }
     { title: "Tech & Gadgets", description: "Internet & technology", color: "#fffcd7" }
+    { title: "Tips", description: "Tips and Suggestions", color: "#fffcd7" }
     { title: "Tools", description: "Helpfuls tools", color: "#fffcd7" }
+    { title: "Travel", description: "Travel related stuff", color: "#fffcd7" }
     { title: "Venture", description: "Ventures", color: "#fffcd7" }
     { title: "Video", description: "Link to a video", color: "#F9DDDE" }
     { title: "Website", description: "Websites", color: "#fffcd7" }
     { title: "World", description: "Travel, Cutures, News ..", color: "#fffcd7" }
 
-    { title: "Tips", description: "Tips and Suggestions", color: "#fffcd7" }
-    { title: "Competition", description: "Competitions", color: "#fffcd7" }
-    { title: "Survey", description: "Surveys", color: "#fffcd7" }
-    { title: "Reviews", description: "Reviews about anything", color: "#fffcd7" }
+    { title: "Conference", description: "Conferences", color: "#fffcd7" }
+    { title: "Mobile", description: "Everything mobile", color: "#fffcd7" }
+
   ]
 
 
