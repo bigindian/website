@@ -1,7 +1,7 @@
 expect           = require "expect.js"
 supertest        = require "supertest"
 
-exports = module.exports = (IoC) -> (app) ->
+Controller = module.exports = (IoC) -> (app) ->
 
-exports["@require"] = ["$container"]
-exports["@singleton"] = true
+Controller["@require"] = ["$container"]
+Controller["@singleton"] = true

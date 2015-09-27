@@ -1,19 +1,14 @@
-exports = module.exports = (reCaptcha, Story, Comments) ->
-  routes: ["/news/comments/([0-9]+)/children"]
+Controller = module.exports = (Comments) ->
+  (request, response, next) ->
+    request.body.created_by = request.user.id
 
-  controller: (request, response, next) ->
-    reCaptcha.verify(request).then ->
-      request.body.created_by = request.user.id
-
-      #! Now create the comment!
-      Comments.createChild request.params[0], request.body
+    #! Now create the comment!
+    Comments.createChild request.params[0], request.body
     .then (comment) -> response.json comment
     .catch (e) -> next e
 
 
-exports["@require"] = [
-  "libraries/recaptcha"
-  "models/news/stories"
-  "models/news/comments"
-]
-exports["@singleton"] = true
+Controller["@middlewares"] = ["CheckForLogin", "CheckCaptcha"]
+Controller["@require"] = ["models/news/comments"]
+Controller["@routes"] = ["/news/comments/([0-9]+)/children"]
+Controller["@singleton"] = true

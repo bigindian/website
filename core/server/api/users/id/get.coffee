@@ -1,6 +1,5 @@
-exports = module.exports = (Users) ->
-  routes: ["/users/([0-9]+)"]
-  controller: (request, response, next) ->
+Controller = module.exports = (Users) ->
+  (request, response, next) ->
     Users.query().then (users) ->
       for user in users
         delete user.password
@@ -8,5 +7,6 @@ exports = module.exports = (Users) ->
       response.json users
 
 
-exports["@require"] = ["models/users"]
-exports["@singleton"] = true
+Controller["@require"] = ["models/users"]
+Controller["@singleton"] = true
+Controller["@routes"] = ["/users/([0-9]+)"]

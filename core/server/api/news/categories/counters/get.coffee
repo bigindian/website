@@ -1,6 +1,5 @@
-exports = module.exports = (Categories, Cache) ->
-  routes: ["/news/categories/counters"]
-  controller: (request, response, next) ->
+Controller = module.exports = (Categories, Cache) ->
+  (request, response, next) ->
     CacheKey = "route:api/news/categories/counters"
     CacheTimeout = 1 * 5 # 5min
 
@@ -29,8 +28,9 @@ exports = module.exports = (Categories, Cache) ->
     .catch next
 
 
-exports["@singleton"] = true
-exports["@require"] = [
+Controller["@singleton"] = true
+Controller["@require"] = [
   "models/news/categories"
   "libraries/cache"
 ]
+Controller["@routes"] = ["/news/categories/counters"]

@@ -1,7 +1,5 @@
-exports = module.exports = (Users) ->
-  routes: ["/users"]
-
-  controller: (request, response, next) ->
+Controller = module.exports = (Users) ->
+  (request, response, next) ->
     Users.query().then (users) ->
       users = users.toJSON()
       for user in users
@@ -17,5 +15,6 @@ exports = module.exports = (Users) ->
       response.json "user not found"
 
 
-exports["@require"] = ["models/users"]
-exports["@singleton"] = true
+Controller["@require"] = ["models/users"]
+Controller["@singleton"] = true
+Controller["@routes"] = ["/users"]

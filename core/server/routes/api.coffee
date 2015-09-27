@@ -35,7 +35,7 @@ exports = module.exports = (IoC) ->
 
   Modify this if you want to customize how routes and controllers get added.
   ###
-  _route = (url, controller, method) ->
+  _route = (url, rawMiddlewares=[], controller, method) ->
     #! If a string was passed to us, then we instansiate the controller
     #! manually.
     if typeof controller is "string" then controller = getController controller
@@ -44,13 +44,16 @@ exports = module.exports = (IoC) ->
     #! if you want to add a prefix.
     urlRegex = new RegExp "^#{url}/?$"
 
+    #! Get all the middlewares now!
+    middlewares = do -> getMiddleware(m) for m in rawMiddlewares
+
     #! Finally add the route to Express's router! `controller.controller` will
     #! refer to the controller function specified in the controller file.
     switch method
-      when "DELETE" then router.delete urlRegex, controller.controller
-      when "GET"    then router.get    urlRegex, controller.controller
-      when "POST"   then router.post   urlRegex, controller.controller
-      when "PUT"    then router.put    urlRegex, controller.controller
+      when "DELETE" then router.delete urlRegex, middlewares, controller
+      when "GET"    then router.get    urlRegex, middlewares, controller
+      when "POST"   then router.post   urlRegex, middlewares, controller
+      when "PUT"    then router.put    urlRegex, middlewares, controller
 
 
   ###
@@ -65,6 +68,9 @@ exports = module.exports = (IoC) ->
 
   ###
   getController = (name) -> IoC.create "api/#{name}"
+
+
+  getMiddleware = (name) -> IoC.create "libraries/middlewares/#{name}"
 
 
   ###
@@ -90,15 +96,17 @@ exports = module.exports = (IoC) ->
     relativePath = path.relative walkPath, file
 
     #! Invoke IoC and get an instance of our controller
+    routes = require("../api/#{relativePath}")["@routes"]
+    middlewares = require("../api/#{relativePath}")["@middlewares"]
     controller = getController relativePath
 
     #! Now if this controller does not have any routes then we skip it!
-    if not controller.routes? then return
+    if not routes? then return
 
     #! If it did have routes set, then we set it for each of its routes
-    for route in controller.routes
+    for route in routes
       method = getHTTPMethod filename
-      _route route, controller, getHTTPMethod filename
+      _route route, middlewares, controller, getHTTPMethod filename
 
       logger.debug "#{method}\tapi#{route} -> api/#{relativePath}"
 

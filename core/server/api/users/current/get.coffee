@@ -1,7 +1,5 @@
-exports = module.exports = ->
-  routes: ["/users/current"]
-
-  controller: (request, response, next) ->
+Controller = module.exports = ->
+  (request, response, next) ->
     user = request.user
     json = {}
 
@@ -16,4 +14,5 @@ exports = module.exports = ->
     response.json json
 
 
-exports["@singleton"] = true
+Controller["@singleton"] = true
+Controller["@routes"] = ["/users/current"]

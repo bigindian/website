@@ -1,7 +1,5 @@
-exports = module.exports = (Stories) ->
-  routes: ["/news/stories/([0-9]+)"]
-
-  controller: (request, response, next) ->
+Controller = module.exports = (Stories) ->
+  (request, response, next) ->
     Stories.get request.params[0]
     .then (story) -> response.json story
     .catch ->
@@ -9,5 +7,6 @@ exports = module.exports = (Stories) ->
       response.json {}
 
 
-exports["@require"] = ["models/news/stories"]
-exports["@singleton"] = true
+Controller["@require"] = ["models/news/stories"]
+Controller["@singleton"] = true
+Controller["@routes"] = ["/news/stories/([0-9]+)"]

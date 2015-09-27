@@ -1,10 +1,8 @@
 util = require "util"
 zpad = require "zpad"
 
-exports = module.exports = (Logs) ->
-  routes: ["/logs"]
-
-  controller: (request, response, next) ->
+Controller = module.exports = (Logs) ->
+  (request, response, next) ->
     # Prints out the events in a CSV style format
     Logs.query(request.query).then (events) ->
       output = ""
@@ -31,5 +29,6 @@ exports = module.exports = (Logs) ->
 
     .catch next
 
-exports["@require"] = ["models/logs"]
-exports["@singleton"] = true
+Controller["@require"] = ["models/logs"]
+Controller["@singleton"] = true
+Controller["@routes"] = ["/logs"]

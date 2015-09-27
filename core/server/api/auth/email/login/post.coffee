@@ -19,10 +19,8 @@ passport = require "passport"
 
   @author Steven Enamakel <me@steven.pw>
 ###
-exports = module.exports = (Events) ->
-  routes: ["/auth/email/login"]
-
-  controller: (request, response, next) ->
+Controller = module.exports = (Events) ->
+  (request, response, next) ->
     finish = (error, user) ->
       if error or not user
         response.status 400
@@ -44,8 +42,9 @@ exports = module.exports = (Events) ->
         response.json json
 
     # Finally call the passport function for local authentication..
-    (passport.authenticate "local", finish) request, response, next
+    passport.authenticate("local", finish) request, response, next
 
 
-exports["@require"] = ["models/logs"]
-exports["@singleton"] = true
+Controller["@require"] = ["models/logs"]
+Controller["@routes"] = ["/auth/email/login"]
+Controller["@singleton"] = true

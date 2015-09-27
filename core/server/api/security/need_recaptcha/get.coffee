@@ -1,7 +1,5 @@
-exports = module.exports = (settings) ->
-  routes: ["/security/need_recaptcha"]
-
-  controller: (request, response, next) ->
+Controller = module.exports = (settings) ->
+  (request, response, next) ->
     #! First get the counter
     counter = request.session.recaptcha_bypass_counter or 0
 
@@ -15,5 +13,6 @@ exports = module.exports = (settings) ->
     response.json counter
 
 
-exports["@require"] = ["igloo/settings"]
-exports["@singleton"] = true
+Controller["@require"] = ["igloo/settings"]
+Controller["@singleton"] = true
+Controller["@routes"] = ["/security/need_recaptcha"]

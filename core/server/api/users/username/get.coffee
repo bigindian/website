@@ -2,9 +2,8 @@ Promise = require "bluebird"
 validator = require "validator"
 
 
-exports = module.exports = (Users) ->
-  routes: ["/users/username/([0-9a-zA-Z\_]+)"]
-  controller: (request, response, next) ->
+Controller = module.exports = (Users) ->
+  (request, response, next) ->
     Users.findByUsernameOrEmail request.params[0]
     .then (user) ->
       if not user? then throw new Error
@@ -20,5 +19,6 @@ exports = module.exports = (Users) ->
       response.status 404
       response.json {}
 
-exports["@require"] = ["models/users"]
-exports["@singleton"] = true
+Controller["@require"] = ["models/users"]
+Controller["@singleton"] = true
+Controller["@routes"] = ["/users/username/([0-9a-zA-Z\_]+)"]

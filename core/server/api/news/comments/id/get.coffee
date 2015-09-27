@@ -1,7 +1,5 @@
-exports = module.exports = (Comments) ->
-  routes: ["/news/comments/([0-9]+)"]
-
-  controller: (request, response, next) ->
+Controller = module.exports = (Comments) ->
+  (request, response, next) ->
     Comments.get request.params[0]
     .then (comment) -> response.json comment
     .catch ->
@@ -9,5 +7,6 @@ exports = module.exports = (Comments) ->
       response.json {}
 
 
-exports["@require"] = ["models/news/comments"]
-exports["@singleton"] = true
+Controller["@require"] = ["models/news/comments"]
+Controller["@routes"] = ["/news/comments/([0-9]+)"]
+Controller["@singleton"] = true

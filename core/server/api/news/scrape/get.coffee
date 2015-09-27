@@ -2,10 +2,8 @@ cheerio = require "cheerio"
 Request = require "request"
 
 
-exports = module.exports = (Stories) ->
-  routes: ["/news/scrape"]
-
-  controller: (request, response, next) ->
+Controller = module.exports = (Stories) ->
+  (request, response, next) ->
     url = request.query.u or ""
 
     Request
@@ -27,5 +25,7 @@ exports = module.exports = (Stories) ->
       else response.json url: url, title: ":("
 
 
-exports["@require"] = ["models/news/stories"]
-exports["@singleton"] = true
+Controller["@middlewares"] = ["CheckForLogin"]
+Controller["@require"] = ["models/news/stories"]
+Controller["@singleton"] = true
+Controller["@routes"] = ["/news/scrape"]

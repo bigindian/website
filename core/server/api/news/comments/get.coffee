@@ -1,7 +1,5 @@
-exports = module.exports = (Comments) ->
-  routes: ["/news/comments"]
-
-  controller: (request, response, next) ->
+Controller = module.exports = (Comments) ->
+  (request, response, next) ->
     Comments.query(null, page: request.query.page)
     .then (comments) -> response.json comments
     .catch ->
@@ -9,5 +7,6 @@ exports = module.exports = (Comments) ->
       response.json "no comments"
 
 
-exports["@require"] = ["models/news/comments"]
-exports["@singleton"] = true
+Controller["@require"] = ["models/news/comments"]
+Controller["@singleton"] = true
+Controller["@routes"] = ["/news/comments"]

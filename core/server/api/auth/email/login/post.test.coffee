@@ -4,7 +4,7 @@ supertest        = require "supertest"
 
 route = "/api/auth/email/login"
 
-exports = module.exports = (IoC) -> (app) ->
+Controller = module.exports = (IoC) -> (app) ->
   # A helper function to shorten most of the common operations
   post = -> supertest.agent(app).post route
 
@@ -111,5 +111,5 @@ exports = module.exports = (IoC) -> (app) ->
         it "ensure that a re-login token is set", ->
 
 
-exports["@require"] = ["$container"]
-exports["@singleton"] = true
+Controller["@require"] = ["$container"]
+Controller["@singleton"] = true

@@ -3,7 +3,7 @@ passport  = require "passport"
 validator = require "validator"
 
 # Controller for the Registering a user via email
-exports = module.exports = (IoC, reCaptcha, Users) ->
+Controller = module.exports = (IoC, Users) ->
   logger = IoC.create "igloo/logger"
 
   validateRequest = (request) ->
@@ -41,9 +41,9 @@ exports = module.exports = (IoC, reCaptcha, Users) ->
     username: request.body.username
 
 
-  routes: ["/auth/email/signup"]
-  controller: (request, response, next) ->
-    reCaptcha.verify request
+
+  (request, response, next) ->
+    Promise.resolve request
     .then validateRequest
     .then createNewUserObject
     .then (newUser) -> Users.create newUser
@@ -59,9 +59,10 @@ exports = module.exports = (IoC, reCaptcha, Users) ->
       response.json   error.message
 
 
-exports["@require"] = [
+Controller["@middlewares"] = ["CheckCaptcha"]
+Controller["@require"] = [
   "$container"
-  "libraries/recaptcha"
   "models/users"
 ]
-exports["@singleton"] = true
+Controller["@singleton"] = true
+Controller["@routes"] = ["/auth/email/signup"]
