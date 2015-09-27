@@ -11,8 +11,8 @@ module.exports =
     debug: true
     client: "postgres"
     connection:
-      database: "kuwaitandme_development"
-      user:     "vagrant"
+      database: "thebigindian_development"
+      user:     "thebigindian_user"
       password: "password"
     pool:
       min: 2
@@ -24,8 +24,8 @@ module.exports =
     client: "postgres"
     connection:
       host: "db.sitename.tld"
-      database: "kuwaitandme_testing"
-      user:     "vagrant"
+      database: "thebigindian_testing"
+      user:     "thebigindian_user"
       password: "password"
     pool:
       min: 2
@@ -37,8 +37,8 @@ module.exports =
     client: "postgres"
     connection:
       host: "db.sitename.tld"
-      database: "kuwaitandme_production"
-      user:     "vagrant"
+      database: "thebigindian"
+      user:     "thebigindian_user"
       password: "password"
     pool:
       min: 2
