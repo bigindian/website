@@ -15,24 +15,12 @@ exports = module.exports = (Stories, Comments) ->
       story.related("comments").load "created_by"
       .then (comments) ->
         comments = comments.toJSON()
-
-        # Fix
-        for comment in comments
-          delete comment.created_by.password
-          delete comment.created_by.mailing_list_token
-          delete comment.created_by.rss_token
-
         story.set "comments", comments
         story
 
     # Once the comments have been loaded too, start rendering the page
     .then (story) ->
       story = story.toJSON()
-
-      # FIX THIS!!
-      delete story.created_by.password
-      delete story.created_by.mailing_list_token
-      delete story.created_by.rss_token
 
       response.render "main/news/single",
         title: story.title

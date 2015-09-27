@@ -6,7 +6,7 @@
 Promise   = require "bluebird"
 bCrypt    = require "bcrypt-nodejs"
 validator = require "validator"
-
+_         = require "underscore"
 
 Model = module.exports = (BaseModel, Enum) ->
 
@@ -21,8 +21,9 @@ Model = module.exports = (BaseModel, Enum) ->
 
 
     extends:
-      hidden: ["password"]
+      hidden: ["password", "rss_token", "mailing_list_token"]
       topics: -> @hasMany "forum_topics"
+      toJSON: -> _.omit @attributes, @hidden
 
 
     ###*
