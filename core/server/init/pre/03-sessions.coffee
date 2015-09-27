@@ -18,7 +18,7 @@ WordpressStrategy     = (require "passport-wordpress").Strategy
 OpenIDStrategy        = (require "passport-openid").Strategy
 
 
-exports = module.exports = (IoC, settings, sessions, Email, Logs,
+exports = module.exports = (IoC, settings, sessions, Logs,
 Users) ->
   app = this
   logger = IoC.create "igloo/logger"
@@ -81,18 +81,9 @@ Users) ->
       # Set the login provider.
       parameters.login_providers[profile.provider] = uid: profile.id
 
-      # Not create the user in the database
+      # Now create the user in the database
       logger.debug name, "user does not exist, creating new user", parameters
       Users.createPromise parameters
-      .then (user) ->
-        if not user? then throw new Error "registration error"
-        else
-          logger.debug name, "new user created with id", user.id
-          Email.sendTemplate "Welcome to Kuwait & Me!",
-            profile.emails[0].value, "user/welcome-oauth",
-              password: password
-              user: user.toJSON()
-        user
 
     # Once the promise resolves we will have a user that has been just created
     # or previously signed up.
@@ -150,30 +141,29 @@ Users) ->
 
 
   # Email Authentication
-  if settings.emailAuth.enabled
-    passport.use new LocalStrategy (username, password, done) ->
-      # First query the DB for the user.
-      Users.findByUsernameOrEmail username
-      .then (user) ->
-        # Check if the user exists
-        if not user? then throw new Error "bad username/email"
+  passport.use new LocalStrategy (username, password, done) ->
+    # First query the DB for the user.
+    Users.findByUsernameOrEmail username
+    .then (user) ->
+      # Check if the user exists
+      if not user? then throw new Error "bad username/email"
 
-        # User exists, now get
-        json = user.toJSON()
-        logger.debug name, "user json", json
+      # User exists, now get
+      json = user.toJSON()
+      logger.debug name, "user json", json
 
-        # Check if password is valid
-        if not Users.isPasswordValid password, json.password
-          throw new Error "password mismatch"
+      # Check if password is valid
+      if not Users.isPasswordValid password, json.password
+        throw new Error "password mismatch"
 
-        # Check if account is active or not.
-        if not Users.isActive user
-          # if json.meta and not json.meta.hasTemporaryPassword
-          return throw new Error "not allowed to login"
+      # Check if account is active or not.
+      if not Users.isActive user
+        # if json.meta and not json.meta.hasTemporaryPassword
+        return throw new Error "not allowed to login"
 
-        # Login successful!
-        done null, user
-      .catch (error) -> done error.message
+      # Login successful!
+      done null, user
+    .catch (error) -> done error.message
 
 
   # Add passport serialization/de-serialization
@@ -185,7 +175,6 @@ exports["@require"] = [
   "$container"
   "igloo/settings"
   "igloo/sessions"
-  "libraries/email"
 
   "models/logs"
   "models/users"

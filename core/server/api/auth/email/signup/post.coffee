@@ -3,7 +3,7 @@ passport  = require "passport"
 validator = require "validator"
 
 # Controller for the Registering a user via email
-exports = module.exports = (IoC, Email, reCaptcha, Users) ->
+exports = module.exports = (IoC, reCaptcha, Users) ->
   logger = IoC.create "igloo/logger"
 
   validateRequest = (request) ->
@@ -61,7 +61,6 @@ exports = module.exports = (IoC, Email, reCaptcha, Users) ->
 
 exports["@require"] = [
   "$container"
-  "libraries/email"
   "libraries/recaptcha"
   "models/users"
 ]

@@ -3,6 +3,9 @@ User-agent: *
 # Don't allow sensitive links. If you're reading this, GET A F**KING HOBBY YOU
 # HACKER NERD !!
 Disallow: /api
+Disallow: /build
+Disallow: /images
+
 
 # Link to the sitemap!
 # Sitemap: sitemap.xml
