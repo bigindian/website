@@ -8,5 +8,5 @@ Controller = module.exports = (Comments) ->
 
 
 Controller["@require"] = ["models/news/comments"]
-Controller["@singleton"] = true
 Controller["@routes"] = ["/news/comments"]
+Controller["@singleton"] = true

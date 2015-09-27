@@ -5,7 +5,7 @@
   @apiErrorExample {json} Captcha Error
     HTTP/1.1 403 Forbidden
     {
-      "error": "captcha failed"
+      "error": "reCaptchaFailed"
     }
 ###
 Middleware = module.exports = (reCaptcha, ReCaptchaError) ->

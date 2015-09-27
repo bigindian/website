@@ -2,6 +2,51 @@
 #
 # This model represents a news story. It is main model through which stories are
 # created, upvoted, moderated and rated.
+
+###
+  @apiDefine StoryModelResponse
+
+  @apiSuccess {Number} id the id of the story
+  @apiSuccess {String} domain the domain of the link
+  @apiSuccess {String} domain the domain of the link
+  @apiSuccess {String} description the HTML description by the author
+  @apiSuccess {String} description_markdown the Markdown (raw) description by the author
+  @apiSuccess {String} slug the url slug for the story.
+  @apiSuccess {Number} upvotes the number of upvotes
+  @apiSuccess {Number} downvotes the number of downvotes
+  @apiSuccess {Number} comments_count the number of comments
+  @apiSuccess {Number} hotness the hotness (ranking) of the story
+  @apiSuccess {Boolean} is_expired true if the story has expired
+  @apiSuccess {Boolean} is_moderated true if the story has been moderated
+  @apiSuccess {Object} meta any optional meta attributes for the story
+  @apiSuccess {Number} created_by id of the user who created this story
+  @apiSuccess {Number} updated_by id of the user who last updated this story
+  @apiSuccess {Number} created_at date when this story was created
+  @apiSuccess {Number} updated_at date when this story was last updated
+  @apiSuccessExample {json} Success-Response:
+    {
+      "id": 1,
+      "title": "This is a sample link",
+      "domain": "github.com",
+      "description": "This is sometings cool",
+      "description_markdown": "<p>This is sometings cool</p>",
+      "slug": "this-is-something-1",
+      "url": "https://github.com/enamakel/thebigindian.news",
+      "upvotes": 0,
+      "downvotes": 0,
+      "comments_count": 1,
+      "hotness": "-11088.4732896000",
+      "is_expired": false,
+      "is_moderated": true,
+      "merged_story": 1,
+      "story_cache": "",
+      "meta": {},
+      "created_by": 1,
+      "updated_by": null,
+      "created_at": "2015-09-13T09:46:45.811Z",
+      "updated_at": "2015-09-13T09:46:45.811Z"
+    }
+###
 Promise   = require "bluebird"
 validator = require "validator"
 markdown  = require("markdown").markdown

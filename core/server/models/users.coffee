@@ -8,7 +8,7 @@ bCrypt    = require "bcrypt-nodejs"
 validator = require "validator"
 
 
-exports = module.exports = (BaseModel, Enum) ->
+Model = module.exports = (BaseModel, Enum) ->
 
   usersPerPage = 20
   class Users extends BaseModel
@@ -173,8 +173,8 @@ exports = module.exports = (BaseModel, Enum) ->
   new Users
 
 
-exports["@require"] = [
+Model["@require"] = [
   "models/base/model"
   "models/base/enum"
 ]
-exports["@singleton"] = true
+Model["@singleton"] = true
