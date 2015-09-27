@@ -18,8 +18,8 @@ convention to implement this.
   - All post requests will be served from the `post.coffee` file
   - All put requests will be served from the `put.coffee` file
 ###
-Express   = require "express"
-Walk      = require "fs-walk"
+Express  = require "express"
+Walk     = require "fs-walk"
 path     = require "path"
 
 
@@ -40,20 +40,16 @@ exports = module.exports = (IoC) ->
     #! manually.
     if typeof controller is "string" then controller = getController controller
 
-    #! This url matcher will take care of trailing back-slashes. Modify this
-    #! if you want to add a prefix.
-    urlRegex = new RegExp "^#{url}/?$"
-
     #! Get all the middlewares now!
     middlewares = do -> getMiddleware(m) for m in rawMiddlewares
 
     #! Finally add the route to Express's router! `controller.controller` will
     #! refer to the controller function specified in the controller file.
     switch method
-      when "DELETE" then router.delete urlRegex, middlewares, controller
-      when "GET"    then router.get    urlRegex, middlewares, controller
-      when "POST"   then router.post   urlRegex, middlewares, controller
-      when "PUT"    then router.put    urlRegex, middlewares, controller
+      when "DELETE" then router.delete url, middlewares, controller
+      when "GET"    then router.get    url, middlewares, controller
+      when "POST"   then router.post   url, middlewares, controller
+      when "PUT"    then router.put    url, middlewares, controller
 
 
   ###
@@ -73,6 +69,7 @@ exports = module.exports = (IoC) ->
   getMiddleware = (name) -> IoC.create "libraries/middlewares/#{name}"
 
 
+
   ###
   **isController()** This function is used to determine if a given filename
   is a valid controller (for us to instantiate and add to the route) or not.
@@ -85,6 +82,14 @@ exports = module.exports = (IoC) ->
 
   getHTTPMethod = (filename) -> filename.split(".coffee")[0].toUpperCase()
 
+
+  #! Add a middleware to check all the integer parameters
+  params = ["id", "user", "comment", "story", "moderation"]
+  router.param p, getMiddleware "CheckIfParameterInteger" for p in params
+
+  #! Add a middleware to check all the slug parametesr
+  params = ["slug", "username", "lang"]
+  router.param p, getMiddleware "CheckIfParameterSlug" for p in params
 
   #! Now start walking!
   walkPath = path.join __dirname, "../api"

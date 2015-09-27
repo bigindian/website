@@ -16,5 +16,5 @@ Controller = module.exports = (Users) ->
 
 
 Controller["@require"] = ["models/users"]
-Controller["@singleton"] = true
 Controller["@routes"] = ["/users"]
+Controller["@singleton"] = true

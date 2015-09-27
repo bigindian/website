@@ -1,6 +1,6 @@
 Controller = module.exports = (Stories) ->
   (request, response, next) ->
-    Stories.get request.params[0]
+    Stories.get request.params.story
     .then (model) -> model.upvote request.user.id
     .then -> response.json "voted"
     .catch (e) -> response.json "already voted"
@@ -8,5 +8,5 @@ Controller = module.exports = (Stories) ->
 
 Controller["@middlewares"] = ["CheckForLogin"]
 Controller["@require"] = ["models/news/stories"]
+Controller["@routes"] = ["/news/stories/:story/upvote"]
 Controller["@singleton"] = true
-Controller["@routes"] = ["/news/stories/([0-9]+)/upvote"]

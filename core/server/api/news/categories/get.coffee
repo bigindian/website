@@ -3,5 +3,5 @@ Controller = module.exports = (Stories) ->
 
 
 Controller["@require"] = ["models/news/stories"]
-Controller["@singleton"] = true
 Controller["@routes"] = ["/news/categories"]
+Controller["@singleton"] = true

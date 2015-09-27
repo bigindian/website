@@ -1,6 +1,6 @@
 Controller = module.exports = (Story) ->
   (request, response, next) ->
-    Story.comments request.params[0], request.query.page
+    Story.comments request.params.story, request.query.page
     .then (data) ->
       comments = data.toJSON()
 
@@ -17,5 +17,5 @@ Controller = module.exports = (Story) ->
 
 
 Controller["@require"] = ["models/news/stories"]
+Controller["@routes"] = ["/news/stories/:story/comments"]
 Controller["@singleton"] = true
-Controller["@routes"] = ["/news/stories/([0-9]+)/comments"]

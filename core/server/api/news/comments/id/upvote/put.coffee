@@ -1,6 +1,6 @@
 Controller = module.exports = (Comments) ->
   (request, response, next) ->
-    Comments.get request.params[0]
+    Comments.get request.params.comment
     .then (comment) -> comment.upvote request.user.id
     .then -> response.json "voted"
     .catch (e) -> next e
@@ -8,5 +8,5 @@ Controller = module.exports = (Comments) ->
 
 Controller["@middlewares"] = ["CheckForLogin"]
 Controller["@require"] = ["models/news/comments"]
-Controller["@routes"] = ["/news/comments/([0-9]+)/upvote"]
+Controller["@routes"] = ["/news/comments/:comment/upvote"]
 Controller["@singleton"] = true

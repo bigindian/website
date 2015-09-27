@@ -4,7 +4,7 @@ validator = require "validator"
 
 Controller = module.exports = (Users) ->
   (request, response, next) ->
-    Users.findByUsernameOrEmail request.params[0]
+    Users.findByUsernameOrEmail request.params.username
     .then (user) ->
       if not user? then throw new Error
 
@@ -20,5 +20,5 @@ Controller = module.exports = (Users) ->
       response.json {}
 
 Controller["@require"] = ["models/users"]
+Controller["@routes"] = ["/users/username/:username"]
 Controller["@singleton"] = true
-Controller["@routes"] = ["/users/username/([0-9a-zA-Z\_]+)"]

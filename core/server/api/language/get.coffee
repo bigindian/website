@@ -37,4 +37,4 @@ Controller["@require"] = [
   "libraries/cache"
 ]
 Controller["@singleton"] = true
-Controller["@routes"] = ["/language/([a-z]+)"]
+Controller["@routes"] = ["/language/:lang"]

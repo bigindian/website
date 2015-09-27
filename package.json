@@ -4,14 +4,15 @@
   "private": "true",
   "author": "Steven Enamakel",
   "scripts": {
-    "schema-up": "knex --knexfile ./etc/config/knexfile.coffee migrate:latest --cwd ./etc/db",
-    "schema-down": "knex --knexfile ./etc/config/knexfile.coffee migrate:rollback --cwd ./etc/db",
-    "seed": "knex seed:run --cwd ./etc/db --knexfile ./etc/config/knexfile.coffee",
     "db-init": "npm run-script schema-up && npm run-script seed",
-    "s": "NODE_ENV=development forever -c coffee start bin/server.coffee",
     "db-refresh": "npm run-script schema-down && npm run-script db-init",
-    "init-config": "sh ./etc/init-config.sh",
     "docs": "groc",
+    "docs-api": "apidoc -i core/server -o docs/api -c etc",
+    "init-config": "sh ./etc/init-config.sh",
+    "s": "NODE_ENV=development forever -c coffee start bin/server.coffee",
+    "schema-down": "knex --knexfile ./etc/config/knexfile.coffee migrate:rollback --cwd ./etc/db",
+    "schema-up": "knex --knexfile ./etc/config/knexfile.coffee migrate:latest --cwd ./etc/db",
+    "seed": "knex seed:run --cwd ./etc/db --knexfile ./etc/config/knexfile.coffee",
     "start": "coffee ./bin/server.coffee",
     "test": "NODE_TLS_REJECT_UNAUTHORIZED=0 mocha src/server/mocha.coffee --compilers coffee:coffee-script/register --check-leaks --bail"
   },
@@ -147,6 +148,7 @@
     "zpad": "^0.5.0"
   },
   "devDependencies": {
+    "apidoc": "^0.13.1",
     "browser-sync": "~2.8.1",
     "browser-sync-spa": "~1.0.2",
     "chalk": "~1.1.0",

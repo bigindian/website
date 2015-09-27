@@ -2,6 +2,12 @@ passport = require "passport"
 
 
 ###
+  @api {post} /api/auth/email/login Login with email
+  @apiName EmailLogin
+  @apiGroup Authentication
+  @apiVersion 1.0.0
+
+  @apiDescription
   This is a controller for the login via Email. It makes sure that that the
   user logs in properly when the correct credentials are given and creates a
   login event.
@@ -9,15 +15,29 @@ passport = require "passport"
   On successful login, the controller returns a JSON of the logged in user and
   sets the session cookie.
 
-  @param  String username         The username (email) of the user
-  @param  String password         The password of the user
-  @required username, password
+  There is no captcha here because we don't really care about bots scraping the
+  site and brute-forcing the username and password will trigger the DDoS
+  alarms.
 
-  @example
-  POST sitename.tld/api/auth/email/login {..} -> 200 JSON { user }
-  POST sitename.tld/api/auth/email/login {..} -> 400 JSON "error message"
+  @apiParam {String} username         The username or email of the user
+  @apiParam {String} password         The password of the user
 
-  @author Steven Enamakel <me@steven.pw>
+  @apiSuccessExample {json} Success-Response:
+  HTTP/1.1 200 OK
+  {
+    "id": 7
+    "email": "jon@mail.com",
+    "language": 1,
+    "login_providers": {
+      "email": "jon@mail.com"
+    },
+    "role": 1,
+    "slug": "johnny",
+    "status": 1,
+    "username": "johnny",
+    "updated_at": "2015-09-27T08:53:07.202Z",
+    "created_at": "2015-09-27T08:53:07.202Z",
+  }
 ###
 Controller = module.exports = (Events) ->
   (request, response, next) ->

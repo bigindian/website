@@ -28,9 +28,9 @@ Controller = module.exports = (Categories, Cache) ->
     .catch next
 
 
-Controller["@singleton"] = true
 Controller["@require"] = [
   "models/news/categories"
   "libraries/cache"
 ]
 Controller["@routes"] = ["/news/categories/counters"]
+Controller["@singleton"] = true

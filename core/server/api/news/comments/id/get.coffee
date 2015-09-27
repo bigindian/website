@@ -1,6 +1,6 @@
 Controller = module.exports = (Comments) ->
   (request, response, next) ->
-    Comments.get request.params[0]
+    Comments.get request.params.id
     .then (comment) -> response.json comment
     .catch ->
       response.status 404
@@ -8,5 +8,5 @@ Controller = module.exports = (Comments) ->
 
 
 Controller["@require"] = ["models/news/comments"]
-Controller["@routes"] = ["/news/comments/([0-9]+)"]
+Controller["@routes"] = ["/news/comments/:id"]
 Controller["@singleton"] = true

@@ -11,5 +11,7 @@ Controller = module.exports = (settings) ->
     response.json data
 
 
+
 Controller["@require"] = ["igloo/settings"]
 Controller["@routes"] = [""]
+Controller["@singleton"] = true

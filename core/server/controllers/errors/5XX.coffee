@@ -10,7 +10,8 @@ exports = module.exports = (settings) ->
     else console.error error
 
     #! For API request just return a JSON version of the message
-    if request.url.indexOf("/api") > -1 then return response.json error.message
+    if request.url.indexOf("/api") > -1
+      return response.json error: error.message
 
     response.render "main/errors/5XX",
       page: "errors/5XX"

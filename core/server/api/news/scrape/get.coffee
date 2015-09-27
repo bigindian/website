@@ -27,5 +27,5 @@ Controller = module.exports = (Stories) ->
 
 Controller["@middlewares"] = ["CheckForLogin"]
 Controller["@require"] = ["models/news/stories"]
-Controller["@singleton"] = true
 Controller["@routes"] = ["/news/scrape"]
+Controller["@singleton"] = true

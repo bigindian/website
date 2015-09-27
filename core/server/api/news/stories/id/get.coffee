@@ -1,6 +1,6 @@
 Controller = module.exports = (Stories) ->
   (request, response, next) ->
-    Stories.get request.params[0]
+    Stories.get request.params.id
     .then (story) -> response.json story
     .catch ->
       response.status 404
@@ -8,5 +8,5 @@ Controller = module.exports = (Stories) ->
 
 
 Controller["@require"] = ["models/news/stories"]
+Controller["@routes"] = ["/news/stories/:id"]
 Controller["@singleton"] = true
-Controller["@routes"] = ["/news/stories/([0-9]+)"]

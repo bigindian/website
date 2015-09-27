@@ -14,5 +14,5 @@ Controller = module.exports = (settings) ->
 
 
 Controller["@require"] = ["igloo/settings"]
-Controller["@singleton"] = true
 Controller["@routes"] = ["/security/need_recaptcha"]
+Controller["@singleton"] = true

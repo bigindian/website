@@ -14,5 +14,5 @@ Controller = module.exports = ->
     response.json json
 
 
-Controller["@singleton"] = true
 Controller["@routes"] = ["/users/current"]
+Controller["@singleton"] = true

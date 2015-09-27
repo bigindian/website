@@ -2,7 +2,7 @@ Controller = module.exports = (Story, Comments) ->
   (request, response, next) ->
     request.body.created_by = request.user.id
 
-    Comments.create request.params[0], request.body
+    Comments.create request.params.story, request.body
     .then (comment) -> response.json comment
     .catch (e) -> next e
 
@@ -12,5 +12,5 @@ Controller["@require"] = [
   "models/news/stories"
   "models/news/comments"
 ]
+Controller["@routes"] = ["/news/stories/:story/comments"]
 Controller["@singleton"] = true
-Controller["@routes"] = ["/news/stories/([0-9]+)/comments"]
