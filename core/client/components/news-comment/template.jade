@@ -29,5 +29,5 @@
       google-recaptcha(ng-model="data.gcaptcha", ng-if="!data.gcaptcha")
       button(ng-click="submit()", ng-if="data.gcaptcha") Submit
 
-  .children(ng-repeat="child in comment.children | orderBy : 'hotness'")
+  .children(ng-repeat="child in comment.children | orderBy : 'hotness' : true")
     news-comment(ng-model="child")
