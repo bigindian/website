@@ -16,12 +16,11 @@ slug              = require "slug"
 traverse          = require "traverse"
 validator         = require "validator"
 xss               = require "xss"
-
-Schema            = require "./schema"
+traverse          = require "traverse"
 
 
 BaseModel = (knex, Enum, Cache, Settings) ->
-  class Model extends Schema
+  class Model
     ###
     **tableName** The name of the database table this model will attach to.
     ###
@@ -64,10 +63,6 @@ BaseModel = (knex, Enum, Cache, Settings) ->
 
 
     constructor: ->
-      #! Initialize the schema.
-      super()
-      validateSchema = @validateSchema
-
       #! Load the Bookshelf registry plugin, which helps us avoid circular
       #! dependencies.
       @bookshelf.plugin "registry"
@@ -77,15 +72,50 @@ BaseModel = (knex, Enum, Cache, Settings) ->
       @bookshelf.plugin require "./pagination"
 
       #! Prepare the parameters we will extend to our Bookshelf.Model
-      self = this
       extendPrameters =
         tableName: @tableName
         hasTimestamps: true
         initialize: ->
-          @on "creating", -> self.onCreate this
-          @on "saving", -> self.onSave this
-          @on "updating", -> self.onUpdate this
-        validate: -> self.validateSchema @attributes or {}
+          @on "created", -> @onCreated()
+          @on "creating", -> @onCreate()
+          @on "saved", -> @onSaved()
+          @on "saving", -> @onSave()
+          @on "updated", -> @onUpdated()
+          @on "updating", -> @onUpdate()
+        onCreated: -> null
+        onCreate: -> null
+        onSaved: -> null
+        onSave: -> null
+        onUpdated: -> null
+        onUpdate: -> null
+
+
+        ###
+          ## Clean JSON
+
+          @param JSON json \- The classified object that is to be cleaned
+          @return JSON \- The result after cleaning the object
+        ###
+        ###
+        **clean()** Cleans the model by performing XSS and removing unwanted
+        keys.
+
+        ```
+        Model.model.clean()
+        ```
+        ###
+        clean: ->
+          # Traverse through each key
+          traverse(@attributes).forEach (value) ->
+            # If it is not defined then remove it.. (remove any annoying nulls)
+            if not value? then @remove()
+
+            # If it is a string then perform an XSS filter on it
+            else if typeof value is "string" then value = xss value
+
+          #! Return this instance to allow chaining.
+          this
+
 
       #! Extend with our custom parameters
       extendPrameters = _.extend extendPrameters, @extends
@@ -116,10 +146,6 @@ BaseModel = (knex, Enum, Cache, Settings) ->
       if @fullCache then @getAll()
 
 
-    onCreate: (model) -> null
-    onUpdate: (model) -> null
-    onSave: (model) -> null
-
 
     ###
     **createSlug()** This is a helper function used to generate a unique slug from a price of
@@ -129,8 +155,7 @@ BaseModel = (knex, Enum, Cache, Settings) ->
     Model.createSlug('hello world') # -> 'hello-world-asdqw12asd'
     ```
     ###
-    createSlug: (text="") ->
-      slug "#{text} #{randomstring.generate 10}".toLowerCase()
+    createSlug: (t="") -> slug "#{t} #{randomstring.generate 10}".toLowerCase()
 
 
     ###
@@ -224,6 +249,15 @@ BaseModel = (knex, Enum, Cache, Settings) ->
 
       #! If no caching was specified then we normally query the table.
       else @model.forge().fetchAll options
+
+    ###
+    **findAll()** An alias to getAll
+
+    ```
+    Model.findAll(options).then (collection) ->
+    ```
+    ###
+    findAll: (options) -> @getAll options
 
 
     ###
