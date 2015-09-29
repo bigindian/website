@@ -7,7 +7,6 @@ Model = (BaseModel) ->
 
   new class CategoryModel extends BaseModel
     tableName: "news_categories"
-
     enableMD5: true
     fullCache: true
 
@@ -15,8 +14,10 @@ Model = (BaseModel) ->
     #
     # Gets the count of stories for each categories.
     getStoryCount: ->
-      @knex.select("category").from "news_story_category"
-      .count("* as stories").groupBy "category"
+      @knex.select "category"
+      .from "news_story_category"
+      .count "* as stories"
+      .groupBy "category"
 
 
 Model["@singleton"] = true

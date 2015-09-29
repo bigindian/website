@@ -66,10 +66,11 @@ Model = (Elasticsearch, BaseModel, Comments, NewsCategories, NewsVotes, Users) -
   ACTIVITY_WEIGHT = 2
 
 
-  # **CREATION_WINDOW** The window variable is used narrow down how effective the creation date is
-  # when the post's hotness is calculated. A smaller window allows lesser
-  # activity before the post makes it to the front page. A bigger window allows
-  # more room for old stories to become popular with comments.
+  # **CREATION_WINDOW** The window variable is used narrow down how effective
+  # the creation date is when the post's hotness is calculated. A smaller window
+  # allows lesser activity before the post makes it to the front page. A bigger
+  # window allows more room for old stories to become popular with comments and
+  # upvotes.
   #
   #! As the site grows, you might want to shrink this down to 12 or so.
   CREATION_WINDOW = 60 * 60 * 60.0
@@ -78,9 +79,11 @@ Model = (Elasticsearch, BaseModel, Comments, NewsCategories, NewsVotes, Users) -
   new class Stories extends BaseModel
     tableName: "news_stories"
 
+    #! Get the static values from the DB
     enums: categories: tableName: "news_categories"
 
 
+    # Properties to extend to the model!
     extends:
       categories: -> @hasMany "news_story_category", "story"
       comments: -> @hasMany "news_comments", "story"
@@ -126,7 +129,10 @@ Model = (Elasticsearch, BaseModel, Comments, NewsCategories, NewsVotes, Users) -
         #! Give a story's comment votes some weight.
         cpoints = @getCommentScore()
 
-        #! Don't immediately kill stories at 0 by bumping up score by one
+        #! Don't immediately kill stories at 0. bump them up by one
+        if score is 0 then score += 1
+
+        #! Calculate the activity's score
         activityScore = (Math.abs(score + 1) + cpoints) * ACTIVITY_WEIGHT
 
         #! Now using the log function is really nice because it evens out
@@ -145,7 +151,7 @@ Model = (Elasticsearch, BaseModel, Comments, NewsCategories, NewsVotes, Users) -
 
         #! The creation points is set so that newer posts get more hotness than
         #! older ones. The window variable is used narrow down how effectiv
-        #! already trending ones.
+        #! already trending ones will take the top spot.
         creationPoints = createdDate / CREATION_WINDOW
 
         #! The final hotness is simply the sum of all the different points.
@@ -171,7 +177,7 @@ Model = (Elasticsearch, BaseModel, Comments, NewsCategories, NewsVotes, Users) -
       ###
       increaseCommentsCount: ->
         @set "comments_count", 1 + @get "comments_count"
-        @updateHotness().save()
+        @save()
 
 
       ###
@@ -194,7 +200,6 @@ Model = (Elasticsearch, BaseModel, Comments, NewsCategories, NewsVotes, Users) -
         .then =>
           #! Update the hotness and the upvotes counter
           @set "upvotes", 1 + @get "upvotes"
-          @updateHotness()
           @save()
 
 
@@ -208,9 +213,21 @@ Model = (Elasticsearch, BaseModel, Comments, NewsCategories, NewsVotes, Users) -
       isRecent: -> @created_at >= RECENT_DAYS #.days.ago # fix this
 
 
+      ###
+      **onSave()** Update the hotness of the story every time it gets saved into
+      the DB.
+
+      ```
+      Story.model.onSave(model)
+      ```
+      ###
+      onSave: ->
+        @clean()
+        @updateHotness()
+
+
     ###
     **top()** Returns the top stories. Works similar to the query function
-
 
     ```
     Stories.top(buildQueryFn, {}).then (storyCollection) ->
@@ -249,8 +266,8 @@ Model = (Elasticsearch, BaseModel, Comments, NewsCategories, NewsVotes, Users) -
         parameters.description = markdown.toHTML description
 
       #! Now create the model and save it into the DB
-      @model.forge(parameters).save()
-      .then (model) =>
+      @model.forge parameters
+      .save().then (model) =>
         #! For each category that was set in the parameters prepare the values
         #! for the insert query.
         insertQuery = (category: cat, story: model.id for cat in categories)
@@ -296,20 +313,6 @@ Model = (Elasticsearch, BaseModel, Comments, NewsCategories, NewsVotes, Users) -
       @model.where(id: id).fetch withRelated: ["comments"]
       .then (story) -> story.related("comments").load "created_by"
 
-
-    ###
-    **increaseCommentsCount()** Increases the number of comments for the given
-    story. Use this function only when a new comment has been added into the
-    story.
-
-    ```
-    Stories.increaseCommentsCount(1).then (model) ->
-    ```
-    ###
-    increaseCommentsCount: (id) ->
-      @get(id).then (model) ->
-        model.set "comments_count", 1 + model.get "comments_count"
-        model.updateHotness()
 
 
 Model["@singleton"] = true
