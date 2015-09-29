@@ -1,7 +1,7 @@
 module.exports = (app) ->
   console.log "initializing components"
 
-  app.directive "footer",          require "./footer/directive"
+  # app.directive "footer",          require "./footer/directive"
   app.directive "header",          require "./header/directive"
   app.directive "headerHamburger", require "./header/hamburger/directive"
   app.directive "newsCategory",    require "./news-category/directive"
