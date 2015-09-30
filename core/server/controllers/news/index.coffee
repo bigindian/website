@@ -7,21 +7,21 @@ Controller = module.exports = (Cache, Stories) ->
     .catch ->
       # console.log request.params[0]
       Stories.top null, page: page
-      .then (stories) ->
+      .then (results) ->
 
-        json = JSON.stringify stories
+        json = JSON.stringify results
 
         #! Cache only the first three pages!
         if 0 <= page and page >= 3 then Cache.set cacheKey, json, 60 * 1
         else json
 
 
-    .then (stories) ->
+    .then (results) ->
       response.render "main/news/index",
         # cache:
           # enable: true
           # timeout: 60 * 1 # 1 minute cache
-        data: JSON.parse stories
+        data: JSON.parse results
         metaRobots: "noarchive"
         title: null
 

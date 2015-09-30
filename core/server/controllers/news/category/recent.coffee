@@ -16,15 +16,17 @@ Controller = module.exports = (Stories) ->
 
     #! Now query for the top stories using our custom querybuilder fn.
     Stories.recent buildQuery, page: request.params[1] or 1
-    .then (stories) ->
+    .then (results) ->
 
-      response.render "main/news/categories",
+      response.render "main/news/category",
         metaRobots: "noarchive"
         cache: #! DO for pages!
           suffix: categoryID
           enable: true
           timeout: 60 * 10 # 10 minute cache
-        data: stories
+        data:
+          collection: results.collection.toJSON()
+          pagination: results.pagination
         title: null
 
     .catch (e) -> next e

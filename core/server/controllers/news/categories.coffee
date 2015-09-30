@@ -8,7 +8,9 @@ Controller = module.exports = (Categories) ->
       categories: Categories.getAll()
     .then (results) ->
       response.render "main/news/categories",
-        data: results
+        data:
+          counters: results.counters
+          categories: results.categories.toJSON()
         metaRobots: "noarchive"
         cache: enable: true
 
