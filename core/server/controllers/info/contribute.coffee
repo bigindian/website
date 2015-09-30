@@ -1,9 +1,9 @@
-exports = module.exports = ->
-  routes: ["/info/contribute"]
-  controller: (request, response, next) ->
+Controller = module.exports = ->
+  (request, response, next) ->
     response.render "main/info/donate",
       cache: enable: true
       metaRobots: "nofollow"
 
 
-exports["@singleton"] = true
+Controller["@routes"] = ["/info/contribute"]
+Controller["@singleton"] = true

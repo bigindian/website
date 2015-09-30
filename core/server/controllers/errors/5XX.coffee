@@ -1,5 +1,5 @@
-exports = module.exports = (settings) ->
-  controller = (error, request, response, next) ->
+Controller = module.exports = (settings) ->
+  (error, request, response, next) ->
     response.status error.status or 500
     isProduction = settings.server.env == "production"
 
@@ -22,5 +22,5 @@ exports = module.exports = (settings) ->
         status: error.status or 500
 
 
-exports["@require"] = ["igloo/settings"]
-exports["@singleton"] = true
+Controller["@require"] = ["igloo/settings"]
+Controller["@singleton"] = true

@@ -1,8 +1,5 @@
-exports = module.exports = (Stories, Comments) ->
-  routes: ["/story/([a-z0-9\-]+)"]
-
-
-  controller: (request, response, next) ->
+Controller = module.exports = (Stories, Comments) ->
+  (request, response, next) ->
     data = {}
 
     slug = request.params[0]
@@ -33,8 +30,9 @@ exports = module.exports = (Stories, Comments) ->
     .catch (e) -> next e
 
 
-exports["@require"] = [
+Controller["@require"] = [
   "models/news/stories"
   "models/news/comments"
 ]
-exports["@singleton"] = true
+Controller["@routes"] = ["/story/([a-z0-9\-]+)"]
+Controller["@singleton"] = true

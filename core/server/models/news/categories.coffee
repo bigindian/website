@@ -5,6 +5,7 @@ Model = (BaseModel) ->
   new class CategoryStoryModel extends BaseModel
     tableName: "news_story_category"
 
+
   new class CategoryModel extends BaseModel
     tableName: "news_categories"
     enableMD5: true

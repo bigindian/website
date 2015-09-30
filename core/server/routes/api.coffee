@@ -66,6 +66,9 @@ exports = module.exports = (IoC) ->
   getController = (name) -> IoC.create "api/#{name}"
 
 
+  ###
+  **getMiddleware()** This function fetches the middleware given it's name.
+  ###
   getMiddleware = (name) -> IoC.create "libraries/middlewares/#{name}"
 
 

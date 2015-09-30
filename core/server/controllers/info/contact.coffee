@@ -1,8 +1,8 @@
-exports = module.exports = ->
-  controller: (request, response, next) ->
+Controller = module.exports = ->
+  (request, response, next) ->
     response.render "main/info/contact",
       cache: enable: true
       metaRobots: "nofollow"
 
 
-exports["@singleton"] = true
+Controller["@singleton"] = true

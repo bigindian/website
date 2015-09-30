@@ -1,6 +1,6 @@
-exports = module.exports = (NotFoundError) ->
-  controller: (request, response, next) -> next new NotFoundError
+Controller = module.exports = (NotFoundError) ->
+  (request, response, next) -> next new NotFoundError
 
 
-exports["@require"] = ["libraries/errors/NotFoundError"]
-exports["@singleton"] = true
+Controller["@require"] = ["libraries/errors/NotFoundError"]
+Controller["@singleton"] = true

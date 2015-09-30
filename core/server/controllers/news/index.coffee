@@ -1,10 +1,5 @@
-exports = module.exports = (Cache, Stories) ->
-  routes: [
-    ""
-    "/page/([0-9]+)?"
-  ]
-
-  controller: (request, response, next) ->
+Controller = module.exports = (Cache, Stories) ->
+  (request, response, next) ->
     page = request.params[0] or 1
     cacheKey = "main/news/index/#{page}"
 
@@ -33,8 +28,12 @@ exports = module.exports = (Cache, Stories) ->
     .catch (e) -> next e
 
 
-exports["@require"] = [
+Controller["@require"] = [
   "libraries/cache"
   "models/news/stories"
 ]
-exports["@singleton"] = true
+Controller["@routes"] = [
+  ""
+  "/page/([0-9]+)?"
+]
+Controller["@singleton"] = true

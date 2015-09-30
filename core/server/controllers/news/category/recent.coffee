@@ -1,10 +1,5 @@
-exports = module.exports = (Stories) ->
-  routes: [
-    "/category/[a-z\-]+-([0-9]+)/recent"
-    "/category/[a-z\-]+-([0-9]+)/recent/page/([0-9]+)"
-  ]
-
-  controller: (request, response, next) ->
+Controller = module.exports = (Stories) ->
+  (request, response, next) ->
     #! Get the knex instance
     knex = Stories.knex
 
@@ -35,5 +30,9 @@ exports = module.exports = (Stories) ->
     .catch (e) -> next e
 
 
-exports["@require"] = ["models/news/stories"]
-exports["@singleton"] = true
+Controller["@require"] = ["models/news/stories"]
+Controller["@routes"] = [
+  "/category/[a-z\-]+-([0-9]+)/recent"
+  "/category/[a-z\-]+-([0-9]+)/recent/page/([0-9]+)"
+]
+Controller["@singleton"] = true

@@ -43,18 +43,18 @@ exports = module.exports = (IoC) ->
 
   Modify this if you want to customize how routes and controllers get added.
   ###
-  _route = (url, controller) ->
+  _route = (url, rawMiddlewares=[], controller) ->
     #! If a string was passed to us, then we instansiate the controller
     #! manually.
     if typeof controller is "string" then controller = getController controller
 
-    #! This url matcher will take care of trailing back-slashes. Modify this
-    #! if you want to add a prefix.
-    urlRegex = new RegExp "^#{url}/?$"
+
+    #! Get all the middlewares now!
+    middlewares = do -> getMiddleware(m) for m in rawMiddlewares
 
     #! Finally add the route to Express's router! `controller.controller` will
     #! refer to the controller function specified in the controller file.
-    router.get urlRegex, controller.controller
+    router.get url, middlewares, controller
 
 
   ###
@@ -69,6 +69,12 @@ exports = module.exports = (IoC) ->
 
   ###
   getController = (name) -> IoC.create "controllers/#{name}"
+
+
+  ###
+  **getMiddleware()** This function fetches the middleware given it's name.
+  ###
+  getMiddleware = (name) -> IoC.create "libraries/middlewares/#{name}"
 
 
   ###
@@ -92,21 +98,23 @@ exports = module.exports = (IoC) ->
     relativePath = path.relative walkPath, file
 
     #! Invoke IoC and get an instance of our controller
+    routes = require("../controllers/#{relativePath}")["@routes"]
+    middlewares = require("../controllers/#{relativePath}")["@middlewares"]
     controller = getController relativePath
 
     #! Now if this controller does not have any routes then we skip it!
-    if not controller.routes? then return
+    if not routes? then return
 
     #! If it did have routes set, then we set it for each of its routes
-    for route in controller.routes
-      _route route, controller
+    for route in routes
+      _route route, middlewares, controller
 
       if route == "" then route = "/"
       logger.debug "GET\t#{route} -> #{relativePath}"
 
 
   #! If none of the routes matched, then route to the 404 controller!
-  _route ".*",                                     "errors/404"
+  _route ".*", [], "errors/404"
 
   #! Finally attach the router into the app
   app.use router

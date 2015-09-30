@@ -17,10 +17,8 @@ in posts, articles etc.. to give a clean/simple look.
 GET sitename.tld/s/123 -> 301 sitename.tld/story-slug-here-123
 ```
 ###
-exports = module.exports = (Stories, NotFoundError) ->
-  routes: ["/s/([0-9]+)"]
-
-  controller: (request, response, next) ->
+Controller = module.exports = (Stories, NotFoundError) ->
+  (request, response, next) ->
     # Get the id of the classified.
     id = request.params[0]
 
@@ -36,8 +34,9 @@ exports = module.exports = (Stories, NotFoundError) ->
     .catch (e) -> next e
 
 
-exports["@require"] = [
+Controller["@require"] = [
   "models/news/stories"
   "libraries/errors/NotFoundError"
 ]
-exports["@singleton"] = true
+Controller["@singleton"] = true
+Controller["@routes"] = ["/s/([0-9]+)"]
