@@ -1,3 +1,2 @@
-exports = module.exports = ->
-  controller: require "./controller"
+module.exports = ->
   templateUrl: "components/footer/template"
