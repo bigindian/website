@@ -115,6 +115,7 @@
     "nodejs-websocket": "^1.2.1",
     "nodemailer": "^1.4.0",
     "nodemailer-smtp-transport": "^1.0.3",
+    "ouch": "^0.2.0-beta",
     "passport": "^0.2.2",
     "passport-amazon": "^0.1.0",
     "passport-facebook": "^2.0.0",
