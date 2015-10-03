@@ -1,5 +1,4 @@
-Controller = ($http, $location, $log, $scope, Notifications, Categories,
-Stories) ->
+Controller = ($http, $location, $log, $scope, Notifications, Stories) ->
   logger = $log.init Controller.tag
   logger.log "initializing"
   $scope.$emit "page:initialize", needLogin: true
@@ -11,28 +10,9 @@ Stories) ->
     title: $location.search().title or ""
     url: $location.search().url or ""
 
-  $scope.categories = Categories.getAll() or []
-  cat.select = false for cat in $scope.categories
-
 
   blockForm = -> $scope.formClasses = loading: $scope.formLoading = true
   unlockForm = -> $scope.formClasses = loading: $scope.formLoading = false
-
-
-  $scope.deselect = (cat) ->
-    logger.log "de-selected category"
-    logger.debug cat
-
-    cat.select = false
-    $scope.selectedCats--
-
-
-  $scope.select = (cat) ->
-    logger.log "selected category"
-    logger.debug cat
-
-    cat.select = true
-    $scope.selectedCats++
 
 
   # When requested to get the title, send the URL to our scrapper
@@ -43,7 +23,6 @@ Stories) ->
     .finally unlockForm
 
 
-
   ###
     @param data {Object}
   ###
@@ -51,11 +30,6 @@ Stories) ->
     blockForm()
     logger.log "submitting form"
     logger.debug data
-
-    # Get the categories
-    data.categories = []
-    for category in $scope.categories
-      if category.select is true then data.categories.push category.id
 
     headers = "x-recaptcha": $scope.form.gcaptcha
 
@@ -75,7 +49,6 @@ Controller.$inject = [
   "$log"
   "$scope"
   "@notifications"
-  "@models/news/categories"
   "@models/news/stories"
 ]
 module.exports = Controller

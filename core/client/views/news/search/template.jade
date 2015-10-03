@@ -1,1 +1,32 @@
-h1 the search page!
+.searchbox
+  form(action="").row
+    .columns
+      h2.title Search
+    .columns
+      p
+        input(autofocus="autofocus" name="q" size="40" type="text" value="")
+        input(type="submit")
+    .columns
+      span.title Include:
+      span.options
+        input(checked="checked" id="what_all" name="what" type="radio" value="all")
+        label All
+        input(name="what" type="radio" value="stories")
+        label Stories
+        input(name="what" type="radio" value="comments")
+        label Comments
+
+    .columns
+      span.title Order by:
+      span.options
+        input(checked="checked" name="order" type="radio" value="rel")
+        label Relevance
+        input(name="order" type="radio" value="stories")
+        label Newest
+        input(name="order" type="radio" value="score")
+        label Score
+
+    .columns
+      span.title Domain:
+      span.options
+        input(type="text", name="domain", placeholder="abc.com")

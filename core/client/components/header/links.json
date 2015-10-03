@@ -1,75 +1,50 @@
 [
   {
-    "slug": "contribute",
-    "class": "contribute",
-    "name": "contribute",
-    "url": "/info/contribute",
-    "color": "#F60"
-  }, {
-    "class": "divider",
-  }, {
-    "slug": "top",
-    "class": "top",
-    "name": "news.top",
-    "main": true,
+  //   "class": "contribute",
+  //   "name": "contribute",
+  //   "url": "/info/contribute",
+  //   "color": "#F60"
+  // }, {
+    "class": "title",
+    "name": "The Big Indian News",
     "url": "/",
-    "color": "#009F5E",
   }, {
-    "slug": "recent",
     "class": "recent",
     "name": "news.recent",
     "url": "/recent",
-    "main": true,
-    "color": "#009F5E",
   }, {
-    "slug": "categories",
-    "class": "categories",
-    "name": "news.categories",
-    "url": "/categories",
-    "main": true,
-    "color": "#009F5E",
+    "class": "comment",
+    "name": "news.comments",
+    "url": "/comments",
   }, {
-    "slug": "submit",
+    "class": "submit",
+    "name": "news.search",
+    "url": "/search",
+  }, {
     "class": "submit",
     "name": "news.submit",
-    "main": true,
     "url": "/submit",
-    "color": "#009F5E",
   }, {
-    "class": "divider",
-  }, {
-    "slug": "settings",
-    "class": "settings",
+    "class": "settings right",
     "name": "settings",
     "url": "/settings",
   }, {
-    "class": "divider",
-  }, {
-    "slug": "login",
-    "class": "hide-if-loggedin",
+    "class": "hide-if-loggedin right",
     "name": "login",
     "url": "/login",
   }, {
-    "slug": "signup",
-    "class": "hide-if-loggedin",
-    "name": "signup",
-    "url": "/signup",
-  }, {
-    "slug": "logout",
-    "class": "show-if-loggedin",
+    "class": "show-if-loggedin right",
     "name": "logout",
     "url": "/logout",
-  }, {
-    "class": "divider",
-  }, {
-    "class": "about",
-    "slug": "about",
-    "name": "about",
-    "url": "/info/about",
-  }, {
-    "slug": "terms-privacy",
-    "class": "terms-privacy",
-    "name": "terms-privacy",
-    "url": "/info/terms-privacy"
+  // }, {
+  //   "class": "divider",
+  // }, {
+  //   "class": "about",
+  //   "name": "about",
+  //   "url": "/info/about",
+  // }, {
+  //   "class": "terms-privacy",
+  //   "name": "terms-privacy",
+  //   "url": "/info/terms-privacy"
   }
 ]

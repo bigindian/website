@@ -12,20 +12,18 @@
         [Story removed by {{ story.is_moderated ? "moderator" : "original submitter" }}]
 
 
-    span.cats(ng-if="!story.is_gone && !settings.storyHideCategories")
+    //- span.cats(ng-if="!story.is_gone && !settings.storyHideCategories")
       a(ng-repeat="cat in story.parsedCategories track by $index"
         fn-route="/category/{{ cat.slug }}")
         news-category(ng-model="cat")
 
     span.domain(ng-if="!settings.storyHideDomain")
-      a(fn-route="{{ story.url }}"
-        target="{{ openNewTab ? '_blank' : ''}}") {{ story.url | domain }}
+      a(fn-route="/search?domain={{ story.domain }}"
+        target="{{ openNewTab ? '_blank' : ''}}") ({{ story.domain }})
 
-    .meta
-      span(ng-if="!settings.storyHideAuthor").
-        by {{ story.created_by.username }}
+    span.meta
       span.timestamp(ng-if="!settings.storyHideDate").
-        {{ story.created_at | prettydate }}
+        {{ story.created_at | prettydate }} by {{ story.created_by.username }}
       span.comments_label(ng-if="story.comments_count == 0 && !settings.storyHideComments")
         a(fn-route="/story/{{ story.slug }}") discuss
       span.comments_label(ng-if="story.comments_count != 0 && !settings.storyHideComments")

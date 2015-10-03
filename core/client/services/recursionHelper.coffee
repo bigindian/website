@@ -9,7 +9,6 @@ module.exports = Service = ($compile) ->
   @returns An object containing the linking functions.
   ###
   compile: (element, link) ->
-    console.log element, link
     # Normalize the link parameter
     if angular.isFunction link then link = post: link
 

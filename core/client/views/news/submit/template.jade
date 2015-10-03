@@ -21,22 +21,6 @@ form(name="form"
       .columns.medium-2.get-title-container(ng-if="story.url && !form.$valid")
         button(ng-click="getTitle()") Get Title
 
-      .columns.category-selector(ng-if="story.url && selectedCats < 3")
-        .title Choose upto 3 categories
-        .options
-          //- span()
-          news-category(ng-model="cat"
-            ng-repeat="cat in categories | orderBy : 'slug'"
-            ng-if="cat.select != true"
-            ng-click="select(cat)")
-
-      .columns.category-selected(ng-if="story.url")
-        .title Selected categories
-        .options
-            news-category(ng-model="cat"
-              ng-repeat="cat in categories | orderBy : 'slug'"
-              ng-if="cat.select == true"
-              ng-click="deselect(cat)")
 
       .columns(ng-if="story.url")
         textarea(placeholder="Optional description when submitting a URL; please see guidelines",
@@ -135,6 +119,6 @@ form(name="form"
           tt ![alt text](http://example.com/image.jpg) (only allowed in link text)
 
 
-  .columns(ng-if="selectedCats >= 1 && form.$valid")
+  .columns(ng-if="form.$valid")
     div(google-recaptcha, ng-model="form.gcaptcha", ng-if="!form.gcaptcha")
     button(ng-click="submit(story)", ng-if="form.gcaptcha") Submit
