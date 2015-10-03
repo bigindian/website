@@ -1,4 +1,4 @@
-Controller = module.exports = (Settings, Stories, Categories) ->
+Controller = module.exports = (Settings, Stories) ->
 
   #! This array will contain the list of urls for our sitemal in JSON format.
   urlList = [
@@ -8,7 +8,10 @@ Controller = module.exports = (Settings, Stories, Categories) ->
     {url: "/page/3", priority: 0.7, freq: "daily"}
 
     #! Monthly urls
-    {url: "/categories", priority: 0.3, freq: "monthly"}
+    {url: "/categories", priority: 0.3, req: "monthly"}
+    {url: "/info/about", priority: 0.3, req: "monthly"}
+    {url: "/info/terms-privacy", priority: 0.3, req: "monthly"}
+    {url: "/info/contribute", priority: 0.3, req: "monthly"}
   ]
 
 
@@ -36,14 +39,6 @@ Controller = module.exports = (Settings, Stories, Categories) ->
     "
 
 
-  #! Add all the category urls
-  Categories.getAll().then (collections) ->
-    for model in collections.toJSON()
-      urlList.push url: "/category/#{model.slug}", priority: 0.5, freq: "weekly"
-      urlList.push url: "/category/#{model.slug}/page/2", priority: 0.3, freq: "weekly"
-      urlList.push url: "/category/#{model.slug}/recent", priority: 0.3, freq: "weekly"
-      urlList.push url: "/category/#{model.slug}/recent/page/2", priority: 0.3, freq: "weekly"
-
   (request, response, next) ->
     response.header "Content-Type", "text/xml"
     response.send generateSitemap urlList
@@ -52,7 +47,6 @@ Controller = module.exports = (Settings, Stories, Categories) ->
 Controller["@require"] = [
   "igloo/settings"
   "models/news/stories"
-  "models/news/categories"
 ]
 Controller["@routes"] = ["/sitemap.xml"]
 Controller["@singleton"] = true

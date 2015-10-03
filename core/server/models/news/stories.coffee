@@ -53,7 +53,7 @@ markdown  = require("markdown").markdown
 url       = require "url"
 
 
-Model = (Elasticsearch, BaseModel, Comments, NewsCategories, NewsVotes, Users) ->
+Model = (Elasticsearch, BaseModel, Comments, NewsVotes, Users) ->
   # **MAX_EDIT_MINS** After this many minutes, a story cannot be edited.
   MAX_EDIT_MINS = 90
 
@@ -79,13 +79,9 @@ Model = (Elasticsearch, BaseModel, Comments, NewsCategories, NewsVotes, Users) -
   new class Stories extends BaseModel
     tableName: "news_stories"
 
-    #! Get the static values from the DB
-    enums: categories: tableName: "news_categories"
-
 
     # Properties to extend to the model!
     extends:
-      categories: -> @hasMany "news_story_category", "story"
       comments: -> @hasMany "news_comments", "story"
       created_by: -> @belongsTo "users", "created_by"
       updated_by: -> @belongsTo "users", "updated_by"
@@ -226,6 +222,23 @@ Model = (Elasticsearch, BaseModel, Comments, NewsCategories, NewsVotes, Users) -
         @updateHotness()
 
 
+      onCreate: -> return
+
+
+      onCreated: ->
+        #! Save the model in elasticsearch!
+        Elasticsearch.create "stories", @id,
+          comments_count: @get "comments_count"
+          created_at: @get "created_at"
+          created_by: @get "created_by"
+          content: @get "description"
+          domain: @get "domain"
+          hotness: @get "hotness"
+          title: @get "title"
+          url: @get "url"
+
+
+
     ###
     **top()** Returns the top stories. Works similar to the query function
 
@@ -235,7 +248,7 @@ Model = (Elasticsearch, BaseModel, Comments, NewsCategories, NewsVotes, Users) -
     ###
     top: (buildQuery, options={}) ->
       options.order = hotness: "DESC"
-      options.withRelated = ["created_by", "categories"]
+      options.withRelated = ["created_by"]
       @query buildQuery, options
 
 
@@ -252,11 +265,7 @@ Model = (Elasticsearch, BaseModel, Comments, NewsCategories, NewsVotes, Users) -
     ```
     ###
     create: (parameters) ->
-      categories = parameters.categories or []
-
       parameters.domain = url.parse(parameters.url).hostname
-
-      delete parameters.categories
 
       #! First set the slug from the right variable.
       parameters.slug = @createSlug()
@@ -266,27 +275,7 @@ Model = (Elasticsearch, BaseModel, Comments, NewsCategories, NewsVotes, Users) -
         parameters.description = markdown.toHTML description
 
       #! Now create the model and save it into the DB
-      @model.forge parameters
-      .save().then (model) =>
-        #! For each category that was set in the parameters prepare the values
-        #! for the insert query.
-        insertQuery = (category: cat, story: model.id for cat in categories)
-
-        promise = Elasticsearch.create "stories", model.id,
-          comments_count: model.get "comments_count"
-          content: model.get "description_markdown"
-          created_at: model.get "created_at"
-          created_by: model.get "created_by"
-          doman: model.get "domain"
-          hotness: model.get "hotness"
-          title: model.get "title"
-
-        #! Simultaneously update the hotness and the add the categories!
-        Promise.all([
-          promise
-          model.updateHotness().save()
-          @knex("news_story_category").insert insertQuery
-        ]).then -> model
+      @model.forge(parameters).save()
 
 
     ###
@@ -297,7 +286,7 @@ Model = (Elasticsearch, BaseModel, Comments, NewsCategories, NewsVotes, Users) -
     ```
     ###
     recent: (buildQuery, options={}) ->
-      options.withRelated = ["created_by", "categories"]
+      options.withRelated = ["created_by"]
       options.order = created_at: "DESC"
       @model.forge().fetchPage buildQuery, options
 
@@ -320,7 +309,6 @@ Model["@require"] = [
   "libraries/elasticsearch"
   "models/base/model"
   "models/comments"
-  "models/news/categories"
   "models/news/votes"
   "models/users"
 ]

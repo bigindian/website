@@ -6,11 +6,11 @@
   "login": "Login",
   "logout": "Logout",
   "news": "News",
-  "news.categories": "Categories",
+  "news.comments": "Comments",
   "news.recent": "Recent",
   "news.search": "Search",
   "news.submit": "Submit",
-  "news.top": "Top",
+  "news.title": "The Big Indian News",
   "signup": "Sign Up",
   "settings": "Settings",
   "terms-privacy": "Terms & Privacy"

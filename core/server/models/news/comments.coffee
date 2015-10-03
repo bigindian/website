@@ -35,7 +35,7 @@ exports = module.exports = (Elasticsearch, BaseModel, NewsStories, NewsVotes) ->
         .then (comment) ->
           #! Add the comment into Elasticsearch..
           promise = Elasticsearch.create "comments", comment.id,
-            content: comment.get "content_markdown"
+            comment: comment.get "content"
             created_at: comment.get "created_at"
             created_by: comment.get "created_by"
             hotness: comment.get "hotness"

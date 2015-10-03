@@ -5,7 +5,6 @@ Controller = module.exports = (Cache, Stories) ->
 
     Cache.get cacheKey
     .catch ->
-      # console.log request.params[0]
       Stories.top null, page: page
       .then (results) ->
 

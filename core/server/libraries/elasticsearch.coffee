@@ -13,8 +13,6 @@ exports = module.exports = (IoC, settings) ->
         body: body
 
 
-    # search: (type) ->
-
 
 exports["@singleton"] = true
 exports["@require"] = [
