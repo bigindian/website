@@ -12,7 +12,6 @@ Router = ($stateProvider, $locationProvider, $urlMatcher, $urlRouterProvider) ->
       templateUrl: templateUrl
       url: route
       resolve:
-        categories: ["@models/news/categories", (m) -> m.download()]
         user:       ["@models/users",           (m) -> m.download()]
         language:   ["@models/languages",       (m) -> m.download()]
 
@@ -27,15 +26,13 @@ Router = ($stateProvider, $locationProvider, $urlMatcher, $urlRouterProvider) ->
   _route "info/contribute",    "/info/contribute"
   _route "info/terms-privacy", "/info/terms-privacy"
 
-  _route "news/categories",    "/categories"
-  _route "news/filters",       "/filters"
-  _route "news/category",      "/category/{cat:[^/]+}/recent"
-  _route "news/category",      "/category/{cat:[^/]+}/recent/page/{page:[0-9]+}"
-  _route "news/category",      "/category/{cat:[^/]+}"
-  _route "news/category",      "/category/{cat:[^/]+}/page/{page:[0-9]+}"
   _route "news/index",         ""
   _route "news/settings",      "/settings"
   _route "news/index",         "/page/{page:[0-9]+}"
+
+  _route "news/recent",        "/comments"
+  _route "news/recent",        "/comments/page/{page:[0-9]+}"
+
   _route "news/recent",        "/recent"
   _route "news/recent",        "/recent/page/{page:[0-9]+}"
   _route "news/search",        "/search"
