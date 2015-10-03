@@ -36,12 +36,11 @@ window.scripts = [
     id: "fonts.css"
     remote: [
       "//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css"
-      "//fonts.googleapis.com/css?family=Cantarell"
-      "//fonts.googleapis.com/css?family=Open+Sans:400,600"
-      "//fonts.googleapis.com/css?family=Roboto"
-      "//fonts.googleapis.com/css?family=Roboto+Slab"
-      "//fonts.googleapis.com/css?family=Palanquin:100"
-      "//fonts.googleapis.com/css?family=Droid+Sans:700"
+      "//fonts.googleapis.com/css?family=Cantarell:400,700"
+
+      "//fonts.googleapis.com/css?family=Roboto:400,900"
+      "//fonts.googleapis.com/css?family=Droid+Sans:400,700"
+      "//fonts.googleapis.com/css?family=Source+Sans+Pro:900,400,700"
     ]
   }
 ]

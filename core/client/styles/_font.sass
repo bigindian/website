@@ -1,9 +1,4 @@
 // Define CSS font-specific classes
-.font-roboto-slab
-  font-family: "Roboto Slab", serif
-
-.font-open
-  font-family: "Open Sans", sans-serif
 
 .font-awesome
   font: normal normal normal 14px/1 "FontAwesome";
@@ -19,16 +14,16 @@
 .font-roboto
   font-family: "Roboto", serif
 
-.font-palanquin
-  font-family: 'Palanquin', 'Helvetica', 'Arial', sans-serif
-
 .font-droid
   font-family: 'Droid Sans', sans-serif
 
+.font-source-pro
+  font-family: 'Source Sans Pro', sans-serif
+  zoom: 1
 
 // Define CSS text-specific classes
 .font-text
-  @extend .font-open
+  @extend .font-droid
 
 .font-thin
   @extend .font-palanquin
@@ -40,11 +35,11 @@
 
 
 .font-title
-  @extend .font-roboto
+  @extend .font-droid
 
 .icon
   @extend .font-awesome
 
 // Default page Font
 body
-  @extend .font-cantarell
+  @extend .font-droid

@@ -1,18 +1,8 @@
 news-item
   +clearfix
+  @extend .font-droid
   display: block
-
-  .link
-    a
-      @extend .font-bitter
-      color: #000
-      font-size: 10pt
-      font-weight: bold
-      margin-right: 5px
-      &:visited
-        color: #444
-      &:hover
-        text-decoration: none
+  font-weight: 400
 
   .story_liner
     padding: 3px 0
@@ -21,20 +11,38 @@ news-item
     margin-right: 5px
 
   .domain a
-    font-style: italic
+    font-size: 11px
+    // font-style: italic
     margin-right: 5px
     color: #888
     opacity: 1
+    &:hover
+      color: blue
 
   .details
+    @extend .font-cantarell
     color: #888
-    font-size: 8.5pt
+    font-size: 13.5px
     margin-top: 2px
     margin-left: 50px
+
     span
       +single-transition
       &:hover
         color: #000
+
+    .link
+      a
+        @extend .font-bold
+        font-size: 100%
+        text-rendering: optimizeLegibility;
+        color: #000
+        margin-right: 5px
+        &:visited
+          color: #444
+        &:hover
+          text-decoration: none
+          color: $news-color
 
   a
     text-decoration: none
@@ -43,29 +51,36 @@ news-item
     &:hover
       text-decoration: underline
 
+  .meta, .meta span, .domain
+    vertical-align: text-bottom
+
   .meta
+    font-size: 11px
     span
-      vertical-align: text-bottom
+      // vertical-align: text-bottom
       &:after
-        content: '\b7'
+        content: '|'
         padding: 0 5px
       &:last-child:after
         content: none
 
+
   .votes
     float: left
     position: relative
+    @extend .font-droid
+
     .voter, .score
       position: absolute
 
     .voter
       left: 28px
-      top: 3px
+      top: 4px
       a
         border-color: transparent transparent #CCC transparent
         border-style: solid
-        border-width: 4px
-        border-bottom-width: 9px
+        border-width: 5px
+        border-bottom-width: 10px
         display: block
         height: 0
         margin-bottom: 0px
@@ -76,20 +91,17 @@ news-item
         &:hover, &.voted
           border-color: transparent transparent #000 transparent
     .score
-      top: 2px
-      left: 0
+      top: 4px
+      left: -1px
       color: #CCC !important
       display: inline-block
-      font-size: 12px
+      font-size: 13px
       text-align: right
       font-weight: bold
       min-width: 25px
 
   .score, .details span, a
     +single-transition
-
-  &:hover .link a
-    color: $news-color
 
 
 body.storyHideScore news-item .details

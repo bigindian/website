@@ -4,6 +4,7 @@ a, a:visited, a:active
     text-decoration: none
 
 html, body
+  -webkit-font-smoothing: antialiased;
   +single-transition
 
 .wait, .wait *
@@ -39,7 +40,6 @@ ol
 
 .seperator
   background: #DDD
-  // opacity: 0.5
   height: 1px
   margin: 20px 0
   width: 100%
@@ -63,12 +63,10 @@ body
 
 
 h1, h2, h3, h4, h5, h6
-  @extend .font-cantarell
-  font-weight: bold
+  @extend .font-bold
+  // font-weight: bold
   @media #{$small-only}
     text-align: center
-h1
-  text-transform: uppercase
 
 
 .gmnoprint img
