@@ -3,7 +3,7 @@ Set this to the total number of scripts in the page. Ideally we could use a
 loop and find out programatically, but I prefer to hard-code it as the
 dependencies don't change that often.
 ###
-maxScriptCount = 9
+maxScriptCount = 10
 
 
 #! Define some variables

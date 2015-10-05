@@ -10,6 +10,7 @@ window.scripts = [
     remote: [
       "//ajax.googleapis.com/ajax/libs/angularjs/1.4.0/angular.min.js"
       "//cdnjs.cloudflare.com/ajax/libs/angular-hotkeys/1.4.5/hotkeys.min.js"
+      "//cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.0/angular-cookies.min.js"
       "//cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.14/angular-ui-router.min.js"
     ]
     local: "/build/md5/libraries_#{ publicData.md5['libraries.js'] }.js"
