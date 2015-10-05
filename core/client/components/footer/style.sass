@@ -6,12 +6,17 @@ footer
 
   ul
     +clearfix
-    opacity: 0.5
     margin: 0 auto
     max-width: $row-width
     li
       float: right
       a
+        +single-transition
+        opacity: 0.75
         display: block
         padding: 0 10px
         text-decoration: none
+
+        &:hover
+          color: $news-color
+          opacity: 1

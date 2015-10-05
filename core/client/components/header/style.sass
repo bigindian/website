@@ -6,11 +6,10 @@ $subHeaderDarkColor: rgba(0,0,0,0.3)
 
 
 header
-  @extend .font-droid
-  // font-family: "Helvetica Neue", Helvetica, Roboto, Arial, sans-serif;
   $border-color: #EEE
-  width: 100%
+  @extend .font-droid
   background: #C80900
+  width: 100%
   z-index: 4
 
   nav#menu-header
@@ -25,8 +24,10 @@ header
         opacity: 0.9
         border-bottom: 3px solid transparent
 
-        &.right
-          float: right
+        &.nav-right
+          @media #{$medium-up}
+            float: right
+
         &.title
           @extend .font-bold
           text-transform: none
@@ -35,7 +36,12 @@ header
           opacity: 1
 
         &.active
-          border-bottom-color: #FFF
+          @media #{$medium-up}
+            border-bottom-color: #FFF
+          @media #{$small-only}
+            background: #FFF
+            a
+              color: $news-color
           opacity: 1
 
         a

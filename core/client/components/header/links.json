@@ -25,15 +25,15 @@
     "name": "news.submit",
     "url": "/submit",
   }, {
-    "class": "settings right",
+    "class": "settings nav-right",
     "name": "settings",
     "url": "/settings",
   }, {
-    "class": "hide-if-loggedin right",
+    "class": "hide-if-loggedin nav-right",
     "name": "login",
     "url": "/login",
   }, {
-    "class": "show-if-loggedin right",
+    "class": "show-if-loggedin nav-right",
     "name": "logout",
     "url": "/logout",
   // }, {
