@@ -10,16 +10,13 @@ Controller = module.exports = (Cache, Stories) ->
 
         json = JSON.stringify results
 
-        #! Cache only the first three pages!
-        if 0 <= page and page >= 3 then Cache.set cacheKey, json, 60 * 1
+        #! Cache only the first fifty pages!
+        if 0 <= page and page >= 50 then Cache.set cacheKey, json, 60 * 1 # 1 minute cache
         else json
 
 
     .then (results) ->
       response.render "main/news/index",
-        # cache:
-          # enable: true
-          # timeout: 60 * 1 # 1 minute cache
         data: JSON.parse results
         metaRobots: "noarchive"
         title: null

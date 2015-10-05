@@ -31,7 +31,7 @@
       "description": "This is sometings cool",
       "description_markdown": "<p>This is sometings cool</p>",
       "slug": "this-is-something-1",
-      "url": "https://github.com/enamakel/thebigindian.news",
+      "url": "https://github.com/thebigindiannews/website",
       "upvotes": 0,
       "downvotes": 0,
       "comments_count": 1,

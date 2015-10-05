@@ -20,7 +20,7 @@ exports = module.exports = (IoC, settings) ->
   ###
   cronDaily = ->
     logger.info name, "running daily cron scripts"
-    if settings.server.env == "production" then emailReport()
+    # if settings.server.env == "production" then emailReport()
 
 
   ###*
