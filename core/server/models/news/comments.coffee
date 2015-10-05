@@ -19,34 +19,24 @@ exports = module.exports = (Elasticsearch, BaseModel, NewsStories, NewsVotes) ->
 
     create: (storyID, data) ->
       #! First find the story for which we are adding the comment
-      NewsStories.get storyID
-      .then (story) =>
+      NewsStories.get(storyID).then (story) =>
         #! Prepare the strucutre of the new comment
         newComment =
           content_markdown: data.content
           content: markdown.toHTML data.content
           created_by: data.created_by
+          created_by_uname: data.created_by_uname
           parent: data.parent
           story: storyID
           slug: @createSlug()
 
         #! Create the new comment!
-        @model.forge(newComment).save()
-        .then (comment) ->
-          #! Add the comment into Elasticsearch..
-          promise = Elasticsearch.create "comments", comment.id,
-            comment: comment.get "content"
-            created_at: comment.get "created_at"
-            created_by: comment.get "created_by"
-            hotness: comment.get "hotness"
-            title: comment.get "title"
-
+        @model.forge(newComment).save().then (comment) ->
           #! increment the comments count for the given story.
           story.increaseCommentsCount()
 
           #! Return the newly created comment
           comment
-
 
 
     createChild: (id, data) ->
@@ -56,6 +46,10 @@ exports = module.exports = (Elasticsearch, BaseModel, NewsStories, NewsVotes) ->
       #! Then fetch the parent and then create the child!
       @get(id).then (parentComment) => @create parentComment.get("story"), data
 
+
+    top: (buildQuery, options={}) ->
+      options.order = hotness: "DESC"
+      @query buildQuery, options
 
 
     findByParent: (parentId, options={}) ->
@@ -151,6 +145,26 @@ exports = module.exports = (Elasticsearch, BaseModel, NewsStories, NewsVotes) ->
       ```
       ###
       onSave: -> @clean().updateHotness()
+
+
+      onCreated: ->
+        #! Save the model in elasticsearch!
+        Elasticsearch.create "comments", @id,
+          id: @id
+          content: @get "content"
+          created_at: @get "created_at"
+          created_by: @get "created_by"
+          created_by_uname: @get "created_by_uname"
+          downvotes: 0
+          slug: @get "slug"
+          upvotes: 0
+
+
+      onUpdated: ->
+        Elasticsearch.update "comments", @id,
+          content: @get "content"
+          downvotes: @get "downvotes"
+          upvotes: @get "upvotes"
 
 
 exports["@require"] = [

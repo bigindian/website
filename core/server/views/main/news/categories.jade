@@ -1,6 +1,0 @@
-extends ./common.jade
-
-block robots
-  each cat in data.categories
-    a(href="/category/#{cat.slug}")= cat.title
-    a(href="/category/#{cat.slug}/recent")= "Recent " + cat.title

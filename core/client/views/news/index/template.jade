@@ -3,7 +3,7 @@ ul.stories
   li.story(ng-repeat="story in stories track by $index")
     news-item(ng-model="story")
 
-//- .page-links(ng-if)
+.page-links
   a(fn-route="/page/{{ pagination.prev }}", ng-if="pagination.prev") Page {{ pagination.prev }}
   span(ng-if="pagination.prev && pagination.next") &nbsp;&middot;&nbsp;
   a(fn-route="/page/{{ pagination.next }}", ng-if="pagination.next") Page {{ pagination.next }}

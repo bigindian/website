@@ -36,7 +36,7 @@ window.scripts = [
     id: "fonts.css"
     remote: [
       "//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css"
-      "//fonts.googleapis.com/css?family=Cantarell:400,700"
+      "//fonts.googleapis.com/css?family=Cantarell"
 
       "//fonts.googleapis.com/css?family=Roboto:400,900"
       "//fonts.googleapis.com/css?family=Droid+Sans:400,700"

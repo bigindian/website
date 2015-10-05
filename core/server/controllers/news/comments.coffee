@@ -1,8 +1,8 @@
-Controller = module.exports = (Stories) ->
+Controller = module.exports = (Comments) ->
   (request, response, next) ->
-    Stories.recent null, page: request.params.page or 1
+    Comments.recent null, page: request.params.page or 1
     .then (results) ->
-      response.render "main/news/recent",
+      response.render "main/news/comments",
         metaRobots: "noarchive"
         cache:
           enable: true
@@ -15,7 +15,7 @@ Controller = module.exports = (Stories) ->
     .catch (e) -> next e
 
 
-Controller["@require"] = ["models/news/stories"]
+Controller["@require"] = ["models/news/comments"]
 Controller["@routes"] = [
   "/comments"
   "/comments/page/:page"

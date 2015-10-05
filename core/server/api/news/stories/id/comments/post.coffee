@@ -1,11 +1,9 @@
 Controller = module.exports = (Story, Comments) ->
   (request, response, next) ->
     request.body.created_by = request.user.id
+    request.body.created_by_uname = request.user.get "username"
 
-    # Story.get request.params.story
-    # .then (story) ->
-
-    Comments.create request.params.story, request.body
+    Comments.create(request.params.story, request.body)
     .then (comment) -> response.json comment
     .catch (e) -> next e
 

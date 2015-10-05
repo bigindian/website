@@ -53,7 +53,7 @@ markdown  = require("markdown").markdown
 url       = require "url"
 
 
-Model = (Elasticsearch, BaseModel, Comments, NewsVotes, Users) ->
+Model = (Elasticsearch, BaseModel, NewsVotes, Users) ->
   # **MAX_EDIT_MINS** After this many minutes, a story cannot be edited.
   MAX_EDIT_MINS = 90
 
@@ -210,7 +210,7 @@ Model = (Elasticsearch, BaseModel, Comments, NewsVotes, Users) ->
 
 
       ###
-      **onSave()** Update the hotness of the story every time it gets saved into
+      **on*Save()** Update the hotness of the story every time it gets saved into
       the DB.
 
       ```
@@ -222,22 +222,30 @@ Model = (Elasticsearch, BaseModel, Comments, NewsVotes, Users) ->
         @updateHotness()
 
 
-      onCreate: -> return
-
-
       onCreated: ->
         #! Save the model in elasticsearch!
         Elasticsearch.create "stories", @id,
-          comments_count: @get "comments_count"
+          id: @id
+          comments_count: 0
+          content: @get "description"
           created_at: @get "created_at"
           created_by: @get "created_by"
-          content: @get "description"
+          slug: @get "slug"
+          created_by_uname: @get "created_by_uname"
           domain: @get "domain"
-          hotness: @get "hotness"
+          downvotes: 0
           title: @get "title"
+          upvotes: 0
           url: @get "url"
 
 
+      onUpdated: ->
+        Elasticsearch.update "stories", @id,
+          comments_count: @get "comments_count"
+          content: @get "description"
+          downvotes: @get "downvotes"
+          title: @get "title"
+          upvotes: @get "upvotes"
 
     ###
     **top()** Returns the top stories. Works similar to the query function
@@ -248,7 +256,6 @@ Model = (Elasticsearch, BaseModel, Comments, NewsVotes, Users) ->
     ###
     top: (buildQuery, options={}) ->
       options.order = hotness: "DESC"
-      options.withRelated = ["created_by"]
       @query buildQuery, options
 
 
@@ -270,6 +277,10 @@ Model = (Elasticsearch, BaseModel, Comments, NewsVotes, Users) ->
       #! First set the slug from the right variable.
       parameters.slug = @createSlug()
 
+      parameters.upvotes = 0
+      parameters.downvotes = 0
+      parameters.comments_count = 0
+
       #! Then parse the description!
       if description = parameters.description
         parameters.description = markdown.toHTML description
@@ -286,7 +297,6 @@ Model = (Elasticsearch, BaseModel, Comments, NewsVotes, Users) ->
     ```
     ###
     recent: (buildQuery, options={}) ->
-      options.withRelated = ["created_by"]
       options.order = created_at: "DESC"
       @model.forge().fetchPage buildQuery, options
 
@@ -298,9 +308,7 @@ Model = (Elasticsearch, BaseModel, Comments, NewsVotes, Users) ->
     Stories.comments(0).then (commentsCollection) ->
     ```
     ###
-    comments: (id) ->
-      @model.where(id: id).fetch withRelated: ["comments"]
-      .then (story) -> story.related("comments").load "created_by"
+    comments: (id) -> @model.where(id: id).fetch withRelated: ["comments"]
 
 
 
@@ -308,7 +316,6 @@ Model["@singleton"] = true
 Model["@require"] = [
   "libraries/elasticsearch"
   "models/base/model"
-  "models/comments"
   "models/news/votes"
   "models/users"
 ]

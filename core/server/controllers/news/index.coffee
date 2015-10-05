@@ -1,6 +1,6 @@
 Controller = module.exports = (Cache, Stories) ->
   (request, response, next) ->
-    page = request.params[0] or 1
+    page = request.params.page or 1
     cacheKey = "main/news/index/#{page}"
 
     Cache.get cacheKey
@@ -33,6 +33,6 @@ Controller["@require"] = [
 ]
 Controller["@routes"] = [
   ""
-  "/page/([0-9]+)?"
+  "/page/:page"
 ]
 Controller["@singleton"] = true

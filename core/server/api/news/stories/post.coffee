@@ -13,6 +13,7 @@
 Controller = module.exports = (Stories) ->
   (request, response, next) ->
     request.body.created_by = request.user.id
+    request.body.created_by_uname = request.user.get "username"
 
     Stories.create request.body
     .then (story) -> response.json story

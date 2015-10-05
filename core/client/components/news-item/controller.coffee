@@ -1,9 +1,8 @@
-Controller = ($scope, $log, Stories, Categories, Settings) ->
+Controller = ($scope, $location, $log, Notifications, Stories, Categories, Users, Settings) ->
   logger = $log.init Controller.tag
   logger.log "initializing"
 
   $scope.settings = {}
-
   $scope.getCategory = (id) -> Categories.findById id
 
   $scope.$watch "story", (story={}) ->
@@ -11,7 +10,6 @@ Controller = ($scope, $log, Stories, Categories, Settings) ->
 
     for categoryPair in (story.categories or [])
       categories.push Categories.findById categoryPair.category
-
     $scope.story.parsedCategories = categories
 
 
@@ -26,7 +24,14 @@ Controller = ($scope, $log, Stories, Categories, Settings) ->
   # $scope.categories = Categories.getAll()
   $scope.hasVoted = false
   $scope.upvote = ->
+    #! User needs to be logged in
+    if not Users.isLoggedIn()
+      $location.path "/login"
+      Notifications.warn "login_needed"
+
+    #! Avoid upvoting if the comment has already been voting
     if $scope.hasVoted then return
+
     $scope.story.score += 1
     $scope.hasVoted = true
     Stories.upvote $scope.story.id
@@ -35,9 +40,12 @@ Controller = ($scope, $log, Stories, Categories, Settings) ->
 Controller.tag = "component:news-item"
 Controller.$inject = [
   "$scope"
+  "$location"
   "$log"
+  "@notifications"
   "@models/news/stories"
   "@models/news/categories"
+  "@models/users"
   "@settings"
 ]
 module.exports = Controller

@@ -17,7 +17,7 @@ exports.up = (knex, Promise) ->
     table.text("story_cache").defaultTo ""
     table.json("meta").defaultTo "{}"
     table.integer("created_by").notNull().references("id").inTable "users"
-    table.integer("updated_by").references("id").inTable "users"
+    table.string("created_by_uname").notNull()
     table.timestamp("created_at").notNull().defaultTo knex.raw "now()"
     table.timestamp("updated_at").notNull().defaultTo knex.raw "now()"
     # table.unique ["is_expired", "is_moderated"]

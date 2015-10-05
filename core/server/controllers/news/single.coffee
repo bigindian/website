@@ -5,16 +5,7 @@ Controller = module.exports = (Stories, Comments) ->
     slug = request.params.slug
 
     # First get the story by the slug
-    Stories.getBySlug slug, withRelated: ["created_by", "comments"]
-    .then (story) ->
-
-      # Load the comments now
-      story.related("comments").load "created_by"
-      .then (comments) ->
-        comments = comments.toJSON()
-        story.set "comments", comments
-        story
-
+    Stories.getBySlug slug, withRelated: ["comments"]
 
      # Once the comments have been loaded too, start rendering the page
     .then (story) ->

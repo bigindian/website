@@ -24,11 +24,11 @@ Controller = module.exports = (ElasticSearch) ->
 
         optionalQueries.push
           fuzzy:
-            comment:
+            content:
               value: request.query.q,
               boost: 2
 
-        optionalQueries.push match: content: request.query.q
+        # optionalQueries.push fuzzy: content: request.query.q
 
       if isNotEmpty request.query.domain
         compulsaryQueries.push match: domain: request.query.domain

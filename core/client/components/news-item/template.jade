@@ -23,7 +23,7 @@
 
     span.meta
       span.timestamp(ng-if="!settings.storyHideDate").
-        {{ story.created_at | prettydate }} by {{ story.created_by.username }}
+        {{ story.created_at | prettydate }} by {{ story.created_by_uname }}
       span.comments_label(ng-if="story.comments_count == 0 && !settings.storyHideComments")
         a(fn-route="/story/{{ story.slug }}") discuss
       span.comments_label(ng-if="story.comments_count != 0 && !settings.storyHideComments")

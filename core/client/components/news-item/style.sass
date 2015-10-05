@@ -22,7 +22,7 @@ news-item
   .details
     @extend .font-cantarell
     color: #888
-    font-size: 13.5px
+    font-size: 13.2px
     margin-top: 2px
     margin-left: 50px
 
@@ -33,11 +33,27 @@ news-item
 
     .link
       a
-        @extend .font-bold
-        font-size: 100%
-        text-rendering: optimizeLegibility;
-        color: #000
-        margin-right: 5px
+        @extend .font-cantarell
+        box-sizing: border-box;
+        color: rgb(0, 0, 0);
+        cursor: auto;
+        display: inline;
+        font-family: Cantarell, sans-serif;
+        font-size: 13.3333330154419px;
+        font-style: normal;
+        font-weight: bold;
+        height: auto;
+        line-height: 20px;
+        list-style-image: none;
+        list-style-position: outside;
+        list-style-type: none;
+        margin-right: 5px;
+        text-align: left;
+        text-decoration: none;
+        transition-delay: 0s;
+        transition-duration: 0.3s;
+        transition-property: border;
+        transition-timing-function: ease-out;
         &:visited
           color: #444
         &:hover
@@ -75,7 +91,7 @@ news-item
 
     .voter
       left: 28px
-      top: 4px
+      top: 2px
       a
         border-color: transparent transparent #CCC transparent
         border-style: solid
@@ -91,11 +107,11 @@ news-item
         &:hover, &.voted
           border-color: transparent transparent #000 transparent
     .score
-      top: 4px
-      left: -1px
+      top: 3px
+      left: 1px
       color: #CCC !important
       display: inline-block
-      font-size: 13px
+      font-size: 12px
       text-align: right
       font-weight: bold
       min-width: 25px

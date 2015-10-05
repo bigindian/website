@@ -1,36 +1,49 @@
-h1 Submit your link
+.row
+  .columns
+    h3 Submit your link
 form(name="form"
   ng-class="formClasses"
   ng-init="showGuidlines = false; showMarkdown = false; selectedCats = 0").row
+
   .columns
-    .row.collapse
-      .columns
-        input.url.field(ng-model="story.url"
+    .row
+      .columns.medium-2
+        label URL *
+      .columns.medium-10
+        input(ng-model="story.url"
           ng-disabled="formLoading"
-          placeholder="URL *"
           type="url"
           required)
 
-      .columns(ng-if="story.url", class="{{ form.$valid ? '' : 'medium-10' }}")
+  .columns
+    .row
+      .columns.medium-2
+        label Title *
+      .columns(class="{{ story.title ? 'medium-10' : 'medium-8' }}")
         input.title.field(ng-model="story.title"
+          type="text"
           ng-disabled="formLoading"
-          placeholder="Title *"
           minlength="10"
           maxlength="255"
           required)
-      .columns.medium-2.get-title-container(ng-if="story.url && !form.$valid")
+      .columns.medium-2(ng-if="!story.title")
         button(ng-click="getTitle()") Get Title
 
+  .columns
+    .row
+      .columns.medium-2
+        label Description
+      .columns.medium-10
+        textarea(maxlength="3000"
+          ng-model="story.description"
+          ng-disabled="formLoading")
 
-      .columns(ng-if="story.url")
-        textarea(placeholder="Optional description when submitting a URL; please see guidelines",
-          maxlength="3000"
-          ng-model="story.description", ng-disabled="formLoading")
-
-  a.guidlines.columns.medium-6(ng-click="showGuidlines = !showGuidlines")
-    span(ng-if="story.url") Submission guidlines
-  a.markdown.columns.medium-6(ng-click="showMarkdown = !showMarkdown")
-    span(ng-if="story.url") Markdown formatting help
+  .columns(ng-if="story.url")
+    .row
+      a.guidlines.columns.small-6(ng-click="showGuidlines = !showGuidlines")
+        span Submission guidlines
+      a.markdown.columns.small-6(ng-click="showMarkdown = !showMarkdown")
+        span Markdown formatting help
 
   .columns(ng-if="showGuidlines")
     ul
@@ -65,7 +78,6 @@ form(name="form"
           | When the link being submitted is more than a year or so old,
           | please add the year the link was written to the post title in
           | parentheses.
-
 
   .markdown_help.columns(ng-if="showMarkdown")
     table

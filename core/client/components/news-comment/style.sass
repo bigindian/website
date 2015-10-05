@@ -2,6 +2,7 @@ news-comment
   display: block
 
   .children
+    margin-top: 10px
     margin-left: 30px
 
   .content
@@ -32,13 +33,13 @@ news-comment
       position: absolute
 
     .voter
-      left: 22px
-      top: 3px
+      left: 26px
+      top: 1px
       a
         border-color: transparent transparent #CCC transparent
         border-style: solid
         border-width: 4px
-        border-bottom-width: 9px
+        border-bottom-width: 10px
         display: block
         height: 0
         margin-top: -2px
@@ -50,11 +51,11 @@ news-comment
         &:hover, &.voted
           border-color: transparent transparent #000 transparent
     .score
-      top: 4px
-      left: 0
+      top: 0px
+      left: 5px
       color: #CCC !important
       display: inline-block
-      font-size: 11px
+      font-size: 12px
       text-align: right
       font-weight: bold
       min-width: 20px
@@ -66,9 +67,11 @@ news-comment
       padding: 0
 
     textarea
-      width: 80%
+      background: #f9f9f9
+      border-bottom: 2px solid #DDD
+      border: 1px solid #DDD
+      margin-top: 10px
       min-height: 100px
       outline: none
-      background: #f9f9f9
-      border: 1px solid #DDD
-      border-bottom: 2px solid #DDD
+      padding: 6px
+      width: 80%

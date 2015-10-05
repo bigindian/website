@@ -13,12 +13,14 @@ exports.seed = (knex, Promise) ->
     merged_story: 1
     slug: "this-is-something-1"
     title: "This is the first link"
+    created_by_uname: "admin"
     upvotes: 0
     url: "https://github.com/jcs/lobsters"
 
   post2 =
     comments_count: 1
     created_by: 1
+    created_by_uname: "admin"
     description: "This is sometings cool"
     description_markdown: "<p>This is sometings cool</p>"
     domain: "github.com"
@@ -37,6 +39,7 @@ exports.seed = (knex, Promise) ->
   post3 =
     comments_count: 1
     created_by: 1
+    created_by_uname: "admin"
     description: "This is sometings cool"
     description_markdown: "<p>This is sometings cool</p>"
     domain: "github.com"

@@ -6,6 +6,7 @@ Controller = ($location, $log, $scope, $window, Notifications, Users) ->
   prompted = false
   $scope.formClasses = {}
   $scope.signup = {}
+  $scope.form ?= {}
   $scope.$emit "page:start"
 
   $scope.goto = (i) ->
@@ -42,7 +43,9 @@ Controller = ($location, $log, $scope, $window, Notifications, Users) ->
 
       Notifications.error error, 7000
       logger.error response.data, response.status
-    .finally -> $scope.formClasses = loading: $scope.formLoading = false
+    .finally ->
+      $scope.form.gcaptcha = null
+      $scope.formClasses = loading: $scope.formLoading = false
 
 
 Controller.tag = "page:auth/signup"

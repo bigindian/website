@@ -6,6 +6,7 @@ exports.seed = (knex, Promise) ->
     created_by: 3
     slug: "asdbc-1"
     is_moderated: true
+    created_by_uname: "dickhead"
     story: 1
 
   comment2 =
@@ -16,6 +17,7 @@ exports.seed = (knex, Promise) ->
     slug: "asdbc-2"
     story: 1
     parent: 1
+    created_by_uname: "admin"
     is_moderated: true
 
 

@@ -1,32 +1,66 @@
 .searchbox
-  form(action="").row
+  form.row
     .columns
       h2.title Search
     .columns
       p
-        input(autofocus="autofocus" name="q" size="40" type="text" value="")
-        input(type="submit")
+        input(autofocus="autofocus"
+          name="q"
+          size="40"
+          type="text"
+          ng-model="query.q")
+        button(ng-click="search()") Search
+        //- input(type="submit")
     .columns
       span.title Include:
       span.options
-        input(checked="checked" id="what_all" name="what" type="radio" value="all")
+        input(checked="checked"
+          ng-model="query.what"
+          id="what_all"
+          type="radio"
+          value="all")
         label All
-        input(name="what" type="radio" value="stories")
+        input(checked="checked"
+          ng-model="query.what"
+          type="radio"
+          value="stories")
         label Stories
-        input(name="what" type="radio" value="comments")
+        input(checked="checked"
+          ng-model="query.what"
+          type="radio"
+          value="comments")
         label Comments
 
     .columns
       span.title Order by:
       span.options
-        input(checked="checked" name="order" type="radio" value="rel")
+        input(checked="checked"
+          ng-model="query.order"
+          type="radio"
+          value="rel")
         label Relevance
-        input(name="order" type="radio" value="stories")
+        input(checked="checked"
+          ng-model="query.order"
+          type="radio"
+          value="newest")
         label Newest
-        input(name="order" type="radio" value="score")
+        input(checked="checked"
+          ng-model="query.order"
+          type="radio"
+          value="score")
         label Score
 
     .columns
       span.title Domain:
       span.options
-        input(type="text", name="domain", placeholder="abc.com")
+        input(type="text"
+          ng-model="query.domain"
+          placeholder="abc.com")
+
+
+.searchResults(ng-if="results")
+  .result(ng-repeat="hit in results.hits")
+    .result-container(ng-if="hit._type == 'stories'")
+      news-item(ng-model="hit._source")
+    .result-container(ng-if="hit._type == 'comments'")
+      news-comment(ng-model="hit._source")

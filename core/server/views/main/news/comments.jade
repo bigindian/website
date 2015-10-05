@@ -1,0 +1,11 @@
+extends ./common.jade
+
+block robots
+  h1 Comments
+
+  ul
+    for comment in data.collection
+      li
+        span created on #{comment.created_at}
+        span created by #{comment.created_by.username}
+        p #{comment.content}

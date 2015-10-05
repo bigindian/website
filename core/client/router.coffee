@@ -30,8 +30,8 @@ Router = ($stateProvider, $locationProvider, $urlMatcher, $urlRouterProvider) ->
   _route "news/settings",      "/settings"
   _route "news/index",         "/page/{page:[0-9]+}"
 
-  _route "news/recent",        "/comments"
-  _route "news/recent",        "/comments/page/{page:[0-9]+}"
+  _route "news/comments",      "/comments"
+  _route "news/comments",      "/comments/page/{page:[0-9]+}"
 
   _route "news/recent",        "/recent"
   _route "news/recent",        "/recent/page/{page:[0-9]+}"

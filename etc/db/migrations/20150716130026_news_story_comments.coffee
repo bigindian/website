@@ -10,10 +10,9 @@ exports.up = (knex, Promise) ->
     table.integer("parent").references("id").inTable "news_comments"
     table.boolean("is_deleted").defaultTo false
     table.boolean("is_moderated").defaultTo false
-    # table.integer("hat_id")
     table.integer("story").notNull().references("id").inTable "news_stories"
     table.integer("created_by").notNull().references("id").inTable "users"
-    table.integer("updated_by").references("id").inTable "users"
+    table.string("created_by_uname").notNull()
     table.json("meta").defaultTo "{}"
     table.timestamp("created_at").notNull().defaultTo knex.raw "now()"
     table.timestamp("updated_at").notNull().defaultTo knex.raw "now()"

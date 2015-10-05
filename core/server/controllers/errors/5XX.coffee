@@ -12,25 +12,25 @@ Controller = module.exports = (settings) ->
     if isProduction then error.stack = null
 
     #! In development, display the error on console
-    else console.error error
+    else return ouchInstance.handleException error, request, response
 
     #! For API request just return a JSON version of the message
     if request.url.indexOf("/api") > -1
       return response.json error: error.message
 
+    #! Redirect 401s to the login page..
+    if error.status is 401
+      redirectUrl = encodeURIComponent request.url
+      finalUrl = "/login?_success=login_needed&redirectTo=#{redirectUrl}"
+      return response.redirect finalUrl
 
-
-    ouchInstance.handleException error, request, response, (output) ->
-      console.log 'Error handled properly'
-
-
-    # response.render "main/errors/5XX",
-    #   page: "errors/5XX"
-    #   title: "Something freaky happened!"
-    #   data:
-    #     error: error
-    #     message: error.message
-    #     status: error.status or 500
+    response.render "main/errors/5XX",
+      page: "errors/5XX"
+      title: "Something freaky happened!"
+      data:
+        error: error
+        message: error.message
+        status: error.status or 500
 
 
 Controller["@require"] = ["igloo/settings"]
