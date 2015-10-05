@@ -7,11 +7,18 @@ Controller = module.exports = (Settings, Stories) ->
     {url: "/page/2", priority: 0.7, freq: "daily"}
     {url: "/page/3", priority: 0.7, freq: "daily"}
 
+    {url: "/comments", priority: 1, freq: "daily"}
+    {url: "/comments/page/2", priority: 0.7, freq: "daily"}
+    {url: "/comments/page/3", priority: 0.7, freq: "daily"}
+
+    {url: "/recents", priority: 0.7, freq: "daily"}
+    {url: "/recents/page/2", priority: 0.7, freq: "daily"}
+    {url: "/recents/page/3", priority: 0.7, freq: "daily"}
+
     #! Monthly urls
-    {url: "/categories", priority: 0.3, req: "monthly"}
-    {url: "/info/about", priority: 0.3, req: "monthly"}
-    {url: "/info/terms-privacy", priority: 0.3, req: "monthly"}
-    {url: "/info/contribute", priority: 0.3, req: "monthly"}
+    {url: "/info/about", priority: 0.3, freq: "monthly"}
+    {url: "/info/terms-privacy", priority: 0.3, freq: "monthly"}
+    {url: "/info/contribute", priority: 0.3, freq: "monthly"}
   ]
 
 
