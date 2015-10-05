@@ -44,19 +44,18 @@ if environment != "production"
     #page-loader {
       position: absolute;
       background: #eee;
-      top: 50%;
-      left: 50%;
-      margin-left: -100px;
-      z-index: 1;
-      width: 200px; }
+      bottom: 0;
+      left: 0;
+      z-index: 55;
+      width: 100%; }
       #page-loader #page-loading-bar {
         transition: all 300ms ease-out;
         width: 0%;
-        background: #009F5E;
+        background: #c80900;
         height: 2px; }
 else
   style.
-    body,html{height:100%}body.initializing{overflow-y:hidden;background:#FFF}body.initializing #page-loader{display:block}body.initializing auth,body.initializing header,body.initializing main,body.initializing modal,body.initializing section[notifications]{display:none}#page-loader{position:absolute;background:#eee;top:50%;left:50%;margin-left:-100px;z-index:1;width:200px}#page-loader #page-loading-bar{transition:all 300ms ease-out;width:0;background:#009F5E;height:2px}
+    body,html{height:100%}body.initializing{overflow-y:hidden;background:#FFF}body.initializing #page-loader{display:block}body.initializing auth,body.initializing header,body.initializing main,body.initializing modal,body.initializing section[notifications]{display:none}#page-loader{position:absolute;background:#eee;bottom:0;left:0;z-index:55;width:100%}#page-loader #page-loading-bar{transition:all 300ms ease-out;width:0;background:#c80900;height:2px}
 
 //- SEO description tag
 if description

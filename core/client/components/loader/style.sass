@@ -1,11 +1,12 @@
 #page-loader
   display: none
-  height: 2px
+  height: 3px
+  background: #FFF
   left: 0
   margin-left: 0
   overflow: hidden
   position: fixed
-  top: 0
+  bottom: 0
   width: 100%
   z-index: 5
 
@@ -38,7 +39,8 @@ body.loading
 body.show-loader, body.loading
   #page-loader
     display: block
+
     #page-loading-bar
-      -webkit-animation-duration: 1s
+      -webkit-animation-duration: 2s
       -webkit-animation-iteration-count: infinite
       -webkit-animation-name: loader-dynamic-load
