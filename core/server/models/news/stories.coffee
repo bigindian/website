@@ -193,10 +193,10 @@ Model = (Elasticsearch, BaseModel, NewsVotes, Users) ->
           user: user_id
 
         # #! If the upvote could be added properly then we save the model!
-        # .then =>
-        #! Update the hotness and the upvotes counter
-        @set "upvotes", 1 + @get "upvotes"
-        @save()
+        .then =>
+          #! Update the hotness and the upvotes counter
+          @set "upvotes", 1 + @get "upvotes"
+          @save()
 
 
       ###
