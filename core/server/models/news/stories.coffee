@@ -63,7 +63,7 @@ Model = (Elasticsearch, BaseModel, NewsVotes, Users) ->
 
 
   # **ACTIVITY_WEIGHT** Amount that any activity inside of the story gets.
-  ACTIVITY_WEIGHT = 2
+  ACTIVITY_WEIGHT = 100
 
 
   # **CREATION_WINDOW** The window variable is used narrow down how effective
@@ -73,7 +73,7 @@ Model = (Elasticsearch, BaseModel, NewsVotes, Users) ->
   # upvotes.
   #
   #! As the site grows, you might want to shrink this down to 12 or so.
-  CREATION_WINDOW = 60 * 60 * 60.0
+  CREATION_WINDOW = 60 * 60 * 60 * 60
 
 
   new class Stories extends BaseModel
@@ -129,18 +129,18 @@ Model = (Elasticsearch, BaseModel, NewsVotes, Users) ->
         if score is 0 then score += 1
 
         #! Calculate the activity's score
-        activityScore = (Math.abs(score + 1) + cpoints) * ACTIVITY_WEIGHT
+        activityScore = Math.max (Math.abs(score + 1) + cpoints), 2
 
         #! Now using the log function is really nice because it evens out
         #! activity after a bunch of comments.
-        activityPoints = Math.log Math.max(activityScore, 1), 10
+        activityPoints = Math.log(Math.max(activityScore, 1), 10) * ACTIVITY_WEIGHT
+
 
         #! Now with the acitvityPoints set, decide if the post should be punished
         #! or rewared by the score of it (ie a function of the upvotes and
         #! downvotes).
-        if score > 0 then rewardOrPunish = 1
+        if score >= 0 then rewardOrPunish = 1
         else if score < 0 then rewardOrPunish = -1
-        else rewardOrPunish = 0
 
         #! Recalculate the activity points based on the score.
         activityPoints = activityPoints * rewardOrPunish
@@ -192,11 +192,11 @@ Model = (Elasticsearch, BaseModel, NewsVotes, Users) ->
           story: @id
           user: user_id
 
-        #! If the upvote could be added properly then we save the model!
-        .then =>
-          #! Update the hotness and the upvotes counter
-          @set "upvotes", 1 + @get "upvotes"
-          @save()
+        # #! If the upvote could be added properly then we save the model!
+        # .then =>
+        #! Update the hotness and the upvotes counter
+        @set "upvotes", 1 + @get "upvotes"
+        @save()
 
 
       ###
