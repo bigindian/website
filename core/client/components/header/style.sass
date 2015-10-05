@@ -52,6 +52,17 @@ header
           text-decoration: none
 
 
+body.stickHeader
+  header
+    position: fixed
+    top: 0
+    left: 0
+    width: 100%
+  main
+    margin-top: 50px !important
+    @media #{$small-only}
+      margin-top: 100px !important
+
 @media print
   header
     display: none

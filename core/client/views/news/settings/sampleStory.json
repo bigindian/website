@@ -1,46 +1,23 @@
 {
-  "id": 5,
+  "id": 0,
   "title": "This is an example link of a news story",
   "description": null,
   "description_markdown": null,
   "slug": "i-dont-exist",
   "url": "http://example.com",
-  "upvotes": 0,
+  "upvotes": 23,
   "downvotes": 0,
   "domain": "example.com",
-  "comments_count": 0,
+  "comments_count": 23,
   "hotness": "6666331.0000000000",
   "is_expired": false,
   "is_moderated": false,
   "merged_story": null,
   "story_cache": "",
   "meta": {},
-  "created_by": {
-    "id": 2,
-    "email": "sample@mail.com",
-    "username": "sample_user",
-    "slug": "sample_user",
-    "name": "Sample User Name",
-    "created_at": "2015-08-18T18:58:03.044Z",
-  },
+  "created_by_uname": "sample_user",
+  "created_by": 2,
   "updated_by": null,
   "created_at": "2015-08-18T19:51:35.699Z",
   "updated_at": "2015-08-18T19:51:35.741Z",
-  "categories": [
-    {
-      "id": 8,
-      "category": 16,
-      "story": 5
-    },
-    {
-      "id": 9,
-      "category": 17,
-      "story": 5
-    },
-    {
-      "id": 10,
-      "category": 29,
-      "story": 5
-    }
-  ]
 }

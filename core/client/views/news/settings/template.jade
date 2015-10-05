@@ -33,13 +33,7 @@ form(name="form")
 
   .row.collapse
     .small-6.medium-9.columns
-      div Hide quotes in the footer
-    .small-6.medium-3.columns.input
-      form-checkbox(ng-model="settings.hideFooterQuotes")
-
-  .row.collapse(ng-if="settings.hideFooterQuotes")
-    .small-6.medium-9.columns
-      div Completly hide the footer
+      div Hide the footer
     .small-6.medium-3.columns.input
       form-checkbox(ng-model="settings.hideFooter")
 
@@ -76,7 +70,7 @@ form(name="form")
     .small-6.medium-3.columns.input
       form-checkbox(ng-model="settings.storyHideComments")
 
-  .row.collapse
+  //- .row.collapse
     .small-6.medium-9.columns
       div Hide the author.
     .small-6.medium-3.columns.input
@@ -84,6 +78,6 @@ form(name="form")
 
   .row.collapse
     .small-6.medium-9.columns
-      div Hide the date posted.
+      div Hide the date posted &amp author.
     .small-6.medium-3.columns.input
       form-checkbox(ng-model="settings.storyHideDate")

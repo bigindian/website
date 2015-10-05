@@ -1,22 +1,12 @@
-Controller = ($scope, $location, $log, Notifications, Stories, Categories, Users, Settings) ->
+Controller = ($scope, $location, $log, Notifications, Stories, Users, Settings) ->
   logger = $log.init Controller.tag
   logger.log "initializing"
 
   $scope.settings = {}
-  $scope.getCategory = (id) -> Categories.findById id
-
-  $scope.$watch "story", (story={}) ->
-    categories = []
-
-    for categoryPair in (story.categories or [])
-      categories.push Categories.findById categoryPair.category
-    $scope.story.parsedCategories = categories
-
 
   onSettingsUpdate = ->
     $scope.settings = Settings.getAll()
     $scope.openNewTab = Settings.get "storyInNewTab"
-
 
   $scope.$on "settings:change", onSettingsUpdate
   onSettingsUpdate()
@@ -44,7 +34,6 @@ Controller.$inject = [
   "$log"
   "@notifications"
   "@models/news/stories"
-  "@models/news/categories"
   "@models/users"
   "@settings"
 ]
