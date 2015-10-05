@@ -22,10 +22,8 @@ window.scripts = [
   }
   {
     id: "templates.js"
-    # remote: ["#{u}/build/md5/templates_#{publicData.md5['templates.js']}.js"]
-    remote: ["/build/templates.js"]
-    # local: "/build/md5/templates_#{publicData.md5['templates.js']}.js"
-    local: "/build/templates.js"
+    remote: ["#{u}/build/md5/templates_#{publicData.md5['templates.js']}.js"]
+    local: "/build/md5/templates_#{publicData.md5['templates.js']}.js"
   }
   {
     id: "main.js"
