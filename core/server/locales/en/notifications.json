@@ -2,7 +2,7 @@
   "comment_posted": "You comment has been posted",
   "login_success": "You are now logged in!",
   "login_invalid": "Wrong credentials. Please try again",
-  "logout_success": "You have logged out succesfully",
+  "logout_success": "You have been logged out succesfully!",
   "login_needed": "You need to be logged in!",
   "story_submit_fail": "Your story could not be submitted. Try again later.",
   "story_submit_success": "Your story has been submitted!"

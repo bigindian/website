@@ -42,7 +42,7 @@ Controller = module.exports = (ElasticSearch) ->
       when "comments" then esQuery.type = "comments"
 
 
-    ElasticSearch.search esQuery
+    ElasticSearch.search esQuery, request.query.page
     .then (results) -> response.json results
     .catch (e) -> next e
 

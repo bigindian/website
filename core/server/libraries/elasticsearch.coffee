@@ -13,8 +13,11 @@ exports = module.exports = (IoC, settings) ->
       @client.update index: @index, type: type, id: id, body: doc: body
 
 
-    search: (esDSL) ->
+    search: (esDSL, page=0) ->
+      page = Math.max (page - 1), 0
       esDSL.index = @index
+      esDSL.size = 20 # 20 results per page
+      esDSL.from = page * esDSL.size
       @client.search esDSL
 
 
