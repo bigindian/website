@@ -1,4 +1,4 @@
-EventHandler = ($log, $root, $timeout) ->
+EventHandler = ($anchorScroll, $log, $root, $timeout) ->
   logger = $log.init EventHandler.tag
   logger.log "initialized"
 
@@ -6,11 +6,14 @@ EventHandler = ($log, $root, $timeout) ->
     logger.log "captured event!"
 
     # Remove the loading class, so that loading bar gets hidden away.
-    $timeout (-> $root.bodyClasses.loading = false), 250
+    $timeout(250).then -> $root.bodyClasses.loading = false
+
+    $timeout(250).then -> $anchorScroll()
 
 
 EventHandler.tag = "event:pageStart"
 EventHandler.$inject = [
+  "$anchorScroll"
   "$log"
   "$rootScope"
   "$timeout"
