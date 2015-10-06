@@ -1,7 +1,6 @@
 Controller = module.exports = ($scope, $log, $http) ->
   logger = $log.init Controller.tag
   logger.log "initializing"
-  logger.debug "routeParams", $stateParams
   $scope.$emit "page:initialize"
 
 
