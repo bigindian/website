@@ -19,3 +19,5 @@ module.exports = (app) ->
   app.controller "news/settings",      require "./news/settings/controller"
   app.controller "news/single",        require "./news/single/controller"
   app.controller "news/submit",        require "./news/submit/controller"
+
+  app.controller "users/single",        require "./users/single/controller"

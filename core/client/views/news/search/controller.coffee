@@ -9,7 +9,6 @@ Controller = module.exports = ($location, $log, $scope, News) ->
     order: "rel"
 
   $scope.query = angular.extend {}, defaultQuery, $location.search()
-  console.log  $scope.query
 
   $scope.search = ->
     $location.search $scope.query

@@ -5,11 +5,9 @@
       a(ng-click="upvote()", ng-class="{voted: hasVoted}")
 
   .details
-    a.author(fn-route-dis="/user/@{{ comment.created_by_uname }}") {{ comment.created_by_uname }}
+    a.author(fn-route="/user/{{ comment.created_by_uname }}") {{ comment.created_by_uname }}
     | &nbsp;&middot;&nbsp;
     span {{ comment.created_at | prettydate }}
-    //- | &nbsp;&middot;&nbsp;
-    //- a(ng-href="{{ path }}#c_{{ comment.slug }}") link
     | &nbsp;&middot;&nbsp;
     a(ng-click="comment.showReplyBox = !comment.showReplyBox") reply
   .content(ng-bind-html="markdown")
