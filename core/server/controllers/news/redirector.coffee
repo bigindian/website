@@ -19,9 +19,6 @@ GET sitename.tld/s/123 -> 301 sitename.tld/story-slug-here-123
 ###
 Controller = module.exports = (Stories, NotFoundError) ->
   (request, response, next) ->
-    # Get the id of the classified.
-    id = request.params[0]
-
     # Reconstruct the query string, because when we redirect, we lose
     # the query string in the original redirect URL.
     query = url.parse(request.url, true).query or {}
@@ -29,7 +26,7 @@ Controller = module.exports = (Stories, NotFoundError) ->
     catch e then newqueryString = ""
 
     # Finally query the DB and redirect
-    Stories.get(id).then (story) ->
+    Stories.get(request.params.id).then (story) ->
       response.redirect "/story/#{story.get "slug"}?#{newqueryString}"
     .catch (e) -> next e
 
@@ -39,4 +36,4 @@ Controller["@require"] = [
   "libraries/errors/NotFoundError"
 ]
 Controller["@singleton"] = true
-Controller["@routes"] = ["/s/([0-9]+)"]
+Controller["@routes"] = ["/s/:id"]
