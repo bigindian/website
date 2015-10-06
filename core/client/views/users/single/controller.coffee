@@ -1,9 +1,9 @@
-Controller = ($scope, $root, $stateParams, $log, $http, $location) ->
+Controller = module.exports = ($scope, $log, $http) ->
   logger = $log.init Controller.tag
   logger.log "initializing"
   logger.debug "routeParams", $stateParams
-
   $scope.$emit "page:initialize"
+
 
   $http.pageAsJSON().success (data) ->
     data.count =
@@ -19,13 +19,6 @@ Controller = ($scope, $root, $stateParams, $log, $http, $location) ->
 Controller.tag = "users/single"
 Controller.$inject = [
   "$scope"
-  "$rootScope"
-  "$stateParams"
   "$log"
-
   "$http"
-  "$location"
 ]
-
-
-module.exports = Controller
