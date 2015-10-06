@@ -29,6 +29,9 @@ exports = module.exports = (Elasticsearch, BaseModel, NewsStories, NewsVotes) ->
           parent: data.parent
           story: storyID
           slug: @createSlug()
+          meta:
+            storyTitle: story.get "title"
+            storySlug: story.get "slug"
 
         #! Create the new comment!
         @model.forge(newComment).save().then (comment) ->
@@ -157,6 +160,7 @@ exports = module.exports = (Elasticsearch, BaseModel, NewsStories, NewsVotes) ->
           created_by_uname: @get "created_by_uname"
           downvotes: 0
           slug: @get "slug"
+          meta: @get "meta"
           upvotes: 0
 
 
