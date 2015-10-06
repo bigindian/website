@@ -11,13 +11,14 @@ Notifications, Comments, Users) ->
 
 
   onLocationChange = ->
-    if $location.search().comment == $scope.comment.slug
-      $scope.comment.focus = true
-      $timeout(500).then ->
-        $location.hash "comment_#{$scope.comment.slug}"
-        $anchorScroll()
-        # $location.hash ""
-    else $scope.comment.focus = false
+    if $scope.comment
+      if $location.search().comment == $scope.comment.slug
+        $scope.comment.focus = true
+        $timeout(500).then ->
+          $location.hash "comment_#{$scope.comment.slug}"
+          $anchorScroll()
+          # $location.hash ""
+      else $scope.comment.focus = false
 
   $scope.$on "$locationChangeSuccess", onLocationChange
   $scope.$watch "comment", onLocationChange
