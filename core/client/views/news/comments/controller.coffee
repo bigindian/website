@@ -21,7 +21,10 @@ Controller = ($cookies, $http, $log, $scope, $storage) ->
   # Fetch data from the page.
   $http.pageAsJSON().success (data) ->
     $scope.pagination = data.pagination
+
+    for comment in data.collection then comment.isNotInStory = true
     $scope.comments = data.collection
+
     $scope.$emit "page:start"
 
 

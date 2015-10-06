@@ -1,4 +1,5 @@
-Controller = ($location, $log, $sce, $scope, Notifications, Comments, Users) ->
+Controller = ($anchorScroll, $location, $log, $sce, $scope, $timeout,
+Notifications, Comments, Users) ->
   logger = $log.init Controller.tag
   logger.log "initializing"
 
@@ -8,10 +9,27 @@ Controller = ($location, $log, $sce, $scope, Notifications, Comments, Users) ->
   $scope.data = {}
   $scope.path = $location.path()
 
+
+  onLocationChange = ->
+    if $location.search().comment == $scope.comment.slug
+      $scope.comment.focus = true
+      $timeout(500).then ->
+        $location.hash "comment_#{$scope.comment.slug}"
+        $anchorScroll()
+        # $location.hash ""
+    else $scope.comment.focus = false
+
+  $scope.$on "$locationChangeSuccess", onLocationChange
+  $scope.$watch "comment", onLocationChange
+  onLocationChange()
+
+
+
   $scope.upvote = ->
     #! User needs to be logged in
     if not Users.isLoggedIn()
       Notifications.warn "login_needed"
+      $location.search redirectTo: encodeURIComponent $location.url()
       return $location.path "/login"
 
     #! Avoid upvoting if the comment has already been voting
@@ -44,10 +62,12 @@ Controller = ($location, $log, $sce, $scope, Notifications, Comments, Users) ->
 
 Controller.tag = "component:news-comment"
 Controller.$inject = [
+  "$anchorScroll"
   "$location"
   "$log"
   "$sce"
   "$scope"
+  "$timeout"
   "@notifications"
   "@models/news/comments"
   "@models/users"

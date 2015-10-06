@@ -1,4 +1,4 @@
-Controller = ($http, $log, $sce, $scope, Notifications, Stories) ->
+Controller = ($http, $location, $log, $sce, $scope, Notifications, Stories) ->
   logger = $log.init Controller.tag
   logger.log "initializing"
 
@@ -9,7 +9,7 @@ Controller = ($http, $log, $sce, $scope, Notifications, Stories) ->
   $scope.story = {}
   $scope.comment = ""
 
-
+  $location.hash ""
 
   _organizeComments = (comments) ->
     #! A recursive helper function to find a parent in the given array of
@@ -101,6 +101,7 @@ Controller = ($http, $log, $sce, $scope, Notifications, Stories) ->
 Controller.tag = "page:news/single"
 Controller.$inject = [
   "$http"
+  "$location"
   "$log"
   "$sce"
   "$scope"
