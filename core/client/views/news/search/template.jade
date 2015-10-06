@@ -57,6 +57,19 @@
           ng-model="query.domain"
           placeholder="abc.com")
 
+    .columns
+      span.title Username:
+      span.options
+        input(type="text"
+          ng-model="query.username"
+          placeholder="abc1992")
+
+    //- .columns
+      span.title Page:
+      span.options
+        input(type="number"
+          ng-model="query.page"
+          placeholder="1")
 
 .searchResults(ng-if="results")
   .result(ng-repeat="hit in results.hits")
