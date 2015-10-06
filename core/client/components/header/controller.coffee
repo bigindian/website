@@ -1,7 +1,7 @@
 # Allow upto 'X' unread notifications to be put in the sub-header
 maxUnreadNotifications = 3
 
-Header = ($scope, $root, $log, $timeout, $location, Notifications) ->
+Header = ($scope, $root, $log, $timeout, $location,Users) ->
   logger = $log.init Header.tag
   logger.log "initialized"
 
@@ -12,7 +12,6 @@ Header = ($scope, $root, $log, $timeout, $location, Notifications) ->
   $root.$on "$viewContentLoaded", ->
     try $scope.route = $location.path().split("/")[1] or ""
     catch e then $scope.route = ""
-    reselectColor()
 
 
   $scope.$on "model:language:change", ->
@@ -31,13 +30,10 @@ Header = ($scope, $root, $log, $timeout, $location, Notifications) ->
 
   $scope.onCoverHover = ->
     $scope.showSubMenu = false
-    reselectColor()
     if $scope.activeLink? then $scope.activeLink.isActive = false
 
 
-  onHeaderChange = ->
-    setActiveLinks()
-    reselectColor()
+  onHeaderChange = -> setActiveLinks()
 
   onHeaderClose = ->
     $scope.showMenuHeader = false
@@ -62,22 +58,6 @@ Header = ($scope, $root, $log, $timeout, $location, Notifications) ->
       evaluate childLink for childLink in link.children or []
       if link.isActive then $scope.currentPageLink = link
 
-
-  reselectColor = ->
-    switch $scope.route
-      when "contribute" then $scope.mainColor = "#FAA617"
-      when "forums" then $scope.mainColor = "#2461B2"
-      when "meetups" then $scope.mainColor = "#F60"
-      when "news" then $scope.mainColor = "#009F5E"
-      when "sharing" then $scope.mainColor = "#CB202E"
-      when "stories" then $scope.mainColor = "#A0C9CC"
-      else $scope.mainColor = "#222"
-
-    if not $scope.showMenuHeader then $scope.mainColor = "#FFF"
-    $scope.mainBorderColor = $scope.mainColor
-
-  $scope.notifications = []
-  $scope.unreadNotifications = 0
 
   # A click handler to display the sub header
   $scope.openHeader = ->
@@ -121,7 +101,9 @@ Header = ($scope, $root, $log, $timeout, $location, Notifications) ->
   # Attach this function to the refresh event and run it once (because the header
   # can initialize after the notifications have been downloaded).
   $scope.$on "notifications:refresh", readNotification
-  # readNotification()
+
+
+  $scope.$on "user:refresh", (event, user) -> $scope.user = user
 
 
   $scope.headerLogoClick = ->
@@ -136,6 +118,6 @@ Header.$inject = [
   "$log"
   "$timeout"
   "$location"
-  # "models.notifications"
+  "@models/users"
 ]
 module.exports = Header

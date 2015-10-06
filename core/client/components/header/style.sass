@@ -8,11 +8,11 @@ $subHeaderDarkColor: rgba(0,0,0,0.3)
 header
   $border-color: #EEE
   @extend .font-droid
-  background: #C80900
   width: 100%
   z-index: 4
 
   nav#menu-header
+    background: #C80900
     ul
       +clearfix
       margin: 0 auto
@@ -51,6 +51,26 @@ header
           color: #FFF
           text-decoration: none
 
+  nav#user-header
+    font-size: 12px
+    padding: 0 10px
+    ul
+      +clearfix
+      margin: 5px 0 0
+      li
+        float: right
+        padding: 0 2px
+        &.spacer
+          padding: 0 5px
+          opacity: 0.2
+        a
+          color: #999
+          padding-bottom: 2px
+          text-decoration: none
+          border-bottom: 1px solid #EEE
+          &:hover, &.user
+            color: blue
+            border-color: blue
 
 body.stickHeader
   header

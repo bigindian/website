@@ -13,4 +13,11 @@ nav#menu-header(ng-class="{'show-menuheader': showMenuHeader}"
       span.icon(ng-if="link.children") &#xf105;
       a(fn-route="{{ link.url }}") {{ link.name | translate:'header'}}
 
+nav#user-header.row.show-if-loggedin
+  ul
+    //- li <a href="/user/{{ user.username }}/notifications">notifications (2)</a>
+    //- li.spacer &middot;
+    //- li <a href="/user/jacon232/comments">messages</a>
+    //- li.spacer &middot;
+    li hello <a fn-route="/user/{{ user.username }}" class="user">{{ user.username }}!</a>
 span.nav-cover(ng-click="closeHeader()", ng-mouseover="onCoverHover()")
