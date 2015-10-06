@@ -86,6 +86,9 @@ exports = module.exports = (IoC) ->
   ###
   isController = (fn) -> fn.indexOf("test") is -1 and /coffee$/.test(fn)
 
+  #! Add the common middlewares here!
+  router.use getMiddleware "UpdateLastOnlineForUser"
+
   #! Add a middleware to check all the integer parameters
   params = ["id", "page", "moderation"]
   router.param p, getMiddleware "CheckIfParameterInteger" for p in params
@@ -93,6 +96,7 @@ exports = module.exports = (IoC) ->
   #! Add a middleware to check all the slug parametesr
   params = ["slug", "username", "story", "comment"]
   router.param p, getMiddleware "CheckIfParameterSlug" for p in params
+
 
   #! Now start walking!
   walkPath = path.join __dirname, "../controllers"
