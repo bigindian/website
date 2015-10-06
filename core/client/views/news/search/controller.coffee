@@ -14,7 +14,9 @@ Controller = module.exports = ($location, $log, $scope, News) ->
     $location.search $scope.query
 
     News.search($scope.query).success (data) ->
-      if data.hits then $scope.results = data.hits
+      if data.hits
+        item._source.isNotInStory = true for item in data.hits.hits
+        $scope.results = data.hits
       else $scope.results = false
 
   $scope.search()
