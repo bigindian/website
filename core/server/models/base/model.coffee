@@ -19,7 +19,7 @@ xss               = require "xss"
 traverse          = require "traverse"
 
 
-BaseModel = (knex, Enum, Cache, Settings) ->
+BaseModel = (knex, Enum, Cache, NotFoundError, Settings) ->
   class Model
     ###
     **tableName** The name of the database table this model will attach to.
@@ -124,6 +124,8 @@ BaseModel = (knex, Enum, Cache, Settings) ->
       @bookshelf.model @tableName, extendPrameters
       @model = @bookshelf.model @tableName
       @collection = @bookshelf.Collection.extend model: @model
+
+      @model.NotFoundError = NotFoundError
 
       #! Now assign all the different enums into the object
       for e of @enums then do (e) =>
@@ -315,13 +317,16 @@ BaseModel = (knex, Enum, Cache, Settings) ->
       result.pagintation: { .. }
     ```
     ###
-    query: (buildQuery, options) -> @model.forge().fetchPage buildQuery, options
+    query: (buildQuery, options) ->
+      options.require = true
+      @model.forge().fetchPage buildQuery, options
 
 
 BaseModel["@require"] = [
   "igloo/knex"
   "models/base/enum"
   "libraries/cache"
+  "libraries/errors/NotFoundError"
   "igloo/settings"
 ]
 BaseModel["@singleton"] = true

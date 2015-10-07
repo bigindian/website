@@ -8,12 +8,6 @@ Controller = module.exports = (settings) ->
     response.status error.status or 500
     isProduction = settings.server.env == "production"
 
-    #! In production, no stack-traces leaked to user
-    if isProduction then error.stack = null
-
-    #! In development, display the error on console
-    else return ouchInstance.handleException error, request, response
-
     #! For API request just return a JSON version of the message
     if request.url.indexOf("/api") > -1
       return response.json error: error.message
@@ -23,6 +17,24 @@ Controller = module.exports = (settings) ->
       redirectUrl = encodeURIComponent request.url
       finalUrl = "/login?_success=login_needed&redirectTo=#{redirectUrl}"
       return response.redirect finalUrl
+
+    #! Redirect 404s to the not found page..
+    if error.status is 404
+      return response.render "main/errors/404",
+        title: "Page not found"
+        data:
+          error: error
+          message: error.message
+          status: error.status
+
+    #! In production, no stack-traces leaked to user
+    if isProduction then error.stack = null
+
+    #! In development, display the error on console
+    else return ouchInstance.handleException error, request, response
+
+
+
 
     response.render "main/errors/5XX",
       page: "errors/5XX"

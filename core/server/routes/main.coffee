@@ -52,9 +52,9 @@ exports = module.exports = (IoC) ->
     #! Get all the middlewares now!
     middlewares = do -> getMiddleware(m) for m in rawMiddlewares
 
-    #! Finally add the route to Express's router! `controller.controller` will
-    #! refer to the controller function specified in the controller file.
-    router.get url, middlewares, controller
+    #! Finally add the route to Express's router!
+    if url? then router.get url, middlewares, controller
+    else router.get middlewares, controller
 
 
   ###
@@ -125,7 +125,7 @@ exports = module.exports = (IoC) ->
 
 
   #! If none of the routes matched, then route to the 404 controller!
-  _route ".*", [], "errors/404"
+  _route null, [], "errors/404"
 
   #! Finally attach the router into the app
   app.use router
