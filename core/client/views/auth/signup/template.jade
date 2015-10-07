@@ -25,14 +25,26 @@ form(name="form", ng-class="formClasses", ng-init="page = 1")
     .columns(ng-if="usernameValid")
       label Password
       input(maxlength="140"
-        minlength="4"
+        minlength="6"
         ng-disabled="formLoading"
         ng-model="signup.password"
         required="true"
         size=30
         type="password")
 
-    .other-options.columns(ng-if="form.$valid && signup.password").
+    .columns(ng-if="usernameValid")
+      label Re-enter Password
+      input(maxlength="140"
+        minlength="4"
+        ng-disabled="formLoading"
+        ng-class="{badpass: signup.password != signup.repassword}"
+        ng-model="signup.repassword"
+        required="true"
+        size=30
+        type="password")
+
+
+    .other-options.columns(ng-if="form.$valid && signup.repassword").
       By creating an account, you agree that you have read our <a href="/info/terms-privacy">terms and services</a>
 
     .columns.captcha(ng-if="form.$valid && signup.password && !form.gcaptcha")
@@ -41,7 +53,7 @@ form(name="form", ng-class="formClasses", ng-init="page = 1")
     .columns(ng-if="form.gcaptcha")
       button.submit(ng-click="doSignup(signup)") Sign Up
 
-    .other-options.columns.
+    .other-options.columns(ng-if="!hideLogin").
       Already have an account? then <a ng-click="goLogin()">login!</a>
 
 
