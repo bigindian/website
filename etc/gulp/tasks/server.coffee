@@ -12,8 +12,8 @@ module.exports = (gulp, config) -> ->
   .pipe rename (path) -> path.dirname += "/build"
   .pipe gulp.dest config.footer.dest
 
+  # For each file, create a minified version of it
   .pipe foreach (stream, file) ->
     stream.pipe uglifyJS file
-    .pipe rename (path) ->
-      path.extname = ".min.js"
+    .pipe rename (path) -> path.extname = ".min.js"
     .pipe gulp.dest config.footer.dest
