@@ -1,6 +1,6 @@
 .story_liner
   .votes(ng-if="!settings.storyHideScore")
-    .score {{ story.score || 0 | prettynumber }}
+    .score {{ story.votes || 1 | prettynumber }}
     .voter(ng-if="!hasVoted")
       a(ng-click="upvote()", ng-class="{voted: hasVoted}")
   .details
@@ -12,16 +12,16 @@
         [Story removed by {{ story.is_moderated ? "moderator" : "original submitter" }}]
 
 
-    //- span.cats(ng-if="!story.is_gone && !settings.storyHideCategories")
+    span.cats(ng-if="!story.is_gone && !settings.storyHideCategories")
       a(ng-repeat="cat in story.parsedCategories track by $index"
         fn-route="/category/{{ cat.slug }}")
         news-category(ng-model="cat")
 
     span.domain(ng-if="!settings.storyHideDomain")
       a(fn-route="/search?domain={{ story.domain }}"
-        target="{{ openNewTab ? '_blank' : ''}}") ({{ story.domain }})
+        target="{{ openNewTab ? '_blank' : ''}}") {{ story.domain }}
 
-    span.meta
+    .meta
       span.timestamp(ng-if="!settings.storyHideDate").
         {{ story.created_at | prettydate }} by
         <a fn-route="/user/{{ story.created_by_uname }}">{{ story.created_by_uname }}</a>

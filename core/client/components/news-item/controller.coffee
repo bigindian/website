@@ -1,4 +1,4 @@
-Controller = ($scope, $location, $log, Notifications, Stories, Users, Settings) ->
+Controller = ($scope, $location, $log, Notifications, Stories, Users, Categories, Settings) ->
   logger = $log.init Controller.tag
   logger.log "initializing"
 
@@ -7,6 +7,14 @@ Controller = ($scope, $location, $log, Notifications, Stories, Users, Settings) 
   onSettingsUpdate = ->
     $scope.settings = Settings.getAll()
     $scope.openNewTab = Settings.get "storyInNewTab"
+
+
+  $scope.getCategory = (id) -> Categories.findById id
+
+  $scope.$watch "story", (story={}) ->
+    $scope.story.parsedCategories = do ->
+      Categories.findById c for c in (story.meta.categories or [])
+
 
   $scope.$on "settings:change", onSettingsUpdate
   onSettingsUpdate()
@@ -22,7 +30,7 @@ Controller = ($scope, $location, $log, Notifications, Stories, Users, Settings) 
     #! Avoid upvoting if the comment has already been voting
     if $scope.hasVoted then return
 
-    $scope.story.score += 1
+    $scope.story.votes += 1
     $scope.hasVoted = true
     Stories.upvote $scope.story.id
 
@@ -35,6 +43,7 @@ Controller.$inject = [
   "@notifications"
   "@models/news/stories"
   "@models/users"
+  "@models/news/categories"
   "@settings"
 ]
 module.exports = Controller

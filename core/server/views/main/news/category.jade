@@ -1,0 +1,10 @@
+extends ./common.jade
+
+block robots
+  ul
+    for story in data.collection
+      li
+        span created on #{story.created_at}
+        span created by #{story.created_by.username}
+        a(href="/story/#{story.slug}")
+          h2 #{story.title}

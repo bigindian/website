@@ -1,4 +1,4 @@
-Router = ($stateProvider, $locationProvider, $urlMatcher, $urlRouterProvider) ->
+Router = module.exports = ($stateProvider, $locationProvider, $urlMatcher, $urlRouterProvider) ->
   # Disable strict mode to allow URLs with trailing slashes
   $urlMatcher.strictMode false
 
@@ -12,6 +12,7 @@ Router = ($stateProvider, $locationProvider, $urlMatcher, $urlRouterProvider) ->
       templateUrl: templateUrl
       url: route
       resolve:
+        categories: ["@models/news/categories", (m) -> m.download()]
         user:       ["@models/users",           (m) -> m.download()]
         language:   ["@models/languages",       (m) -> m.download()]
 
@@ -26,14 +27,22 @@ Router = ($stateProvider, $locationProvider, $urlMatcher, $urlRouterProvider) ->
   _route "info/contribute",    "/info/contribute"
   _route "info/terms-privacy", "/info/terms-privacy"
 
-  _route "news/index",         ""
-  _route "news/settings",      "/settings"
-  _route "news/index",         "/page/{page:[0-9]+}"
+  _route "news/categories",    "/categories"
+  _route "news/filters",       "/filters"
+  _route "news/category",      "/category/{cat:[^/]+}/recent"
+  _route "news/category",      "/category/{cat:[^/]+}/recent/page/{page:[0-9]+}"
+  _route "news/category",      "/category/{cat:[^/]+}"
+  _route "news/category",      "/category/{cat:[^/]+}/page/{page:[0-9]+}"
+
   _route "news/comments",      "/comments"
   _route "news/comments",      "/comments/page/{page:[0-9]+}"
+  _route "news/index",         ""
+  _route "news/index",         "/page/{page:[0-9]+}"
+  _route "news/newsletter",    "/newsletter"
   _route "news/recent",        "/recent"
   _route "news/recent",        "/recent/page/{page:[0-9]+}"
   _route "news/search",        "/search"
+  _route "news/settings",      "/settings"
   _route "news/single",        "/story/{story:[^/]+}"
   _route "news/submit",        "/submit"
 
@@ -54,4 +63,3 @@ Router.$inject = [
   "$urlMatcherFactoryProvider"
   "$urlRouterProvider"
 ]
-module.exports = Router
