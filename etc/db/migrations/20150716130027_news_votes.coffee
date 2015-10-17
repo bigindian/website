@@ -5,6 +5,7 @@ exports.up = (knex, Promise) ->
     table.integer("story").references("id").inTable "news_stories"
     table.integer("comment").references("id").inTable "news_comments"
     table.timestamp("created_at").notNull().defaultTo knex.raw "now()"
+    table.timestamp("updated_at").notNull().defaultTo knex.raw "now()"
     table.unique ["story", "user"]
     table.unique ["comment", "user"]
 

@@ -3,7 +3,9 @@ Controller = module.exports = (Stories) ->
     Stories.get request.params.story
     .then (model) -> model.upvote request.user.id
     .then -> response.json status: "voted"
-    .catch (e) -> response.json status: "already voted"
+    .catch (e) ->
+      response.status 400
+      response.json status: "already voted"
 
 
 Controller["@middlewares"] = ["CheckForLogin"]

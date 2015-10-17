@@ -178,7 +178,6 @@ Model = (Elasticsearch, BaseModel, NewsVotes, Users) ->
       upvote: (user_id) ->
         #! Try to add the vote into the votes table
         NewsVotes.create
-          is_upvote: true
           story: @id
           user: user_id
 
