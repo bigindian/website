@@ -1,14 +1,14 @@
 .story_comment(id="comment_{{ comment.slug }}"
   ng-class="{ focus: comment.focus }")
   .votes(ng-if="!settings.storyHideScore")
-    .score {{ comment.score || 0 | prettynumber }}
+    .score {{ comment.votes_count || 1 | prettynumber }}
     .voter(ng-if="!hasVoted")
       a(ng-click="upvote()", ng-class="{voted: hasVoted}")
 
   .details(ng-if="!comment.isNotInStory")
     a.author(fn-route="/user/{{ comment.created_by_uname }}") {{ comment.created_by_uname }}
-    | &nbsp;&middot;&nbsp;
-    span {{ comment.created_at | prettydate }}
+    | &nbsp;&nbsp;
+    span posted {{ comment.created_at | prettydate }}
     | &nbsp;&middot;&nbsp;
     a(fn-route="/story/{{ comment.meta.storySlug }}?comment={{ comment.slug }}") link
     | &nbsp;&middot;&nbsp;

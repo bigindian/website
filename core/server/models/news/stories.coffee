@@ -12,8 +12,7 @@
   @apiSuccess {String} description the HTML description by the author
   @apiSuccess {String} description_markdown the Markdown (raw) description by the author
   @apiSuccess {String} slug the url slug for the story.
-  @apiSuccess {Number} upvotes the number of upvotes
-  @apiSuccess {Number} downvotes the number of downvotes
+  @apiSuccess {Number} votes the number of upvotes
   @apiSuccess {Number} comments_count the number of comments
   @apiSuccess {Number} hotness the hotness (ranking) of the story
   @apiSuccess {Boolean} is_expired true if the story has expired
@@ -33,7 +32,6 @@
       "slug": "this-is-something-1",
       "url": "https://github.com/thebigindiannews/website",
       "upvotes": 0,
-      "downvotes": 0,
       "comments_count": 1,
       "hotness": "-11088.4732896000",
       "is_expired": false,
@@ -79,23 +77,15 @@ Model = (Elasticsearch, BaseModel, NewsVotes, Users) ->
   new class Stories extends BaseModel
     tableName: "news_stories"
 
+    #! Get the static values from the DB
+    enums: categories: tableName: "news_categories"
 
     # Properties to extend to the model!
     extends:
+      categories: -> @hasMany "news_story_category", "story"
       comments: -> @hasMany "news_comments", "story"
       created_by: -> @belongsTo "users", "created_by"
       updated_by: -> @belongsTo "users", "updated_by"
-
-
-      ###
-      **getScore()** Helper function to calculate the score. The score should only be a
-      function of the upvotes and downvotes.
-
-      ```
-      Stories.model.getScore() # -> 30
-      ```
-      ###
-      getScore: -> (@get("upvotes") - @get("downvotes")) or 0
 
 
       ###
@@ -120,7 +110,7 @@ Model = (Elasticsearch, BaseModel, NewsVotes, Users) ->
       ###
       updateHotness: ->
         createdDate = Number new Date(@get "created_at").getTime() or Date.now()
-        score = @getScore()
+        score = @get "votes_count"
 
         #! Give a story's comment votes some weight.
         cpoints = @getCommentScore()
@@ -134,7 +124,6 @@ Model = (Elasticsearch, BaseModel, NewsVotes, Users) ->
         #! Now using the log function is really nice because it evens out
         #! activity after a bunch of comments.
         activityPoints = Math.log(Math.max(activityScore, 1), 10) * ACTIVITY_WEIGHT
-
 
         #! Now with the acitvityPoints set, decide if the post should be punished
         #! or rewared by the score of it (ie a function of the upvotes and
@@ -157,6 +146,7 @@ Model = (Elasticsearch, BaseModel, NewsVotes, Users) ->
         #! model!
         #! See http://stackoverflow.com/questions/11832914/round-to-at-most-2-decimal-places-in-javascript
         @set "hotness", Math.round(hotness * 10 * 7)/(10 * 7)
+        @set "raw_hotness", Math.round(activityPoints * 10 * 7)/(10 * 7)
 
         #! Return this instance to allow chaining.
         this
@@ -195,7 +185,7 @@ Model = (Elasticsearch, BaseModel, NewsVotes, Users) ->
         # #! If the upvote could be added properly then we save the model!
         .then =>
           #! Update the hotness and the upvotes counter
-          @set "upvotes", 1 + @get "upvotes"
+          @set "votes_count", 1 + @get "votes_count"
           @save()
 
 
@@ -219,7 +209,15 @@ Model = (Elasticsearch, BaseModel, NewsVotes, Users) ->
       ###
       onSave: ->
         @clean()
+        @set "description", markdown.toHTML @get("description_markdown") or ""
         @updateHotness()
+
+
+      onCreate: ->
+        @set "domain", url.parse(@get "url").hostname
+
+        #! First set the slug from the right variable.
+        @set "slug", @createSlug()
 
 
       onCreated: ->
@@ -233,19 +231,18 @@ Model = (Elasticsearch, BaseModel, NewsVotes, Users) ->
           slug: @get "slug"
           created_by_uname: @get "created_by_uname"
           domain: @get "domain"
-          downvotes: 0
           title: @get "title"
-          upvotes: 0
+          votes_count: 1
           url: @get "url"
+          meta: @get "meta"
 
 
       onUpdated: ->
         Elasticsearch.update "stories", @id,
           comments_count: @get "comments_count"
           content: @get "description"
-          downvotes: @get "downvotes"
           title: @get "title"
-          upvotes: @get "upvotes"
+          votes_count: @get "votes_count"
 
     ###
     **top()** Returns the top stories. Works similar to the query function
@@ -272,21 +269,17 @@ Model = (Elasticsearch, BaseModel, NewsVotes, Users) ->
     ```
     ###
     create: (parameters) ->
-      parameters.domain = url.parse(parameters.url).hostname
+      categories = parameters.categories or []
 
       #! First set the slug from the right variable.
       parameters.slug = @createSlug()
 
-      parameters.upvotes = 0
-      parameters.downvotes = 0
-      parameters.comments_count = 0
-
-      #! Then parse the description!
-      if description = parameters.description
-        parameters.description = markdown.toHTML description
-
       #! Now create the model and save it into the DB
       @model.forge(parameters).save()
+      # .then (model) ->
+        #! For each category that was set in the parameters prepare the values
+        #! for the insert query.
+        # insertQuery = do -> category: cat, story: model.id for cat in categories
 
 
     ###

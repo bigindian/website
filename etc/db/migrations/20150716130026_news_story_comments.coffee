@@ -4,12 +4,13 @@ exports.up = (knex, Promise) ->
     table.text("content").notNull().defaultTo ""
     table.text("content_markdown")
     table.string("slug").unique().index().notNull().defaultTo ""
-    table.integer("upvotes").notNull().defaultTo 0
-    table.integer("downvotes").notNull().defaultTo 0
+    table.integer("votes_count").notNull().defaultTo 1
     table.decimal("hotness", 20, 10).index().notNull().defaultTo 0.0
+    table.decimal("raw_hotness", 20, 10).index().notNull().defaultTo 0.0
     table.integer("parent").references("id").inTable "news_comments"
     table.boolean("is_deleted").defaultTo false
     table.boolean("is_moderated").defaultTo false
+    table.boolean("is_edited").defaultTo false
     table.integer("story").notNull().references("id").inTable "news_stories"
     table.integer("created_by").notNull().references("id").inTable "users"
     table.string("created_by_uname").notNull()

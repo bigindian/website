@@ -15,7 +15,7 @@ form(name="form"
           type="url"
           required)
 
-  .columns
+  .columns(ng-if="story.url")
     .row
       .columns.medium-2
         label Title *
@@ -29,13 +29,13 @@ form(name="form"
       .columns.medium-2(ng-if="!story.title")
         button(ng-click="getTitle()") Get Title
 
-  .columns
+  .columns(ng-if="story.url")
     .row
       .columns.medium-2
         label Description
       .columns.medium-10
         textarea(maxlength="3000"
-          ng-model="story.description"
+          ng-model="story.description_markdown"
           ng-disabled="formLoading")
 
   .columns(ng-if="story.url")

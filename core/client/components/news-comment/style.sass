@@ -9,6 +9,7 @@ news-comment
     margin-top: 10px
     margin-left: 30px
 
+
   .content
     margin-left: 30px
     margin-top: 5px
@@ -23,16 +24,18 @@ news-comment
       font-style: italic
 
   .details
-    color: #888
+    color: #999
     font-size: 12px
     margin-top: 2px
-    margin-left: 45px
+    margin-left: 30px
     a
       text-decoration: none
       &:hover
         color: blue
         text-decoration: underline
 
+  .author
+    color: $news-color !important
 
   .votes
     float: left
@@ -41,16 +44,15 @@ news-comment
       position: absolute
 
     .voter
-      left: 26px
-      top: 1px
+      left: 4px
+      top: 0
       a
         border-color: transparent transparent #CCC transparent
         border-style: solid
-        border-width: 4px
+        border-width: 5px
         border-bottom-width: 10px
         display: block
         height: 0
-        margin-top: -2px
         margin-bottom: 0px
         margin-left: 5px
         padding: 0
@@ -59,17 +61,18 @@ news-comment
         &:hover, &.voted
           border-color: transparent transparent #000 transparent
     .score
-      top: 0px
-      left: 5px
+      top: 20px
+      left: 0
       color: #CCC !important
       display: inline-block
       font-size: 12px
-      text-align: right
+      text-align: center
       font-weight: bold
-      min-width: 20px
+      min-width: 27px
+
 
   .replyBox
-    margin-left: 50px
+    margin-left: 30px
 
     .columns
       padding: 0

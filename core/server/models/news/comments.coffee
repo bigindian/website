@@ -1,7 +1,7 @@
 markdown = require("markdown").markdown
 
 
-exports = module.exports = (Elasticsearch, BaseModel, NewsStories, NewsVotes) ->
+Model = module.exports = (Elasticsearch, BaseModel, NewsStories, NewsVotes) ->
   # **ACTIVITY_WEIGHT** Amount that any activity inside of the comment gets.
   ACTIVITY_WEIGHT = 10
 
@@ -14,7 +14,7 @@ exports = module.exports = (Elasticsearch, BaseModel, NewsStories, NewsVotes) ->
   #! As the site grows, you might want to shrink this down to 12 or so.
   CREATION_WINDOW = 60 * 60 * 1.0
 
-  new class Model extends BaseModel
+  new class CommentsModel extends BaseModel
     tableName: "news_comments"
 
     create: (storyID, data) ->
@@ -70,13 +70,12 @@ exports = module.exports = (Elasticsearch, BaseModel, NewsStories, NewsVotes) ->
         #! Try to add the vote into the votes table
         NewsVotes.create
           comment: @id
-          is_upvote: true
           user: user_id
 
         #! If the upvote could be added properly then we save the model!
         .then =>
           #! Update the hotness and the upvotes counter
-          @set "upvotes", 1 + @get "upvotes"
+          @set "votes_count", 1 + @get "votes_count"
           # @updateHotness()
           @save()
 
@@ -89,7 +88,7 @@ exports = module.exports = (Elasticsearch, BaseModel, NewsStories, NewsVotes) ->
       Comments.model.getScore() # -> 30
       ```
       ###
-      getScore: -> (@get("upvotes") - @get("downvotes")) or 0
+      getScore: -> @get("votes_count") or 1
 
 
       ###
@@ -103,7 +102,7 @@ exports = module.exports = (Elasticsearch, BaseModel, NewsStories, NewsVotes) ->
       updateHotness: ->
         # Get the creation date and the score first.
         createdDate = Number new Date(@get "created_at").getTime() or Date.now()
-        score = @getScore()
+        score = @get "votes_count"
 
         #! Don't immediately kill stories at 0. bump them up by one
         if score is 0 then score += 1
@@ -134,6 +133,7 @@ exports = module.exports = (Elasticsearch, BaseModel, NewsStories, NewsVotes) ->
         #! model!
         #! See http://stackoverflow.com/questions/11832914/round-to-at-most-2-decimal-places-in-javascript
         @set "hotness", Math.round(hotness * 10 * 7)/(10 * 7)
+        @set "raw_hotness", Math.round(activityPoints * 10 * 7)/(10 * 7)
 
         #! Return this instance to allow chaining.
         this
@@ -158,23 +158,21 @@ exports = module.exports = (Elasticsearch, BaseModel, NewsStories, NewsVotes) ->
           created_at: @get "created_at"
           created_by: @get "created_by"
           created_by_uname: @get "created_by_uname"
-          downvotes: 0
           slug: @get "slug"
           meta: @get "meta"
-          upvotes: 0
+          votes_count: 1
 
 
       onUpdated: ->
         Elasticsearch.update "comments", @id,
           content: @get "content"
-          downvotes: @get "downvotes"
-          upvotes: @get "upvotes"
+          votes_count: @get "votes_count"
 
 
-exports["@require"] = [
+Model["@require"] = [
   "libraries/elasticsearch"
   "models/base/model"
   "models/news/stories"
   "models/news/votes"
 ]
-exports["@singleton"] = true
+Model["@singleton"] = true

@@ -8,9 +8,9 @@ Controller = module.exports = (settings) ->
     response.status error.status or 500
     isProduction = settings.server.env == "production"
 
-    #! For API request just return a JSON version of the message
-    if request.url.indexOf("/api") > -1
-      return response.json error: error.message
+    # #! For API request just return a JSON version of the message
+    # if request.url.indexOf("/api") > -1
+    #   return response.json error: error.message
 
     #! Redirect 401s to the login page..
     if error.status is 401

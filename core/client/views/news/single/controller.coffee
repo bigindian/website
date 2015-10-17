@@ -11,6 +11,11 @@ Controller = ($http, $location, $log, $sce, $scope, Notifications, Stories) ->
 
   $location.hash ""
 
+  $scope.redirectToLogin = ->
+    $location.search redirectTo: encodeURIComponent $location.url()
+    $location.path "/login"
+    Notifications.warn "login_needed"
+
   _organizeComments = (comments) ->
     #! A recursive helper function to find a parent in the given array of
     #! comments.
@@ -86,10 +91,13 @@ Controller = ($http, $location, $log, $sce, $scope, Notifications, Stories) ->
     body = content: $scope.story.comment
     headers = "x-recaptcha": $scope.data.gcaptcha
 
-    Stories.createComment(id, body, headers)
-    .then ->
+    Stories.createComment id, body, headers
+    .success (comment) ->
+      console.log comment
       logger.log "comment posted!"
       $scope.story.comment = ""
+
+      $location.search "comment", comment.slug
 
       $scope.$emit "refresh"
       Notifications.success "comment_posted"

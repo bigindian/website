@@ -25,7 +25,6 @@ Notifications, Comments, Users) ->
   onLocationChange()
 
 
-
   $scope.upvote = ->
     #! User needs to be logged in
     if not Users.isLoggedIn()

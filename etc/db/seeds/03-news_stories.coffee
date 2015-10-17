@@ -14,7 +14,7 @@ exports.seed = (knex, Promise) ->
     slug: "this-is-something-1"
     title: "This is the first link"
     created_by_uname: "admin"
-    votes: 0
+    votes_count: 0
     url: "https://github.com/jcs/lobsters"
     meta:
       categories: [1, 2, 3]
@@ -34,7 +34,7 @@ exports.seed = (knex, Promise) ->
     merged_story: 1
     slug: "this-is-something-2"
     title: "What’s Your Pain Threshold?"
-    votes: 0
+    votes_count: 0
     url: "https://github.com/jcs/lobsters"
     meta:
       categories: [2]
@@ -54,7 +54,7 @@ exports.seed = (knex, Promise) ->
     merged_story: 1
     slug: "this-is-something-3"
     title: "This is the third link"
-    votes: 0
+    votes_count: 0
     url: "https://github.com/jcs/lobsters"
     meta:
       categories: [1]

@@ -3,15 +3,15 @@ body#news-single
   // news-item
     // margin-bottom: 1rem
 
-  #comments
-    margin-left: 50px
+  // #comments
+  //   margin-left: 35px
 
   .main-commentbox, .replyBox textarea
     width: 100%
     min-height: 100px
     outline: none
-    // background: #f9f9f9
-    border: 1px solid #EEE
+    border: 1px solid #DDD
+    border-bottom-width: 2px
     padding: 8px 10px
     &:focus
       border-bottom-color: $color-warn
@@ -20,26 +20,16 @@ body#news-single
     &[disabled]
       background: #EEE
 
-  .description, form
-    margin-left: 50px
+  // .description, form
 
   .comment-box
     margin-top: 1rem
+    margin-left: 35px
     form
       border: 0
 
-  .description
-    margin-top: 0
-    padding: 15px 0
-    margin-bottom: 1rem
-    font-size: 12px
-    font-family: "helvetica neue", arial, sans-serif
-
-    h1, h2, h3, h4, h5, h6
-      font-weight: bold
-
-    a
-      color: blue
+  .editButton
+    margin-left: 35px
 
   news-item .link a:visited
     color: #000

@@ -4,6 +4,9 @@ news-item
   display: block
   font-weight: 400
 
+  a
+    text-decoration: none
+
   .story_liner
     padding: 3px 0
 
@@ -12,7 +15,7 @@ news-item
 
   .domain a
     font-size: 11px
-    // font-style: italic
+    font-style: italic
     margin-right: 5px
     color: #888
     opacity: 1
@@ -24,48 +27,34 @@ news-item
     color: #888
     font-size: 13.2px
     margin-top: 2px
-    margin-left: 50px
+    margin-left: 35px
 
-    span
-      +single-transition
-      &:hover
-        color: #000
+    span:hover
+      color: #000
 
     .link
+      @extend .font-droid
+      box-sizing: border-box
+      color: rgb(0, 0, 0)
+      cursor: auto
+      display: inline
+      font-size: 14px
+      font-weight: bold
+      line-height: 20px
+      margin-right: 5px
+      text-align: left
       a
-        @extend .font-cantarell
-        box-sizing: border-box;
-        color: rgb(0, 0, 0);
-        cursor: auto;
-        display: inline;
-        font-family: Cantarell, sans-serif;
-        font-size: 13.3333330154419px;
-        font-style: normal;
-        font-weight: bold;
-        height: auto;
-        line-height: 20px;
-        list-style-image: none;
-        list-style-position: outside;
-        list-style-type: none;
-        margin-right: 5px;
-        text-align: left;
-        text-decoration: none;
-        transition-delay: 0s;
-        transition-duration: 0.3s;
-        transition-property: border;
-        transition-timing-function: ease-out;
+        text-decoration: none
         &:visited
-          color: #444
+          color: #888
         &:hover
-          text-decoration: none
           color: $news-color
+      &.edittext
+        margin-bottom: 5px
+        display: block
 
-  a
-    text-decoration: none
-    &.underline
-      text-decoration: underline
-    &:hover
-      text-decoration: underline
+
+
 
   .meta, .meta span, .domain
     vertical-align: text-bottom
@@ -75,11 +64,12 @@ news-item
     span
       // vertical-align: text-bottom
       &:after
-        content: '|'
-        padding: 0 5px
+        content: '\b7\a0'
+        padding: 0 4px
       &:last-child:after
         content: none
-
+    a:hover
+      text-decoration: underline
 
   .votes
     float: left
@@ -90,8 +80,8 @@ news-item
       position: absolute
 
     .voter
-      left: 28px
-      top: 2px
+      left: 4px
+      top: 0
       a
         border-color: transparent transparent #CCC transparent
         border-style: solid
@@ -107,18 +97,39 @@ news-item
         &:hover, &.voted
           border-color: transparent transparent #000 transparent
     .score
-      top: 3px
-      left: 1px
+      +single-transition
+      top: 20px
+      left: 0
       color: #CCC !important
       display: inline-block
       font-size: 12px
-      text-align: right
+      text-align: center
       font-weight: bold
-      min-width: 25px
+      min-width: 27px
 
-  .score, .details span, a
-    +single-transition
 
+  .description
+    padding: 5px 0
+    margin: 10px 0 0 35px
+    font-size: 12px
+    font-family: "helvetica neue", arial, sans-serif
+    h1, h2, h3, h4, h5, h6
+      font-weight: bold
+    h1, h2, h3, h4, h5, h6, p
+      margin-top: 0
+    a
+      color: blue
+
+    &.edittext
+      width: 100%
+      min-height: 100px
+
+  .edittext
+    padding: 5px 10px
+    border: 2px dotted #DDD
+    outline: none
+    &:focus
+      border-color: blue
 
 body.storyHideScore news-item .details
   margin-left: 15px

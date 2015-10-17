@@ -88,6 +88,8 @@ BaseModel = (knex, Enum, Cache, NotFoundError, Settings) ->
         onSave: -> null
         onUpdated: -> null
         onUpdate: -> null
+        createSlug: @createSlug
+
 
 
         ###

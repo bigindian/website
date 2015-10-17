@@ -1,4 +1,4 @@
-Model = ($http, $log, Environment) ->
+Model = module.exports = ($http, $log, Environment) ->
   logger = $log.init Model.tag
   logger.log "initializing"
 
@@ -23,4 +23,3 @@ Model.$inject = [
   "@environment"
   "@storage"
 ]
-module.exports = Model

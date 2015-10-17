@@ -1,32 +1,62 @@
-.story_liner
+.story_liner(ng-init="editMode = false")
   .votes(ng-if="!settings.storyHideScore")
-    .score {{ story.votes || 1 | prettynumber }}
+    .score {{ story.votes_count || 1 | prettynumber }}
     .voter(ng-if="!hasVoted")
       a(ng-click="upvote()", ng-class="{voted: hasVoted}")
+
   .details
-    span.link
+    span.link(ng-if="!editMode")
       span(ng-if="!story.is_gone")
         a(fn-route="{{ story.url }}"
+          contenteditable="true"
           target="{{ openNewTab ? '_blank' : ''}}") {{ story.title }}
       span(ng-if="story.is_gone").
         [Story removed by {{ story.is_moderated ? "moderator" : "original submitter" }}]
+    .link.edittext(contenteditable="true", ng-if="editMode") {{ story.title }}
 
 
-    span.cats(ng-if="!story.is_gone && !settings.storyHideCategories")
+    span.cats(ng-if="!story.is_gone && !settings.storyHideCategories && !editMode")
       a(ng-repeat="cat in story.parsedCategories track by $index"
         fn-route="/category/{{ cat.slug }}")
         news-category(ng-model="cat")
 
-    span.domain(ng-if="!settings.storyHideDomain")
+    span.domain(ng-if="!settings.storyHideDomain && !editMode")
       a(fn-route="/search?domain={{ story.domain }}"
         target="{{ openNewTab ? '_blank' : ''}}") {{ story.domain }}
 
-    .meta
+    .meta(ng-if="!editMode")
       span.timestamp(ng-if="!settings.storyHideDate").
         {{ story.created_at | prettydate }} by
-        <a fn-route="/user/{{ story.created_by_uname }}">{{ story.created_by_uname }}</a>
+        <a class="author" fn-route="/user/{{ story.created_by_uname }}">{{ story.created_by_uname }}</a>
       span.comments_label(ng-if="story.comments_count == 0 && !settings.storyHideComments")
         a(fn-route="/story/{{ story.slug }}") discuss
       span.comments_label(ng-if="story.comments_count != 0 && !settings.storyHideComments")
         a(fn-route="/story/{{ story.slug }}").
           {{ story.comments_count }} {{ story.comments_count == 1 ? "comment" : "comments" }}
+      span(ng-if="allowEditing")
+        a(href="", ng-click="setEditMode(true)") edit
+      span
+        a(href="", ng-click="save()") ban
+
+
+  div(ng-if="showDescription")
+    .description(ng-bind-html="story.description", ng-if="!editMode && story.description")
+    textarea.description.edittext(ng-model="story.description_markdown", ng-if="editMode")
+
+  .comment-box(ng-if="!editMode && showCommentBox")
+    form.row.collapse(name="form", ng-class="formClasses")
+      .columns
+        textarea.field.main-commentbox.show-if-loggedin(ng-model="story.comment"
+          ng-disabled="formLoading"
+          maxlength=3000
+          placeholder="comment on this link."
+          required)
+        a.hide-if-loggedin(ng-click="redirectToLogin()", href="")
+          textarea.field.main-commentbox(disabled
+            placeholder="you need to be logged in to comment")
+
+      .columns(ng-if="form.$valid")
+        google-recaptcha(ng-model="data.gcaptcha", ng-if="!data.gcaptcha")
+        button(ng-click="submit()", ng-if="data.gcaptcha") Submit
+
+  button.editButton(ng-click="setEditMode(false)", ng-if="editMode") Save
