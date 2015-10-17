@@ -1,14 +1,5 @@
 [
   {
-  //   "class": "contribute",
-  //   "name": "contribute",
-  //   "url": "/info/contribute",
-  //   "color": "#F60"
-  // }, {
-    "class": "title",
-    "name": "The Big Indian News",
-    "url": "/",
-  }, {
     "class": "recent",
     "name": "news.recent",
     "url": "/recent",

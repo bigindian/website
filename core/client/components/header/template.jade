@@ -6,6 +6,9 @@
 nav#menu-header(ng-class="{'show-menuheader': showMenuHeader}"
   ng-init="showSubMenu=false;")
   ul
+    li.homelogo
+      a(fn-route="/")
+        img(src="/images/logo.2.png")
     li(ng-repeat="link in links"
       class="{{ link.class }}"
       ng-mouseover="onMainLinkHover(link)"
@@ -13,8 +16,8 @@ nav#menu-header(ng-class="{'show-menuheader': showMenuHeader}"
       span.icon(ng-if="link.children") &#xf105;
       a(fn-route="{{ link.url }}") {{ link.name | translate:'header'}}
 
-nav#user-header.row.show-if-loggedin
-  ul
+//- nav#user-header.row
+  ul.show-if-loggedin
     //- li <a href="/user/{{ user.username }}/notifications">notifications (2)</a>
     //- li.spacer &middot;
     //- li <a href="/user/jacon232/comments">messages</a>

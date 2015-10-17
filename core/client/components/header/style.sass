@@ -2,8 +2,7 @@
 $headerHeight: 50px
 $subHeaderWidth: 130px
 $subHeaderColor: #382869
-$subHeaderDarkColor: rgba(0,0,0,0.3)
-
+$subHeaderDarkColor: rgba(0, 0, 0, 0.3)
 
 header
   $border-color: #EEE
@@ -12,7 +11,8 @@ header
   z-index: 4
 
   nav#menu-header
-    background: #C80900
+    // background: #C80900
+
     ul
       +clearfix
       margin: 0 auto
@@ -36,38 +36,59 @@ header
           opacity: 1
 
         &.active
+          opacity: 1
+
           @media #{$medium-up}
             border-bottom-color: #FFF
+
           @media #{$small-only}
             background: #FFF
+
             a
               color: $news-color
-          opacity: 1
+
+
 
         a
           display: block
           font-size: 13px
-          padding: 10px 8px 8px
-          color: #FFF
+          padding: 13px 8px 8px
+          // color: #FFF
+          text-transform: capitalize
           text-decoration: none
+
+          @media #{$small-only}
+            padding-bottom: 0
+
+        &.homelogo
+          a
+            width: 30px
+            margin: 10px
+            padding: 0
 
   nav#user-header
     font-size: 12px
     padding: 0 10px
+    min-height: 10px
+
     ul
       +clearfix
       margin: 5px 0 0
+
       li
         float: right
         padding: 0 2px
+
         &.spacer
           padding: 0 5px
           opacity: 0.2
+
         a
           color: #999
           padding-bottom: 2px
           text-decoration: none
           border-bottom: 1px solid #EEE
+
           &:hover, &.user
             color: blue
             border-color: blue
@@ -78,10 +99,13 @@ body.stickHeader
     top: 0
     left: 0
     width: 100%
+
   main
     margin-top: 50px !important
+
     @media #{$small-only}
       margin-top: 100px !important
+
 
 @media print
   header
