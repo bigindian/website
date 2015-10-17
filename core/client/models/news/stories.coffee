@@ -1,4 +1,4 @@
-Model = ($http, $log, Environment) ->
+Model = module.exports = ($http, $log, Environment) ->
   logger = $log.init Model.tag
   logger.log "initializing"
 
@@ -16,10 +16,20 @@ Model = ($http, $log, Environment) ->
         method: "POST"
         url: "#{Environment.url}/api/news/stories"
 
+
+    update: (id, data, headers={}) ->
+      $http
+        data: data
+        headers: headers
+        method: "PUT"
+        url: "#{Environment.url}/api/news/stories/#{id}"
+
+
     upvote: (id) ->
       $http
         method: "PUT"
         url: "#{Environment.url}/api/news/stories/#{id}/upvote"
+
 
     createComment: (id, data, headers={}) ->
       $http
@@ -36,4 +46,3 @@ Model.$inject = [
   "@environment"
   "@storage"
 ]
-module.exports = Model

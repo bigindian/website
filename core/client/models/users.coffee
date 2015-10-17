@@ -1,8 +1,8 @@
 class User
   roles:
-    NORMAL: 0
-    MODERATOR: 1
-    ADMIN: 2
+    NORMAL: 1
+    MODERATOR: 2
+    ADMIN: 3
 
   statuses:
     INACTIVE: 0
@@ -28,14 +28,18 @@ class User
   isModerator: -> @user.role is @roles.MODERATOR
 
   get: -> @user
-  set: (data) -> @user = angular.extend {}, @defaults, data
+  set: (data) ->
+    @user = angular.extend {}, @defaults, data
+    @id = @user.id
 
 
-currentUser = new User
-downloadedFlag = false
+
 
 Model = ($http, $root, $log, $q, environment, storage) ->
   logger = $log.init Model.tag
+  currentUser = new User
+  downloadedFlag = false
+
 
   # Updates the current user
   updateUser = (response) ->

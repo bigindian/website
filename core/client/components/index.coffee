@@ -1,6 +1,8 @@
 module.exports = (app) ->
   console.log "initializing components"
 
+
+  app.directive "contenteditable", require "./contenteditable/directive"
   app.directive "sitePreviewer",   require "./site-previewer/directive"
   app.directive "footer",          require "./footer/directive"
   app.directive "header",          require "./header/directive"
