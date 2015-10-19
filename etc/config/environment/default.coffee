@@ -28,7 +28,7 @@ module.exports =
 
   analyticsCode: "UA-XXXXXXXXXX-X"
 
-  csrfBypassKey: "XXXXXXXXX"
+  mobile: csrfBypassKey: "XXXXXXXXX"
 
   appDir: appDir
   assetsDir: assetsDir
