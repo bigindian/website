@@ -12,7 +12,7 @@ serveStatic          = require "serve-static"
 winstonRequestLogger = require "winston-request-logger"
 
 
-exports = module.exports = (IoC, logger, settings, policies) ->
+exports = module.exports = (IoC, logger, settings) ->
   app = this
 
   # ignore GET /favicon.ico
@@ -59,5 +59,4 @@ exports["@require"] = [
   "$container"
   "igloo/logger"
   "igloo/settings"
-  "policies"
 ]
