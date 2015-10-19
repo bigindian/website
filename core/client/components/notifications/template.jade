@@ -1,5 +1,7 @@
 .container
   .item(ng-repeat="notification in notifications track by $index"
     class="{{ notification.type }}"
-    ng-click="notification.hasRead = true"
-    ng-if="!notification.hasRead") {{ notification.message | translate:"notifications"}}
+    ng-class="notification.class"
+    ng-if="!notification.hasRead")
+    span {{ notification.message | translate:"notifications"}}
+    span.icon(ng-click="read(notification)") &#xf00d;

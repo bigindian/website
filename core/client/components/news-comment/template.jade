@@ -1,28 +1,33 @@
 .story_comment(id="comment_{{ comment.slug }}"
   ng-class="{ focus: comment.focus }")
-  .votes(ng-if="!settings.storyHideScore")
+  .votes(ng-if="!settings.storyHideScore", ng-class="{voted: hasVoted}")
     .score {{ comment.votes_count || 1 | prettynumber }}
-    .voter(ng-if="!hasVoted")
-      a(ng-click="upvote()", ng-class="{voted: hasVoted}")
+    .voter
+      a(ng-click="upvote()")
 
-  .details(ng-if="!comment.isNotInStory")
+  .details(ng-if="!isNotInStory")
     a.author(fn-route="/user/{{ comment.created_by_uname }}") {{ comment.created_by_uname }}
     | &nbsp;&nbsp;
     span posted {{ comment.created_at | prettydate }}
     | &nbsp;&middot;&nbsp;
     a(fn-route="/story/{{ comment.meta.storySlug }}?comment={{ comment.slug }}") link
     | &nbsp;&middot;&nbsp;
-    a(ng-click="comment.showReplyBox = !comment.showReplyBox") reply
+    a.report(ng-click="toggleReportBox()") report
+    | &nbsp;&middot;&nbsp;
+    a(ng-click="toggleReplyBox()") reply
 
-  .details(ng-if="comment.isNotInStory")
+  .details(ng-if="isNotInStory")
     a.author(fn-route="/user/{{ comment.created_by_uname }}") {{ comment.created_by_uname }}
     | &nbsp;&middot;&nbsp;
     span {{ comment.created_at | prettydate }}
     | &nbsp;&middot;&nbsp;on:&nbsp;
     a(fn-route="/story/{{ comment.meta.storySlug }}?comment={{ comment.slug }}") {{ comment.meta.storyTitle }}
 
+
   .content(ng-bind-html="markdown")
-  form.replyBox.row(ng-if="comment.showReplyBox", name="comment_form")
+
+  //- Reply form
+  form.replyBox.row(ng-if="data.showReplyBox", name="comment_form")
     .columns
       textarea.field.show-if-loggedin(ng-model="data.child_comment"
         ng-disabled="formLoading"
@@ -36,7 +41,27 @@
 
     .columns(ng-if="comment_form.$valid")
       google-recaptcha(ng-model="data.gcaptcha", ng-if="!data.gcaptcha")
-      button(ng-click="submit()", ng-if="data.gcaptcha") Submit
+      button(ng-click="submitComment()", ng-if="data.gcaptcha") Submit
+
+  //- Report form
+  form.reportBox.row(ng-if="data.showReportBox", name="report_form")
+    .columns
+      p Give us a reason for reporting this comment
+      input.field.show-if-loggedin(ng-model="data.child_comment"
+        ng-disabled="formLoading"
+        type="radio"
+        maxlength=3000
+        placeholder="reply to this comment"
+        required)
+      a.hide-if-loggedin(fn-route="/login")
+        textarea.field.main-commentbox(
+          placeholder="you need to be logged in to comment"
+          disabled)
+
+    .columns(ng-if="report_form.$valid")
+      google-recaptcha(ng-model="data.gcaptcha", ng-if="!data.gcaptcha")
+      button(ng-click="submitReport()", ng-if="data.gcaptcha") Submit
+
 
   .children(ng-repeat="child in comment.children | orderBy : 'hotness' : true")
     news-comment(ng-model="child")

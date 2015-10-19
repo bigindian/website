@@ -1,8 +1,8 @@
 .story_liner(ng-init="editMode = false;da")
-  .votes(ng-if="!settings.storyHideScore")
+  .votes(ng-if="!settings.storyHideScore", ng-class="{voted: hasVoted}")
     .score {{ story.votes_count || 1 | prettynumber }}
-    .voter(ng-if="!hasVoted")
-      a(ng-click="upvote()", ng-class="{voted: hasVoted}")
+    .voter
+      a(ng-click="upvote()")
 
   .details
     span.link(ng-if="!editMode")
@@ -21,7 +21,7 @@
 
     span.domain(ng-if="!settings.storyHideDomain && !editMode")
       a(fn-route="/search?domain={{ story.domain }}"
-        target="{{ openNewTab ? '_blank' : ''}}") {{ story.domain }}
+        target="{{ openNewTab ? '_blank' : ''}}") ({{ story.domain }})
 
     .meta(ng-if="!editMode")
       span.timestamp(ng-if="!settings.storyHideDate").

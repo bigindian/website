@@ -1,15 +1,16 @@
 .row
-  h2.username @{{ user.username }}
-  p {{ user.about }}
+  .columns
+    h2.username @{{ user.username }}
+    p {{ user.about }}
 
-  .info(ng-if="user.meta.lastOnline")
-    b.title last online:
-    .value {{ user.meta.lastOnline | prettydate }}
+    .info(ng-if="user.meta.lastOnline")
+      b.title last online:
+      .value {{ user.meta.lastOnline | prettydate }}
 
-  .info
-    b.title joined:
-    .value {{ user.created_at | prettydate }}
+    .info
+      b.title joined:
+      .value {{ user.created_at | prettydate }}
 
-  .info
-    b.title karma:
-    .value {{ user.karma }} points
+    .info
+      b.title karma:
+      .value {{ user.karma }} points

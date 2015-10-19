@@ -40,15 +40,10 @@ Controller =  module.exports = ($sce, $scope, $location, $log, Notifications, St
     #! Avoid upvoting if the comment has already been voting
     if $scope.hasVoted then return
 
-    Stories.upvote($scope.story.id).then ->
-      #! User needs to be logged in
-      if not Users.isLoggedIn()
-        $location.path "/login"
-        Notifications.warn "login_needed"
-
-
-      $scope.story.votes_count += 1
-      $scope.hasVoted = true
+    Users.withLogin(redirect: true).then ->
+      Stories.upvote($scope.story.id).then ->
+        $scope.story.votes_count += 1
+      .finally -> $scope.hasVoted = true
 
 
   blockForm = -> $scope.formClasses = loading: $scope.formLoading = true
@@ -60,11 +55,12 @@ Controller =  module.exports = ($sce, $scope, $location, $log, Notifications, St
     body = $scope.edit
     headers = "x-recaptcha": $scope.data.gcaptcha
 
-    Stories.update $scope.story.id, body, headers
-    .then ->
-      $scope.setEditMode false
-      $scope.$emit "refresh"
-    .finally unlockForm
+    Users.withLogin(redirect: true).then ->
+      Stories.update $scope.story.id, body, headers
+      .then ->
+        $scope.setEditMode false
+        $scope.$emit "refresh"
+      .finally unlockForm
 
 
   # Submit a new comment to the story!

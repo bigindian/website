@@ -1,9 +1,11 @@
 .row
   .columns
     h3 Submit your link
-form(name="form"
+
+form.row(name="form"
   ng-class="formClasses"
-  ng-init="showGuidlines = false; showMarkdown = false; selectedCats = 0").row
+  ng-init="selectedCats = 0"
+  accept-charset="UTF-8")
 
   .columns
     .row
@@ -36,16 +38,61 @@ form(name="form"
       .columns.medium-10
         textarea(maxlength="3000"
           ng-model="story.description_markdown"
+          placeholder="type using Markdown! See below for help..."
           ng-disabled="formLoading")
+      .columns.medium-10(ng-if="!form.showMarkdown")
+        a.markdown(ng-click="form.showMarkdown = true") formatting help
 
-  .columns(ng-if="story.url")
+      .columns.medium-10(ng-if="form.showMarkdown")
+        .markdown_help
+          table
+            tr
+              td(width='125')
+                em emphasized text
+              td surround text with <tt>*asterisks*</tt>
+            tr
+              td
+                strong strong text
+              td surround text with <tt>**two asterisks**</tt>
+            tr
+              td
+                strike struck-through
+              td surround text with <tt>~~two tilde characters~~</tt>
+            tr
+              td
+                tt fixed width
+              td surround text with <tt>&grave;backticks&grave;</tt>
+            tr
+              td
+                a(href="http://example.com/") linked text
+              td.
+                <tt>[linked text](http://example.com/)</tt> or just a bare URL to
+                create without a title
+            tr
+              td
+                blockquote quoted text
+              td prefix text with <tt>&gt;</tt>
+
+            //- tr
+              td
+                pre(style='margin: 0px;').
+                  pre
+                    text
+              td
+                | prefix text with at least
+                tt &nbsp;&nbsp;&nbsp;&nbsp;4 spaces
+            //- tr
+              td (inline image)
+
+              td
+                tt ![alt text](http://example.com/image.jpg) (only allowed in link text)
+
+  .columns
     .row
-      a.guidlines.columns.small-6(ng-click="showGuidlines = !showGuidlines")
+      a.guidlines.columns.small-6(ng-click="form.showGuidlines = !form.showGuidlines")
         span Submission guidlines
-      a.markdown.columns.small-6(ng-click="showMarkdown = !showMarkdown")
-        span Markdown formatting help
 
-  .columns(ng-if="showGuidlines")
+  .columns(ng-if="form.showGuidlines")
     ul
       //- li
         p
@@ -55,82 +102,37 @@ form(name="form"
           | page's URL and title.
 
       li
-        p
-          | When submitting a URL, the text field is optional and should only
-          | be used when additional context or explanation of the URL is
-          | needed.  Commentary or opinion should be reserved for a comment,
-          | so that it can be voted on separately from the story.
+        p.
+          When submitting a URL, the text field is optional and should only
+          be used when additional context or explanation of the URL is
+          needed. Commentary or opinion should be reserved for a comment,
+          so that it can be voted separately from the story.
 
       li
-        p
-          | Do not editorialize link titles, but when the original link's
-          | title has no context or is unclear, please change it.  <strong>Please
-          | remove extraneous components from titles such as the name of the
-          | site or section.</strong>
+        p.
+          Do not editorialize link titles, but when the original link's
+          title has no context or is unclear, please change it.  <strong>Please
+          remove unwanted components from titles such as the name of the
+          site or section.</strong>
 
       li
-        p
-          | If no tags clearly apply to the link you are submitting, chances
-          | are it does not belong here.  Do not overreach with tags if they
-          | are not the primary focus of the link.
+        p.
+          If no tags clearly apply to the link you are submitting, chances
+          are it does not belong here.  Do not overreach with tags if they
+          are not the primary focus of the link.
+
       li
-        p
-          | When the link being submitted is more than a year or so old,
-          | please add the year the link was written to the post title in
-          | parentheses.
+        p.
+          When the link being submitted is more than a year or so old,
+          please add the year the link was written to the post title in
+          parentheses.
 
-  .markdown_help.columns(ng-if="showMarkdown")
-    table
-      tr
-        td(width='125')
-          em emphasized text
-        td
-          | surround text with
-          tt *asterisks*
-      tr
-        td
-          strong strong text
-        td
-          | surround text with
-          tt **two asterisks**
-      tr
-        td
-          strike struck-through
-        td
-          | surround text with
-          tt ~~two tilde characters~~
-      tr
-        td
-          tt fixed width
-        td
-          | surround text with
-          tt &grave;backticks&grave;
-      tr
-        td
-          a(href='http://example.com/', style='color: inherit;') linked text
-        td
-          tt [linked text](http://example.com/) or just a bare URL to create without a title
-      tr
-        td
-          blockquote  quoted text
-        td
-          | prefix text with
-          tt &gt;
-      tr
-        td
-          pre(style='margin: 0px;').
-            \npre
-              text
-        td
-          | prefix text with at least
-          tt &nbsp;&nbsp;&nbsp;&nbsp;4 spaces
-      tr
-        td (inline image)
+      li
+        p.
+          You cannot change the URL or the categories of the story once you
+          submit it, so make sure to double-check. You can however change the
+          title and description even after you've submitted the link.
 
-        td
-          tt ![alt text](http://example.com/image.jpg) (only allowed in link text)
-
-
-  .columns(ng-if="form.$valid")
+  .columns(ng-if="story.url")
     div(google-recaptcha, ng-model="form.gcaptcha", ng-if="!form.gcaptcha")
-    button(ng-click="submit(story)", ng-if="form.gcaptcha") Submit
+    button(ng-click="submit(story)", ng-if="form.gcaptcha", ng-disabled="!form.$valid") Submit

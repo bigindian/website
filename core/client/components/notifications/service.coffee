@@ -1,5 +1,5 @@
-NotificationService = ($log, $root) ->
-  logger = $log.init NotificationService.tag
+Service = module.exports = ($log, $root) ->
+  logger = $log.init Service.tag
   logger.log "initializing"
 
 
@@ -11,7 +11,6 @@ NotificationService = ($log, $root) ->
         show: true
         type: type
 
-      console.log notification
       $root.$emit "notifications:add", notification
 
 
@@ -23,9 +22,8 @@ NotificationService = ($log, $root) ->
   new Service
 
 
-NotificationService.tag = "service:notifications"
-NotificationService.$inject = [
+Service.tag = "service:notifications"
+Service.$inject = [
   "$log"
   "$rootScope"
 ]
-module.exports = NotificationService

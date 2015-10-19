@@ -1,13 +1,16 @@
 Directive = module.exports = (RecursionHelper) ->
+  compile: (element) ->
+    # Use the compile function from the RecursionHelper, and return the
+    # linking function(s) which it returns
+    RecursionHelper.compile element, require "./link"
+
   controller: require "./controller"
   require: "ngModel"
-  # link: require "./link"
-  scope: true
+  scope:
+    allowReporting: "="
+    allowSubCommenting: "="
+    isNotInStory: "="
   templateUrl: "components/news-comment/template"
-  compile: (element) ->
-    #! Use the compile function from the RecursionHelper, and return the
-    #! linking function(s) which it returns
-    RecursionHelper.compile element, require "./link"
 
 
 Directive.$inject = ["@recursionHelper"]

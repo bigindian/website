@@ -3,7 +3,8 @@ news-comment
 
   .focus
     padding: 5px 10px
-    background: #EEE
+    background: #f6f6f6
+    border: 1px solid #EEE
 
   .children
     margin-top: 10px
@@ -32,10 +33,11 @@ news-comment
       text-decoration: none
       &:hover
         color: blue
-        text-decoration: underline
 
-  .author
-    color: $news-color !important
+      &.author
+        color: $news-color !important
+      &.report:hover
+        color: $color-red !important
 
   .votes
     float: left
@@ -58,7 +60,7 @@ news-comment
         padding: 0
         text-decoration: none
         width: 0px
-        &:hover, &.voted
+        &:hover
           border-color: transparent transparent #000 transparent
     .score
       top: 20px
@@ -70,6 +72,11 @@ news-comment
       font-weight: bold
       min-width: 27px
 
+    &.voted
+      .score
+        color: #000 !important
+      .voter a
+        border-color: transparent transparent #000 transparent
 
   .replyBox
     margin-left: 30px

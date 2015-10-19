@@ -1,11 +1,11 @@
-Controller = ($anchorScroll, $location, $log, $sce, $scope, $timeout,
-Notifications, Comments, Users) ->
+Controller = module.exports = ($anchorScroll, $location, $log, $sce, $scope, $timeout, Notifications, Comments, Users) ->
   logger = $log.init Controller.tag
   logger.log "initializing"
 
   $scope.$watch "comment.content_markdown", (value) ->
     $scope.markdown = $sce.trustAsHtml $scope.comment.content
 
+  window.a = $scope
   $scope.data = {}
   $scope.path = $location.path()
 
@@ -17,32 +17,38 @@ Notifications, Comments, Users) ->
         $timeout(500).then ->
           $location.hash "comment_#{$scope.comment.slug}"
           $anchorScroll()
-          # $location.hash ""
-      else $scope.comment.focus = false
 
+      else $scope.comment.focus = false
   $scope.$on "$locationChangeSuccess", onLocationChange
   $scope.$watch "comment", onLocationChange
   onLocationChange()
 
 
   $scope.upvote = ->
-    #! User needs to be logged in
-    if not Users.isLoggedIn()
-      Notifications.warn "login_needed"
-      $location.search redirectTo: encodeURIComponent $location.url()
-      return $location.path "/login"
+    # Ensure user is logged in!
+    Users.withLogin(redirect: true).then ->
+      # Avoid upvoting if the comment has already been voting
+      if $scope.hasVoted then return else $scope.hasVoted = true
 
-    #! Avoid upvoting if the comment has already been voting
-    if $scope.hasVoted then return else $scope.hasVoted = true
+      # Post comment into the DB
+      Comments.upvote $scope.comment.id
+      .then -> $scope.comment.votes_count += 1
 
-    $scope.comment.score += 1
-    Comments.upvote $scope.comment.id
+
+  $scope.toggleReportBox = -> Users.withLogin(redirect: true).then ->
+    $scope.data.showReportBox = !$scope.data.showReportBox
+
+
+  $scope.toggleReplyBox = -> Users.withLogin(redirect: true).then ->
+    $scope.data.showReplyBox = !$scope.data.showReplyBox
 
 
   blockForm = -> $scope.formClasses = loading: $scope.formLoading = true
   unlockForm = -> $scope.formClasses = loading: $scope.formLoading = false
 
-  $scope.submit = ->
+
+  # Submit a new child comment to this one
+  $scope.submitComment = ->
     blockForm()
 
     id = $scope.comment.id
@@ -60,6 +66,9 @@ Notifications, Comments, Users) ->
     .finally unlockForm
 
 
+  # Submit a new report for this comment
+
+
 Controller.tag = "component:news-comment"
 Controller.$inject = [
   "$anchorScroll"
@@ -72,4 +81,3 @@ Controller.$inject = [
   "@models/news/comments"
   "@models/users"
 ]
-module.exports = Controller

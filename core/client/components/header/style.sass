@@ -10,6 +10,13 @@ header
   width: 100%
   z-index: 4
 
+  @media #{$small-up}
+    border-bottom: 1px solid #EEE
+  @media #{$small-only}
+    padding-bottom: 10px
+  @media #{$large-up}
+    border: 0
+
   nav#menu-header
     // background: #C80900
 
@@ -21,7 +28,7 @@ header
       li
         text-transform: lowercase
         float: left
-        opacity: 0.9
+        // opacity: 0.9
         border-bottom: 3px solid transparent
 
         &.nav-right
@@ -35,30 +42,22 @@ header
           padding-right: 10px
           opacity: 1
 
-        &.active
-          opacity: 1
-
-          @media #{$medium-up}
-            border-bottom-color: #FFF
-
-          @media #{$small-only}
-            background: #FFF
-
-            a
-              color: $news-color
-
-
+        &.active a
+          color: $news-color
 
         a
           display: block
-          font-size: 13px
+          font-size: 12px
+          color: #666
           padding: 13px 8px 8px
-          // color: #FFF
           text-transform: capitalize
           text-decoration: none
 
           @media #{$small-only}
             padding-bottom: 0
+
+          &:hover
+            color: $news-color
 
         &.homelogo
           a
@@ -84,7 +83,7 @@ header
           opacity: 0.2
 
         a
-          color: #999
+          color: #000
           padding-bottom: 2px
           text-decoration: none
           border-bottom: 1px solid #EEE

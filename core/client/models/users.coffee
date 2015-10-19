@@ -35,7 +35,7 @@ class User
 
 
 
-Model = ($http, $root, $log, $q, environment, storage) ->
+Model = ($http, $location, $root, $log, $q, Notifications, environment, storage) ->
   logger = $log.init Model.tag
   currentUser = new User
   downloadedFlag = false
@@ -126,6 +126,18 @@ Model = ($http, $root, $log, $q, environment, storage) ->
       else true
 
 
+    withLogin: (options={}) -> new $q (resolve, reject) =>
+      logger.info "user needs to be logged in for this page"
+      if not @isLoggedIn()
+        if options.redirect
+          Notifications.warn "login_needed"
+          $location.search redirectTo: encodeURIComponent $location.url()
+          $location.path "/login"
+
+        reject()
+      else resolve()
+
+
     # Performs an API call to login the user using Email.
     login: (credentials, headers) ->
       $http
@@ -160,10 +172,12 @@ Model = ($http, $root, $log, $q, environment, storage) ->
 Model.tag = "model:user"
 Model.$inject = [
   "$http"
+  "$location"
   "$rootScope"
   "$log"
   "$q"
 
+  "@notifications"
   "@environment"
   "@storage"
 ]

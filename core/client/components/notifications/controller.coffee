@@ -1,30 +1,40 @@
-NotificationComponent = ($log, $root, $scope, $timeout) ->
-  logger = $log.init NotificationComponent.tag
+Controller = module.exports = ($log, $root, $scope, $timeout) ->
+  logger = $log.init Controller.tag
   logger.log "initializing"
   $scope.notifications = []
 
   # Use this to adjust how long the flash notifications stay on the header,
   # before they disappear.
-  notificationLifetime = 7 * 1000
+  lifetime = 7 * 1000
 
   # Listen for a notification event to add the a flash notification
   $root.$on "notifications:add", (event, data) ->
     notification = data
-    console.log data
-    $timeout -> $scope.notifications.push notification
-    # index = $scope.notifications.indexOf notification
+    notification.class = {}
+    notification.class[notification.type] = true
+
+    $scope.notifications.push notification
+
+    $timeout(10).then ->
+      notification.class["animate-in"] = true
 
     # Set a timeout function to remove the notification
-    do (notification) -> $timeout ->
-      notification.hasRead = true
-    , notificationLifetime
+    do (notification) -> $timeout(lifetime).then -> $scope.read notification
+
+    # Helper function to remove a notification
+    $scope.read = (notification) ->
+      # First let CSS animate it out
+      notification.class["animate-in"] = false
+      notification.class["animate-out"] = false
+
+      # Then remove it from the stack by marking it as read.
+      $timeout(1000).then -> notification.hasRead = true
 
 
-NotificationComponent.tag = "component:notification"
-NotificationComponent.$inject = [
+Controller.tag = "component:notification"
+Controller.$inject = [
   "$log"
   "$rootScope"
   "$scope"
   "$timeout"
 ]
-module.exports = NotificationComponent
