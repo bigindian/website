@@ -8,7 +8,7 @@ Controller = module.exports = (Stories) ->
       response.json status: "already voted"
 
 
-Controller["@middlewares"] = ["CheckForLogin"]
+Controller["@middlewares"] = ["EnsureLoggedIn"]
 Controller["@require"] = ["models/news/stories"]
 Controller["@routes"] = ["/news/stories/:story/upvote"]
 Controller["@singleton"] = true

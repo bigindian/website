@@ -6,7 +6,7 @@ Controller = module.exports = (Comments) ->
     .catch (e) -> next e
 
 
-Controller["@middlewares"] = ["CheckForLogin"]
+Controller["@middlewares"] = ["EnsureLoggedIn"]
 Controller["@require"] = ["models/news/comments"]
 Controller["@routes"] = ["/news/comments/:comment/upvote"]
 Controller["@singleton"] = true

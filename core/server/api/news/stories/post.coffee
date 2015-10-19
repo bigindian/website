@@ -20,7 +20,7 @@ Controller = module.exports = (Stories) ->
     .catch (e) -> next e
 
 
-Controller["@middlewares"] = ["CheckForLogin", "CheckCaptcha"]
+Controller["@middlewares"] = ["EnsureLoggedIn", "CheckCaptcha"]
 Controller["@require"] = ["models/news/stories"]
 Controller["@routes"] = ["/news/stories"]
 Controller["@singleton"] = true

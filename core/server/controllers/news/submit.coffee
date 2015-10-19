@@ -5,6 +5,6 @@ Controller = module.exports = ->
       metaRobots: "noindex"
 
 
-Controller["@middlewares"] = ["CheckForLogin"]
+Controller["@middlewares"] = ["EnsureLoggedIn"]
 Controller["@routes"] = ["/submit"]
 Controller["@singleton"] = true

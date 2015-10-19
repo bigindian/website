@@ -8,7 +8,7 @@ Controller = module.exports = (Story, Comments) ->
     .catch (e) -> next e
 
 
-Controller["@middlewares"] = ["CheckForLogin", "CheckCaptcha"]
+Controller["@middlewares"] = ["EnsureLoggedIn", "CheckCaptcha"]
 Controller["@require"] = [
   "models/news/stories"
   "models/news/comments"

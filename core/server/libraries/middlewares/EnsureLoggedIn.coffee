@@ -1,5 +1,5 @@
 ###
-  @apiDefine CheckForLogin
+  @apiDefine EnsureLoggedIn
 
   @apiHeader {String} Cookie cookie data containing the user's session
   @apiErrorExample {json} Authentication error

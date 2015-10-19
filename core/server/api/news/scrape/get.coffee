@@ -25,7 +25,7 @@ Controller = module.exports = (Stories) ->
       else response.json url: url, title: ":("
 
 
-Controller["@middlewares"] = ["CheckForLogin"]
+Controller["@middlewares"] = ["EnsureLoggedIn"]
 Controller["@require"] = ["models/news/stories"]
 Controller["@routes"] = ["/news/scrape"]
 Controller["@singleton"] = true
