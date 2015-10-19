@@ -319,7 +319,7 @@ BaseModel = (knex, Enum, Cache, NotFoundError, Settings) ->
       result.pagintation: { .. }
     ```
     ###
-    query: (buildQuery, options) ->
+    query: (buildQuery, options={}) ->
       options.require = true
       @model.forge().fetchPage buildQuery, options
 

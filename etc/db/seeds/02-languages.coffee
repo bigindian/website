@@ -9,7 +9,7 @@ exports.seed = (knex, Promise) ->
 
 
   Promise.join(
-    (ins "English", "en"),
-    (ins "Arabic", "ar"),
+    (ins "English", "en")
+    (ins "Arabic", "ar")
     (ins "Hindi", "in")
   )

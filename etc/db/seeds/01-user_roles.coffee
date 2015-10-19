@@ -10,7 +10,7 @@ exports.seed = (knex, Promise) ->
 
 
   Promise.join(
-    ins("Normal"),
-    ins("Moderator"),
+    ins("Normal")
+    ins("Moderator")
     ins("Admin")
   )

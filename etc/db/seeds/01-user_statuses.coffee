@@ -10,8 +10,8 @@ exports.seed = (knex, Promise) ->
 
 
   Promise.join(
-    (ins "Active"),
-    (ins "Banned"),
-    (ins "Blocked"),
+    (ins "Active")
+    (ins "Banned")
+    (ins "Blocked")
     (ins "In-Active")
   )
