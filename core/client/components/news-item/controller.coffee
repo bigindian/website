@@ -102,25 +102,17 @@ Controller =  module.exports = ($sce, $scope, $location, $log, Notifications, St
   $scope.submitReport = ->
     blockForm()
 
-    id = $scope.story.id
-    body =
-      content_markdown: $scope.data.comment
-      gcaptcha: $scope.data.gcaptcha
-
-    $scope.story.createComment
+    $scope.story.report $scope.data.report
     .then (comment) ->
-      logger.log "comment posted!"
+      logger.log "report posted!"
 
-      # Erase the comment..
-      $scope.data.comment = ""
-      $scope.data.gcaptcha = null
+      # Erase the report
+      $scope.data.report = {}
+      $scope.setReportMode false
 
-      # focus on the comment!
-      $location.search "comment", comment.slug
-
-      # Refresh the page and show the comment posted notification!
+      # Refresh the page and show the report posted notification!
       $scope.$emit "refresh"
-      Notifications.success "comment_posted"
+      Notifications.success "report_posted"
 
     .catch (error) -> logger.error error
     .finally unlockForm

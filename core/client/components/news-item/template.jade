@@ -43,35 +43,37 @@
         a(href="", ng-click="setReportMode(true)") report
 
 
-  form.report-box.box(ng-if="reportMode", ng-init="data.report = {}",
+  form.report-box.box(ng-if="reportMode"
+    ng-init="data.report = {}"
     name="reportForm", ng-class="formClasses")
-    .rtitle why are you reporting this?
-    .option
-      input(type="radio", name="reason", ng-model="data.report.type", required, value="spam")
-      label spam
-    .option
-      input(type="radio", name="reason", ng-model="data.report.type", value="vote_m")
-      label vote manipulation
-    .option
-      input(type="radio", name="reason", ng-model="data.report.type", value="pers_info")
-      label personal information
-    .option
-      input(type="radio", name="reason", ng-model="data.report.type", value="offensive")
-      label inappropriate/offensive
-    .option
-      input(type="radio", name="reason", ng-model="data.report.type", value="other")
-      label other (max 100 characters):
-    .option(ng-if="data.report.type == 'other'")
-      input(type="text", required, ng-model="data.report.text",
-        minlength="5"
-        maxlength="100"
-        placeholder="type your reason here..")
 
-    .buttons
-      span(ng-if="reportForm.$valid")
-        google-recaptcha(ng-model="data.gcaptcha", ng-if="!data.gcaptcha")
-        button(ng-click="submitReport()", ng-if="data.gcaptcha") Submit
-      button(ng-click="setReportMode(false)") Cancel
+      .rtitle why are you reporting this?
+      .option
+        input(type="radio", name="reason", ng-model="data.report.type", required, value="spam")
+        label spam
+      .option
+        input(type="radio", name="reason", ng-model="data.report.type", value="vote_m")
+        label vote manipulation
+      .option
+        input(type="radio", name="reason", ng-model="data.report.type", value="pers_info")
+        label personal information
+      .option
+        input(type="radio", name="reason", ng-model="data.report.type", value="offensive")
+        label inappropriate/offensive
+      .option
+        input(type="radio", name="reason", ng-model="data.report.type", value="other")
+        label other (max 100 characters):
+      .option(ng-if="data.report.type == 'other'")
+        input(type="text", required, ng-model="data.report.text",
+          minlength="5"
+          maxlength="100"
+          placeholder="type your reason here..")
+
+      .buttons
+        span(ng-if="reportForm.$valid")
+          google-recaptcha(ng-model="data.gcaptcha", ng-if="!data.gcaptcha")
+          button(ng-click="submitReport()", ng-if="data.gcaptcha") Submit
+        button(ng-click="setReportMode(false)") Cancel
 
 
   section(ng-if="showDescription")

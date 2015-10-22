@@ -7,6 +7,10 @@ Model = module.exports = ($log, $q, BackboneModel, BackboneCollection, Comments,
   UpvoteModel = BackboneModel.extend
     url: -> "/api/news/stories/#{@get 'story'}/upvote"
 
+  # A Backbone model to represent a report
+  ReportModel = BackboneModel.extend
+    url: -> "/api/news/stories/#{@get 'story'}/report"
+
 
   upvotesCache = []
   upvotesCacheKey = "votes:stories:user@#{Session.user.id}"
@@ -46,6 +50,14 @@ Model = module.exports = ($log, $q, BackboneModel, BackboneCollection, Comments,
           @set "voted", true
           upvotesCache.push @id
           Storage.local upvotesCacheKey, upvotesCache
+
+
+      report: (data={}) ->
+        data.story = @id
+
+        # Create a report instance and save it in the DB
+        report = new ReportModel data
+        report.save()
 
 
     @Collection: BackboneCollection.extend

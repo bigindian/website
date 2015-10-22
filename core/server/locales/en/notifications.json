@@ -4,6 +4,7 @@
   "login_invalid": "Wrong credentials. Please try again",
   "logout_success": "You have been logged out succesfully!",
   "login_needed": "You need to be logged in!",
+  "report_posted": "Your report has been sent to a Moderator!",
   "story_submit_fail": "Your story could not be submitted. Try again later.",
   "story_submit_success": "Your story has been submitted!"
 }
