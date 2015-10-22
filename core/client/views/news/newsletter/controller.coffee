@@ -14,9 +14,9 @@ Controller = ($cookies, $http, $log, $scope, $storage) ->
   $storage.local("options:newtab").then (val) ->
     $scope.options.newtab = val == "true" or false
 
-  # Attach listeners to all our options
-  $scope.$watch "options.resultsPerPage", (val) -> $cookies.put "rpp", val
-  $scope.$watch "options.newtab", (val) -> $storage.local "options:newtab", val
+  # # Attach listeners to all our options
+  # $scope.$watch "options.resultsPerPage", (val) -> $cookies.put "rpp", val
+  # $scope.$watch "options.newtab", (val) -> $storage.local "options:newtab", val
 
   # Fetch data from the page.
   $http.pageAsJSON().success (data) ->

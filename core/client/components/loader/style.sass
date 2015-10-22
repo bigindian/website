@@ -1,7 +1,6 @@
 #page-loader
-  display: none
-  height: 3px
-  // opacity: 0.5
+  // display: none
+  height: 1px
   background: transparent
   left: 0
   margin-left: 0
@@ -12,9 +11,10 @@
   z-index: 5
 
   #page-loading-bar
+    opacity: 0
     +single-transition
     transition-timing-function: linear
-    background: rgba(0,0,0,0.5)
+    // background: rgba(0,0,0,0.5)
     height: 5px
     left: 0
     position: absolute
@@ -40,9 +40,9 @@ body.loading
 
 body.show-loader, body.loading
   #page-loader
-    display: block
 
     #page-loading-bar
-      -webkit-animation-duration: 4s
+      opacity: 1
+      -webkit-animation-duration: 2s
       -webkit-animation-iteration-count: infinite
       -webkit-animation-name: loader-dynamic-load

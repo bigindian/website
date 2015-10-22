@@ -1,11 +1,9 @@
 # Allow upto 'X' unread notifications to be put in the sub-header
 maxUnreadNotifications = 3
 
-Header = ($scope, $root, $log, $timeout, $location,Users) ->
+Header = ($scope, $root, $log, $timeout, $location, angular, Users) ->
   logger = $log.init Header.tag
   logger.log "initialized"
-
-  logger.log "initializing"
 
   $scope.activeLink = null
 
@@ -80,28 +78,6 @@ Header = ($scope, $root, $log, $timeout, $location,Users) ->
     else $scope.openHeader()
 
 
-  # Add a listener for when notifications get marked as 'read' to update the DB.
-  $scope.onNotificationRead = -> Notifications.signalRead()
-
-
-  # When a new notification gets added, run the below function to display it
-  # properly
-  readNotification = ->
-    $scope.unreadNotifications = 0
-    notifications = Notifications.getAll()
-
-    # Now calculate how many unread notifications exist.
-    for notification in notifications
-      if not notification.hasRead() then $scope.unreadNotifications++
-
-    # Retrieve the JSON of the classifieds and update the DOM
-    json = do -> notification.get() for notification in notifications
-    $scope.notifications = json
-
-  # Attach this function to the refresh event and run it once (because the header
-  # can initialize after the notifications have been downloaded).
-  $scope.$on "notifications:refresh", readNotification
-
 
   $scope.$on "user:refresh", (event, user) -> $scope.user = user
 
@@ -118,6 +94,7 @@ Header.$inject = [
   "$log"
   "$timeout"
   "$location"
+  "angular"
   "@models/users"
 ]
 module.exports = Header

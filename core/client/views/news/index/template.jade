@@ -1,6 +1,6 @@
 //- The stories list
 ul.stories
-  li.story(ng-repeat="story in stories track by $index")
+  li.story(ng-repeat="story in stories.$models track by $index")
     news-item(ng-model="story")
 
 .page-links

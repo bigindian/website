@@ -1,30 +1,40 @@
-.story_comment(id="comment_{{ comment.slug }}"
-  ng-class="{ focus: comment.focus }")
-  .votes(ng-if="!settings.storyHideScore", ng-class="{voted: hasVoted}")
-    .score {{ comment.votes_count || 1 | prettynumber }}
+.story_comment(id="comment_{{ commentJSON.slug }}"
+  ng-init="collapse = false"
+  ng-class="{ focus: commentJSON.focus }")
+  .votes(ng-if="!settings.storyHideScore && !collapse", ng-class="{voted: commentJSON.voted}")
+    .score {{ commentJSON.votes_count || 1 | prettynumber }}
     .voter
       a(ng-click="upvote()")
 
   .details(ng-if="!isNotInStory")
-    a.author(fn-route="/user/{{ comment.created_by_uname }}") {{ comment.created_by_uname }}
+    a(ng-click="setCollapse(true)", ng-if="!collapse") [-]&nbsp;&nbsp;
+    a(ng-click="setCollapse(false)", ng-if="collapse") [+]&nbsp;&nbsp;
+
+    a.author(fn-route="/user/{{ commentJSON.created_by_uname }}") {{ commentJSON.created_by_uname }}
     | &nbsp;&nbsp;
-    span posted {{ comment.created_at | prettydate }}
-    | &nbsp;&middot;&nbsp;
-    a(fn-route="/story/{{ comment.meta.storySlug }}?comment={{ comment.slug }}") link
-    | &nbsp;&middot;&nbsp;
-    a.report(ng-click="toggleReportBox()") report
-    | &nbsp;&middot;&nbsp;
-    a(ng-click="toggleReplyBox()") reply
+
+    span posted {{ commentJSON.created_at | prettydate }}
+
+    span(ng-if="!collapse")
+      | &nbsp;&middot;&nbsp;
+      a(fn-route="/story/{{ commentJSON.meta.storySlug }}?comment={{ commentJSON.slug }}") link
+      | &nbsp;&middot;&nbsp;
+      a.report(ng-click="toggleReportBox()", ng-if="!collapse") report
+      | &nbsp;&middot;&nbsp;
+      a(ng-click="toggleReplyBox()") reply
+
 
   .details(ng-if="isNotInStory")
-    a.author(fn-route="/user/{{ comment.created_by_uname }}") {{ comment.created_by_uname }}
+    a(ng-click="setCollapse(true)", ng-if="!collapse") [-]&nbsp;&nbsp;
+    a(ng-click="setCollapse(false)", ng-if="collapse") [+]&nbsp;&nbsp;
+    a.author(fn-route="/user/{{ commentJSON.created_by_uname }}") {{ commentJSON.created_by_uname }}
     | &nbsp;&middot;&nbsp;
-    span {{ comment.created_at | prettydate }}
+    span {{ commentJSON.created_at | prettydate }}
     | &nbsp;&middot;&nbsp;on:&nbsp;
-    a(fn-route="/story/{{ comment.meta.storySlug }}?comment={{ comment.slug }}") {{ comment.meta.storyTitle }}
+    a(fn-route="/story/{{ commentJSON.meta.storySlug }}?comment={{ commentJSON.slug }}") {{ commentJSON.meta.storyTitle }}
 
 
-  .content(ng-bind-html="markdown")
+  .content(ng-bind-html="markdown", ng-if="!collapse")
 
   //- Reply form
   form.replyBox.row(ng-if="data.showReplyBox", name="comment_form")
@@ -63,5 +73,6 @@
       button(ng-click="submitReport()", ng-if="data.gcaptcha") Submit
 
 
-  .children(ng-repeat="child in comment.children | orderBy : 'hotness' : true")
+  .children(ng-repeat="child in childComments.$models | orderBy : 'hotness' : true"
+    ng-if="!collapse")
     news-comment(ng-model="child")

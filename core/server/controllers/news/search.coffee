@@ -1,6 +1,6 @@
 Controller = module.exports = (ElasticSearch) ->
   (request, response, next) ->
-    response.render "main/auth/login",
+    response.render "main/news/search",
       metaRobots: "noindex"
 
 

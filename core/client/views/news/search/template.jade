@@ -75,4 +75,4 @@ form.row
     .result-container(ng-if="hit._type == 'stories'")
       news-item(ng-model="hit._source")
     .result-container(ng-if="hit._type == 'comments'")
-      news-comment(ng-model="hit._source")
+      news-comment(ng-model="hit._source", is-not-in-story="true")

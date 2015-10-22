@@ -1,4 +1,4 @@
-Controller = ($http, $location, $log, $scope, $window, Notifications, Users) ->
+Controller = ($http, $location, $log, $scope, $window, Notifications, Session) ->
   logger = $log.init Controller.tag
   logger.log "initializing"
   $scope.$emit "page:initialize"
@@ -24,8 +24,8 @@ Controller = ($http, $location, $log, $scope, $window, Notifications, Users) ->
   $scope.doLogin = (data) ->
     $scope.formClasses = loading: $scope.formLoading = true
 
-    Users.login $scope.login
-    .then (response) ->
+    Session.login $scope.login
+    .then (user) ->
       # Get the redirect URL
       getQuery = $location.search() or {}
       redirectURL = getQuery.redirectTo or "/"
@@ -36,6 +36,7 @@ Controller = ($http, $location, $log, $scope, $window, Notifications, Users) ->
 
       # Give a notification for a succesful login.
       Notifications.success "login_success"
+
     .catch (response) ->
       Notifications.error "login_invalid"
       logger.error response.data, response.status
@@ -50,6 +51,6 @@ Controller.$inject = [
   "$scope"
   "$window"
   "@notifications"
-  "@models/users"
+  "@models/session"
 ]
 module.exports = Controller

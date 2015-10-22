@@ -1,8 +1,10 @@
 bootloader = require "./bootloader"
+Angular    = window.angular
 
 bootloader.initialize()
-app = angular.module "news",[
+app = Angular.module "news",[
   "ngCookies"
+  "ngResource"
   "ui.router"
   "cfp.hotkeys"
 ]

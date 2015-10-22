@@ -1,4 +1,4 @@
-SettingsService = ($log, $q, $root, $window, Storage) ->
+SettingsService = module.exports = ($log, $q, $root, $window, Storage) ->
   logger = $log.init SettingsService.tag
 
   new class Settings
@@ -8,7 +8,7 @@ SettingsService = ($log, $q, $root, $window, Storage) ->
     constructor: ->
       logger.log "initializing"
       Storage.local @storageKey
-      .then (settings) => @setAll angular.fromJson(settings) or {}
+      .then (settings) => @setAll settings or {}
 
     get: (key) -> @current[key]
     set: (key, value) ->
@@ -19,9 +19,8 @@ SettingsService = ($log, $q, $root, $window, Storage) ->
     setAll: (@current) ->
       logger.log "set new setting"
       logger.debug @current
-      Storage.local @storageKey, angular.toJson @current
+      Storage.local @storageKey, @current
       @update()
-
 
     update: ->
       logger.log "updating with body classes"
@@ -38,4 +37,3 @@ SettingsService.$inject = [
   "$window"
   "@storage"
 ]
-module.exports = SettingsService

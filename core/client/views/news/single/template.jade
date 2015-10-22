@@ -2,23 +2,8 @@ section(ng-if="story.id")
   news-item(ng-model="story"
     show-comment-box="true"
     allow-editing="true"
+    allow-reporting="true"
     show-description="true")
-  //- .comment-box.row.collapse
-  //-   //- form.row.collapse(name="form", ng-class="formClasses")
-  //-   //-   .columns
-  //-   //-     textarea.field.main-commentbox.show-if-loggedin(ng-model="story.comment"
-  //-   //-       ng-disabled="formLoading"
-  //-   //-       maxlength=3000
-  //-   //-       placeholder="comment on this link."
-  //-   //-       required)
-  //-   //-     a.hide-if-loggedin(ng-click="redirectToLogin()", href="")
-  //-   //-       textarea.field.main-commentbox(disabled
-  //-   //-         placeholder="you need to be logged in to comment")
 
-  //-   //-   .columns(ng-if="form.$valid")
-  //-   //-     google-recaptcha(ng-model="data.gcaptcha", ng-if="!data.gcaptcha")
-  //-   //-     button(ng-click="submit()", ng-if="data.gcaptcha") Submit
-
-
-  p#comments(ng-repeat="comment in comments | orderBy : 'hotness'")
+  p#comments(ng-repeat="comment in comments.$models | orderBy : 'hotness'")
     news-comment(ng-model="comment")

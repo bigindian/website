@@ -12,12 +12,12 @@ Router = module.exports = ($stateProvider, $locationProvider, $urlMatcher, $urlR
       templateUrl: templateUrl
       url: route
       resolve:
-        categories: ["@models/news/categories", (m) -> m.download()]
-        user:       ["@models/users",           (m) -> m.download()]
-        language:   ["@models/languages",       (m) -> m.download()]
+        0: ["@models/session",         (m) -> m.refresh()]
+        1: ["@models/languages",       (m) -> m.download()]
+        2: ["@models/news/categories", (m) -> m.download()]
 
 
-  #! Start adding each route one by one
+  # Start adding each route one by one
   _route "auth/login",         "/login"
   _route "auth/logout",        "/logout"
   _route "auth/login",         "/login/forgot"
@@ -51,7 +51,7 @@ Router = module.exports = ($stateProvider, $locationProvider, $urlMatcher, $urlR
   _route "error/404",          "*page"
 
 
-  #! Enable HTML5 pushstate for hash-less URLs
+  # Enable HTML5 pushstate for hash-less URLs
   $locationProvider.html5Mode
     enabled: true
     requireBases: false

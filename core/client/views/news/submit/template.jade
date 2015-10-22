@@ -134,5 +134,5 @@ form.row(name="form"
           title and description even after you've submitted the link.
 
   .columns(ng-if="story.url")
-    div(google-recaptcha, ng-model="form.gcaptcha", ng-if="!form.gcaptcha")
-    button(ng-click="submit(story)", ng-if="form.gcaptcha", ng-disabled="!form.$valid") Submit
+    div(google-recaptcha, ng-model="form.gcaptcha", ng-if="!story.gcaptcha")
+    button(ng-click="submit(story)", ng-if="story.gcaptcha", ng-disabled="!form.$valid") Submit

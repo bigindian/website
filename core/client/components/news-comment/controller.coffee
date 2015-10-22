@@ -1,45 +1,54 @@
-Controller = module.exports = ($anchorScroll, $location, $log, $sce, $scope, $timeout, Notifications, Comments, Users) ->
+Controller = module.exports = ($anchorScroll, $location, $log, $sce, $scope, $timeout, Notifications, Comments, Session) ->
   logger = $log.init Controller.tag
-  logger.log "initializing"
-
-  $scope.$watch "comment.content_markdown", (value) ->
-    $scope.markdown = $sce.trustAsHtml $scope.comment.content
-
-  window.a = $scope
   $scope.data = {}
   $scope.path = $location.path()
+  logger.log "initializing"
+
+
+  $scope.$watch "_original", (value={}) ->
+    if value.toJSON? then $scope.comment = value
+    else $scope.comment = new Comments.Model value, parse: true
+
+
+  updateComment = (comment) ->
+    $scope.commentJSON = comment.toJSON()
+    $scope.childComments = new Comments.Collection comment.get "children", parse: true
+    $scope.markdown = $sce.trustAsHtml comment.get "content"
+    onLocationChange()
+  $scope.$watch "comment", updateComment
 
 
   onLocationChange = ->
     if $scope.comment
-      if $location.search().comment == $scope.comment.slug
-        $scope.comment.focus = true
+      if $location.search().comment == $scope.commentJSON.slug
+        $scope.commentJSON.focus = true
         $timeout(500).then ->
-          $location.hash "comment_#{$scope.comment.slug}"
+          $location.hash "comment_#{$scope.commentJSON.slug}"
           $anchorScroll()
 
-      else $scope.comment.focus = false
+      else $scope.commentJSON.focus = false
   $scope.$on "$locationChangeSuccess", onLocationChange
-  $scope.$watch "comment", onLocationChange
-  onLocationChange()
+
+
+
+  $scope.setCollapse = (set) -> $scope.collapse = set
 
 
   $scope.upvote = ->
-    # Ensure user is logged in!
-    Users.withLogin(redirect: true).then ->
+    Session.ensureLogin(redirect: true).then ->
       # Avoid upvoting if the comment has already been voting
-      if $scope.hasVoted then return else $scope.hasVoted = true
+      if $scope.commentJSON.voted then return
 
       # Post comment into the DB
-      Comments.upvote $scope.comment.id
-      .then -> $scope.comment.votes_count += 1
+      $scope.comment.upvote()
+      .finally -> updateComment $scope.comment
 
 
-  $scope.toggleReportBox = -> Users.withLogin(redirect: true).then ->
+  $scope.toggleReportBox = -> Session.ensureLogin(redirect: true).then ->
     $scope.data.showReportBox = !$scope.data.showReportBox
 
 
-  $scope.toggleReplyBox = -> Users.withLogin(redirect: true).then ->
+  $scope.toggleReplyBox = -> Session.ensureLogin(redirect: true).then ->
     $scope.data.showReplyBox = !$scope.data.showReplyBox
 
 
@@ -52,13 +61,14 @@ Controller = module.exports = ($anchorScroll, $location, $log, $sce, $scope, $ti
     blockForm()
 
     id = $scope.comment.id
-    body = content: $scope.data.child_comment
-    headers = "x-recaptcha": $scope.data.gcaptcha
+    body =
+      content_markdown: $scope.data.child_comment
+      gcaptcha: $scope.data.gcaptcha
 
-    Comments.createChildComment id, body, headers
+    $scope.comment.createChild body
+    # Comments.createChildComment id, body, headers
     .then ->
       logger.log "comment posted!"
-      $scope.story.comment = ""
 
       $scope.$emit "refresh"
       Notifications.success "comment_posted"
@@ -79,5 +89,5 @@ Controller.$inject = [
   "$timeout"
   "@notifications"
   "@models/news/comments"
-  "@models/users"
+  "@models/session"
 ]

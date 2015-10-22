@@ -1,6 +1,6 @@
 //- The stories list
 ul.stories
-  li.story(ng-repeat="comment in comments track by $index")
+  li.story(ng-repeat="comment in comments.$models track by $index")
     news-comment(ng-model="comment", is-not-in-story="true")
 
 .page-links

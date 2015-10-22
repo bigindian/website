@@ -96,4 +96,4 @@ Controller["@require"] = [
   "models/users"
 ]
 Controller["@singleton"] = true
-Controller["@routes"] = ["/auth/email/signup"]
+Controller["@routes"] = ["/session/email/signup"]

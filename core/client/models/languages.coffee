@@ -1,26 +1,26 @@
-Model = ($root, Enum) ->
-  class Languages extends Enum
-    data: {}
-    tag: Model.tag
-    md5Key: "locale:en"
-
-    downloadUrl: -> "/api/language/en"
+Model = module.exports = ($root, Enum, $resource, BackboneModel) ->
+  dictionary = {}
+  resource =  $resource "/api/language/:slug", slug: "@slug"
 
 
-    translate: (text, page) ->
-      key = "#{page}:#{text}"
-      @data[key] or ""
+  LanguageModel = BackboneModel.extend
+    urlRoot: "/api/language/en"
+    idAttribute: null
+
+    cache: true
+    localStorage: true
+
+    translate: (text, page) -> @get "#{page}:#{text}"
+
+    download: -> @fetch().then -> $root.$broadcast "model:language:change"
 
 
-    onChange: -> $root.$emit "model:language:change"
+  new LanguageModel slug: "en"
 
 
-  new Languages
-
-
-Model.tag = "model:language"
 Model.$inject = [
   "$rootScope"
   "@models/base/enum"
+  "$resource"
+  "BackboneModel"
 ]
-module.exports = Model

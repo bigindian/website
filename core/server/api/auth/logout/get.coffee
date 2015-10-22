@@ -18,5 +18,8 @@ Controller = module.exports = ->
     response.json status: "ok"
 
 
-Controller["@routes"] = ["/auth/logout"]
+Controller["@routes"] = [
+  "/auth/logout"
+  "/users/current/logout"
+]
 Controller["@singleton"] = true

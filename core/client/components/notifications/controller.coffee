@@ -15,8 +15,7 @@ Controller = module.exports = ($log, $root, $scope, $timeout) ->
 
     $scope.notifications.push notification
 
-    $timeout(10).then ->
-      notification.class["animate-in"] = true
+    $timeout(10).then -> notification.class["animate-in"] = true
 
     # Set a timeout function to remove the notification
     do (notification) -> $timeout(lifetime).then -> $scope.read notification

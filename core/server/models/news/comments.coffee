@@ -22,8 +22,8 @@ Model = module.exports = (Elasticsearch, BaseModel, NewsStories, NewsVotes) ->
       NewsStories.get(storyID).then (story) =>
         #! Prepare the strucutre of the new comment
         newComment =
-          content_markdown: data.content
-          content: markdown.toHTML data.content
+          content_markdown: data.content_markdown
+          content: markdown.toHTML data.content_markdown
           created_by: data.created_by
           created_by_uname: data.created_by_uname
           parent: data.parent

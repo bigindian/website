@@ -3,7 +3,8 @@ module.exports = Directive = ->
   require: "ngModel"
   link: require "./link"
   scope:
+    allowEditing: "="
+    allowReporting: "="
     showCommentBox: "="
     showDescription: "="
-    allowEditing: "="
   templateUrl: "components/news-item/template"

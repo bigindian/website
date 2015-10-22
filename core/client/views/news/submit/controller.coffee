@@ -1,4 +1,4 @@
-Controller = ($http, $location, $log, $scope, Notifications, Stories) ->
+Controller = module.exports = ($http, $location, $log, $scope, Notifications, Stories) ->
   logger = $log.init Controller.tag
   logger.log "initializing"
   $scope.$emit "page:initialize", needLogin: true
@@ -26,16 +26,16 @@ Controller = ($http, $location, $log, $scope, Notifications, Stories) ->
   ###
     @param data {Object}
   ###
-  $scope.submit = (data) ->
+  $scope.submit = ->
     blockForm()
     logger.log "submitting form"
-    logger.debug data
+    logger.debug $scope.story
 
     headers = "x-recaptcha": $scope.form.gcaptcha
 
     # Send the request!
-    Stories.create data, headers
-    .success (story) ->
+    new Stories.Model $scope.story
+    .then (story) ->
       Notifications.success "story_submit_success"
       $location.path "/story/#{story.slug}"
     .catch -> Notifications.success "story_submit_fail"
@@ -51,4 +51,3 @@ Controller.$inject = [
   "@notifications"
   "@models/news/stories"
 ]
-module.exports = Controller

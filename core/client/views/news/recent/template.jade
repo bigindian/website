@@ -1,9 +1,9 @@
 //- The stories list
 ul.stories
-  li.story(ng-repeat="story in stories track by $index")
+  li.story(ng-repeat="story in stories.$models track by $index")
     news-item(ng-model="story")
 
 .page-links
-  a(fn-route="/recent/page/{{ pagination.prev }}", ng-if="pagination.prev") Page {{ pagination.prev }}
+  a(fn-route="/page/{{ pagination.prev }}", ng-if="pagination.prev") Page {{ pagination.prev }}
   span(ng-if="pagination.prev && pagination.next") &nbsp;&middot;&nbsp;
-  a(fn-route="/recent/page/{{ pagination.next }}", ng-if="pagination.next") Page {{ pagination.next }}
+  a(fn-route="/page/{{ pagination.next }}", ng-if="pagination.next") Page {{ pagination.next }}

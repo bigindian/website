@@ -1,2 +1,2 @@
 module.exports = (scope, element, attributes, ngModel) ->
-  ngModel.$render = -> scope.comment = ngModel.$modelValue or {}
+  ngModel.$render = -> scope._original = ngModel.$modelValue

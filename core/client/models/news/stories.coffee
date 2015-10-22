@@ -1,48 +1,71 @@
-Model = module.exports = ($http, $log, Environment) ->
+Model = module.exports = ($log, $q, BackboneModel, BackboneCollection, Comments, Storage, Session) ->
   logger = $log.init Model.tag
   logger.log "initializing"
 
-  new class
-    top: ->
-      API = "#{Environment.url}/api/news/top"
-      logger.log "fetching top news stories from server by id"
-      $http.get "#{API}"
+
+  # A Backbone model to represent an upvote
+  UpvoteModel = BackboneModel.extend
+    url: -> "/api/news/stories/#{@get 'story'}/upvote"
 
 
-    create: (data, headers={}) ->
-      $http
-        data: data
-        headers: headers
-        method: "POST"
-        url: "#{Environment.url}/api/news/stories"
+  upvotesCache = []
+  upvotesCacheKey = "votes:stories:user@#{Session.user.id}"
+  Storage.local(upvotesCacheKey).then (value) => upvotesCache = value
 
 
-    update: (id, data, headers={}) ->
-      $http
-        data: data
-        headers: headers
-        method: "PUT"
-        url: "#{Environment.url}/api/news/stories/#{id}"
+  class Stories
+    @Model: BackboneModel.extend
+      urlRoot: "/api/news/stories"
+
+      initialize: ->
+        upvotesCacheKey = "votes:stories:user@#{Session.user.id}"
+        Storage.local(upvotesCacheKey).then (value) => upvotesCache = value
+        @set "voted", @id in upvotesCache
 
 
-    upvote: (id) ->
-      $http
-        method: "PUT"
-        url: "#{Environment.url}/api/news/stories/#{id}/upvote"
+      parse: (json) ->
+        json.categories = [1, 2, 3]
+        json
 
 
-    createComment: (id, data, headers={}) ->
-      $http
-        data: data
-        headers: headers
-        method: "POST"
-        url: "#{Environment.url}/api/news/stories/#{id}/comments"
+      createComment: (data) ->
+        comment = new Comments.Model data
+        comment.set "story", @id
+        comment.save()
 
 
-Model.tag = "model:news/stories"
+      upvote: ->
+        # If the user has already voted for this story, then we avoid voting
+        # again.
+        if @id in upvotesCache then return $q.resolve {}
+
+        # Create a up votes instance and save it in the DB
+        upvote = new UpvoteModel story: @id
+        upvote.save().then => @set "votes_count", 1 + @get "votes_count"
+        .finally =>
+          @set "voted", true
+          upvotesCache.push @id
+          Storage.local upvotesCacheKey, upvotesCache
+
+
+    @Collection: BackboneCollection.extend
+      model: Stories.Model
+      type: "normal" # "recent", "top"
+
+      url: ->
+        switch @type
+          when "recent" then "/news/stories/recent"
+          when "top" then "/news/stories/top"
+          else "/news/stories"
+
+
+Model.tag = "model:stories"
 Model.$inject = [
-  "$http"
   "$log"
-  "@environment"
+  "$q"
+  "BackboneModel"
+  "BackboneCollection"
+  "@models/news/comments"
   "@storage"
+  "@models/session"
 ]

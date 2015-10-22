@@ -66,5 +66,8 @@ Controller = module.exports = (Events) ->
 
 
 Controller["@require"] = ["models/logs"]
-Controller["@routes"] = ["/auth/email/login"]
+Controller["@routes"] = [
+  "/auth/email/login"
+  "/session/email/login"
+]
 Controller["@singleton"] = true

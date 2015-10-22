@@ -1,4 +1,4 @@
-Controller =  module.exports = ($sce, $scope, $location, $log, Notifications, Stories, Users, Categories, Settings) ->
+Controller =  module.exports = ($sce, $scope, $location, $log, Notifications, Stories, Session, Categories, Settings) ->
   logger = $log.init Controller.tag
   logger.log "initializing"
 
@@ -6,21 +6,28 @@ Controller =  module.exports = ($sce, $scope, $location, $log, Notifications, St
   $scope.settings = {}
   $scope.data = {}
   $scope.edit = {}
-  $scope.hasVoted = false
+  $scope.story = {}
 
-  currentUser = Users.getCurrent()
+
+  $scope.$watch "_original", (value={}) ->
+    if value.toJSON? then $scope.story = value
+    else $scope.story = new Stories.Model value, parse: true
+
 
   # This function runs everytime the story gets updated!
-  $scope.$watch "story", (story={}) ->
-    $scope.edit.description_markdown = $scope.story.description_markdown
-    $scope.edit.title = $scope.story.title
+  updateStory = (story={}) ->
+    currentUser = Session.user
+    $scope.storyJSON = story.toJSON()
+    # $scope.encodedURL = encodeURIComponent story.get "url"
 
-    $scope.userCanEdit = $scope.story.created_by is currentUser.id or
-      currentUser.isModerator() or currentUser.isAdmin()
+    $scope.edit.description_markdown = story.get "description_markdown"
+    $scope.edit.title = story.get "title"
 
-    $scope.story.description = $sce.trustAsHtml $scope.story.description
-    $scope.story.parsedCategories = do ->
-      Categories.findById c for c in story.meta.categories or []
+    # $scope.userCanEdit = $scope.story.created_by is currentUser.id or
+    #   currentUser.isModerator() or currentUser.isAdmin()
+
+    $scope.storyJSON.description = $sce.trustAsHtml story.get "description"
+  $scope.$watch "story", updateStory
 
 
   # Add a listener for whenever settings change
@@ -35,15 +42,16 @@ Controller =  module.exports = ($sce, $scope, $location, $log, Notifications, St
   # because directly setting this variable causes some bugs with the ng-if's
   $scope.setEditMode = (set) -> $scope.editMode = set
 
+  # Same function as above, but for the report mode.
+  $scope.setReportMode = (set) -> $scope.reportMode = set
+
 
   $scope.upvote = ->
-    #! Avoid upvoting if the comment has already been voting
-    if $scope.hasVoted then return
+    # Avoid upvoting if the comment has already been voting
+    if $scope.storyJSON.voted then return
 
-    Users.withLogin(redirect: true).then ->
-      Stories.upvote($scope.story.id).then ->
-        $scope.story.votes_count += 1
-      .finally -> $scope.hasVoted = true
+    Session.ensureLogin(redirect: true).then ->
+      $scope.story.upvote().finally -> updateStory $scope.story
 
 
   blockForm = -> $scope.formClasses = loading: $scope.formLoading = true
@@ -55,7 +63,7 @@ Controller =  module.exports = ($sce, $scope, $location, $log, Notifications, St
     body = $scope.edit
     headers = "x-recaptcha": $scope.data.gcaptcha
 
-    Users.withLogin(redirect: true).then ->
+    Session.ensureLogin(redirect: true).then ->
       Stories.update $scope.story.id, body, headers
       .then ->
         $scope.setEditMode false
@@ -68,15 +76,16 @@ Controller =  module.exports = ($sce, $scope, $location, $log, Notifications, St
     blockForm()
 
     id = $scope.story.id
-    body = content: $scope.story.comment
-    headers = "x-recaptcha": $scope.data.gcaptcha
+    body =
+      content_markdown: $scope.data.comment
+      gcaptcha: $scope.data.gcaptcha
 
-    Stories.createComment id, body, headers
-    .success (comment) ->
+    $scope.story.createComment body
+    .then (comment) ->
       logger.log "comment posted!"
 
       # Erase the comment..
-      $scope.story.comment = ""
+      $scope.data.comment = ""
       $scope.data.gcaptcha = null
 
       # focus on the comment!
@@ -90,7 +99,32 @@ Controller =  module.exports = ($sce, $scope, $location, $log, Notifications, St
     .finally unlockForm
 
 
-  # $scope.
+  $scope.submitReport = ->
+    blockForm()
+
+    id = $scope.story.id
+    body =
+      content_markdown: $scope.data.comment
+      gcaptcha: $scope.data.gcaptcha
+
+    $scope.story.createComment
+    .then (comment) ->
+      logger.log "comment posted!"
+
+      # Erase the comment..
+      $scope.data.comment = ""
+      $scope.data.gcaptcha = null
+
+      # focus on the comment!
+      $location.search "comment", comment.slug
+
+      # Refresh the page and show the comment posted notification!
+      $scope.$emit "refresh"
+      Notifications.success "comment_posted"
+
+    .catch (error) -> logger.error error
+    .finally unlockForm
+
 
 Controller.tag = "component:news-item"
 Controller.$inject = [
@@ -100,7 +134,7 @@ Controller.$inject = [
   "$log"
   "@notifications"
   "@models/news/stories"
-  "@models/users"
+  "@models/session"
   "@models/news/categories"
   "@settings"
 ]

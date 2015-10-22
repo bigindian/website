@@ -1,4 +1,4 @@
-Controller = module.exports = ($location, $log, $scope, News) ->
++Controller = module.exports = ($location, $log, $scope, angular, News) ->
   logger = $log.init Controller.tag
   logger.log "initializing"
   $scope.$emit "page:initialize"
@@ -28,5 +28,6 @@ Controller.$inject = [
   "$location"
   "$log"
   "$scope"
+  "angular"
   "@models/news"
 ]

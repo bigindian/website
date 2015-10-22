@@ -14,7 +14,7 @@
   @module Services.Storage
   @author Steven Enamakel <me@steven.pw>
 ###
-StorageService = ($log, $q, $window, environment) ->
+StorageService = module.exports = ($log, $q, $window, environment) ->
   logger = $log.init StorageService.tag
   logger.log "initializing"
 
@@ -67,22 +67,22 @@ StorageService = ($log, $q, $window, environment) ->
     ###
     _operate: (storage, key, value) ->
       $q (resolve, reject) ->
-        #! If value and key was set to null then the function was had no
-        #! arguments. So we clear the storage!
+        # If value and key was set to null then the function was had no
+        # arguments. So we clear the storage!
         if key == null and value == null then resolve storage.clear()
 
-        #! If a key was set but the value was undefined, then we request data
-        #! from the storage.
+        # If a key was set but the value was undefined, then we request data
+        # from the storage.
         else if typeof value is "undefined"
-          cache = storage.getItem key
+          try cache = JSON.parse storage.getItem key catch e
           if cache? then resolve cache else reject cache
 
-        #! If a key and a value was set then we request data to be saved with
-        #! the key value pair in the storage.
-        else if value? then resolve storage.setItem key, value
+        # If a key and a value was set then we request data to be saved with
+        # the key value pair in the storage.
+        else if value? then resolve storage.setItem key, JSON.stringify value
 
-        #! If the key was set and the value was specifically 'null' then we
-        #! remove the key-value pair from the storage.
+        # If the key was set and the value was specifically 'null' then we
+        # remove the key-value pair from the storage.
         else resolve storage.removeItem key
 
 
@@ -117,4 +117,3 @@ StorageService.$inject = [
   "$window"
   "@environment"
 ]
-module.exports = StorageService

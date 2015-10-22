@@ -1,8 +1,7 @@
-Controller = module.exports = (Stories, Comments) ->
+Controller = module.exports = (Stories) ->
   (request, response, next) ->
-    data = {}
-
     slug = request.params.slug
+
 
     # First get the story by the slug
     Stories.getBySlug slug, withRelated: ["comments"]
@@ -18,13 +17,9 @@ Controller = module.exports = (Stories, Comments) ->
           noFollow: true
           story: story
 
-
     .catch (e) -> next e
 
 
-Controller["@require"] = [
-  "models/news/stories"
-  "models/news/comments"
-]
+Controller["@require"] = ["models/news/stories"]
 Controller["@routes"] = ["/story/:slug"]
 Controller["@singleton"] = true
