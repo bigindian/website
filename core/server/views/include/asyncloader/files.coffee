@@ -2,8 +2,8 @@ u = window.publicData.staticUrl
 window.scripts = [
   {
     id: "style.css"
-    remote: ["#{u}/build/md5/style_#{publicData.md5['style.css']}.css"]
-    local: "/build/md5/style_#{publicData.md5['style.css']}.css"
+    remote: ["#{u}/build/md5/style_#{ publicData.md5['style.css'] }.css"]
+    local: "/build/md5/style_#{ publicData.md5['style.css'] }.css"
   }
   {
     id: "libraries.js"
@@ -12,18 +12,19 @@ window.scripts = [
       "//cdnjs.cloudflare.com/ajax/libs/angular-hotkeys/1.4.5/hotkeys.min.js"
       "//cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.0/angular-cookies.min.js"
       "//cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.14/angular-ui-router.min.js"
+      "//cdnjs.cloudflare.com/ajax/libs/backbone.js/1.2.3/backbone-min.js"
     ]
     local: "/build/md5/libraries_#{ publicData.md5['libraries.js'] }.js"
   }
   {
     id: "templates.js"
-    remote: ["#{u}/build/md5/templates_#{publicData.md5['templates.js']}.js"]
-    local: "/build/md5/templates_#{publicData.md5['templates.js']}.js"
+    remote: ["#{u}/build/md5/templates_#{ publicData.md5['templates.js'] }.js"]
+    local: "/build/md5/templates_#{ publicData.md5['templates.js'] }.js"
   }
   {
     id: "main.js"
-    remote: ["#{u}/build/md5/main_#{publicData.md5['main.js']}.js"]
-    local: "/build/md5/main_#{publicData.md5['main.js']}.js"
+    remote: ["#{u}/build/md5/main_#{ publicData.md5['main.js'] }.js"]
+    local: "/build/md5/main_#{ publicData.md5['main.js'] }.js"
   }
   {
     id: "fonts.css"
