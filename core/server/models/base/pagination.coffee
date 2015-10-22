@@ -18,7 +18,7 @@ Promise = require "bluebird"
   @property {Number|String} `limit` \- no. results per page (default: 15)
 ###
 defaults =
-  limit: 25
+  limit: 15
   page: 1
 
 
