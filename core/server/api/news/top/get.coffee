@@ -7,6 +7,6 @@ Controller = module.exports = (Stories) ->
     .catch (e) -> next e
 
 
-Controller["@require"] = ["models/news/stories"]
+# Controller["@require"] = ["models/news/stories"]
 Controller["@routes"] = ["/news/top"]
 Controller["@singleton"] = true

@@ -1,20 +1,9 @@
-Controller = module.exports = (Users) ->
+Controller = module.exports = (User) ->
   (request, response, next) ->
-    Users.query().then (users) ->
-      users = users.toJSON()
-      for user in users
-        delete user.password
-        delete user.credits
-        delete user.login_providers
-        delete user.meta
-      response.json users
-
-    # For any error (including any 500 errors) return a 404 page.
-    .catch ->
-      response.status 404
-      response.json "user not found"
+    User.query().then (users) -> response.json users
+    .catch (e) -> next e
 
 
-Controller["@require"] = ["models/users"]
 Controller["@routes"] = ["/users"]
+Controller["@require"] = ["models/user"]
 Controller["@singleton"] = true

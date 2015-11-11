@@ -141,6 +141,7 @@
     "request": "^2.60.0",
     "request-ip": "1.1.4",
     "response-time": "^2.3.1",
+    "rsj": "0.0.4",
     "rss": "^1.1.1",
     "run-sequence": "^1.1.2",
     "serve-favicon": "^2.3.0",

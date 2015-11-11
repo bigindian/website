@@ -1,7 +1,6 @@
 Controller = module.exports = ->
   (request, response, next) ->
-    user = request.user
-    if user? then response.json user
+    if request.user? then response.json request.user
     else response.json {}
 
 

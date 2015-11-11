@@ -9,13 +9,13 @@
 @apiSuccess {String} lastname  Lastname of the User.
 @apiVersion 1.0.0
 ###
-Controller = module.exports = (Users) ->
+Controller = module.exports = (User) ->
   (request, response, next) ->
-    Users.get request.params.id
-    .then (user) -> response.json user
+    User.forge id: request.params.id
+    .fetch().then (user) -> response.json user
     .catch (e) -> next e
 
 
-Controller["@require"] = ["models/users"]
+Controller["@require"] = ["models/user"]
 Controller["@routes"] = ["/users/:id"]
 Controller["@singleton"] = true

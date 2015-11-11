@@ -3,8 +3,6 @@ exports.up = (knex, Promise) ->
     table.increments().primary()
     table.string("title", 25).unique().index().notNull().defaultTo ""
     table.string("slug", 25).unique().index().notNull()
-    table.boolean("is_media").defaultTo false
-    table.boolean("inactive").defaultTo false
     table.integer("hotness_mod").defaultTo 0
     table.json("meta").defaultTo "{}"
     table.timestamp("created_at").notNull().defaultTo knex.raw "now()"

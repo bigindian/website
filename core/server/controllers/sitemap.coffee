@@ -53,7 +53,7 @@ Controller = module.exports = (Settings, Stories) ->
 
 Controller["@require"] = [
   "igloo/settings"
-  "models/news/stories"
+  # "models/news/stories"
 ]
 Controller["@routes"] = ["/sitemap.xml"]
 Controller["@singleton"] = true

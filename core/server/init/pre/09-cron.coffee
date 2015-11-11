@@ -9,6 +9,7 @@ exports = module.exports = (IoC, settings) ->
   # Start initializing the different cron scripts we have..
   backupDatabase = IoC.create "cron/backup-database"
   clearCache = IoC.create "cron/clear-cache"
+  fetchNews = IoC.create "cron/fetch-articles"
   # emailReport = IoC.create "cron/email-report"
   # deleteBadUsers = IoC.create "cron/delete-bad-users"
   # expireClassifieds = IoC.create "cron/expire-classifieds"
@@ -43,7 +44,7 @@ exports = module.exports = (IoC, settings) ->
   new cronJob "0  0  *  *  *  *", cronHourly, null, true, "Asia/Kuwait"
   new cronJob "0  0  1  *  *  5", cronWeekly, null, true, "Asia/Kuwait"
   new cronJob "0  0  21 *  *  *", cronDaily,  null, true, "Asia/Kuwait"
-
+  fetchNews()
 
 exports["@require"] = [
   "$container"

@@ -4,7 +4,7 @@ validator = require "validator"
 
 
 ###
-  @api {post} /api/auth/email/signup Signup with email
+  @api {post} /api/session/email/signup Signup with email
   @apiName SignupLogin
   @apiGroup Authentication
   @apiVersion 1.0.0

@@ -1,7 +1,7 @@
-Controller = module.exports = (Stories) ->
-  (request, response, next) -> response.json Stories.categories
+Controller = module.exports = (Feed) ->
+  (request, response, next) -> response.json Feed.categories
 
 
-Controller["@require"] = ["models/news/stories"]
+Controller["@require"] = ["models/news/feed"]
 Controller["@routes"] = ["/news/categories"]
 Controller["@singleton"] = true

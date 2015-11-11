@@ -62,7 +62,7 @@ Controller = module.exports = (Cache, Stories) ->
 
 Controller["@require"] = [
   "libraries/cache"
-  "models/news/stories"
+  # "models/news/stories"
 ]
 Controller["@routes"] = ["/rss"]
 Controller["@singleton"] = true

@@ -5,10 +5,11 @@ validator = require "validator"
 
 Model = module.exports = (Bookshelf) ->
   Bookshelf.Model.extend
-    tableName: "news_categories"
+    tableName: "logs"
     cache: true
     require: true
 
+    enums: types: tableName: "log_types", pick: "name"
 
 
 Model["@require"] = ["models/base/bookshelf"]

@@ -5,7 +5,7 @@ supertest        = require "supertest"
 route = "/api/users"
 
 
-Controller = module.exports = (IoC, Users) -> (app) ->
+exports = module.exports = (IoC, Users) -> (app) ->
 
   testFor = (route, HTTPcode, json, done) ->
     supertest.agent app
@@ -104,8 +104,8 @@ Controller = module.exports = (IoC, Users) -> (app) ->
           catch e then done e
 
 
-Controller["@require"] = [
+exports["@require"] = [
   "$container"
-  "models/users"
+  "models/user"
 ]
-Controller["@singleton"] = true
+exports["@singleton"] = true

@@ -71,6 +71,6 @@ exports["@require"] = [
   "igloo/settings"
   "igloo/sessions"
 
-  "models/logs"
-  "models/users"
+  "models/log"
+  "models/user"
 ]

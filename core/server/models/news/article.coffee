@@ -1,14 +1,10 @@
-Promise   = require "bluebird"
-bCrypt    = require "bcrypt-nodejs"
-validator = require "validator"
+helpers = require "../helpers"
 
 
 Model = module.exports = (Bookshelf) ->
   Bookshelf.Model.extend
-    tableName: "news_categories"
-    cache: true
+    tableName: "news_feed_articles"
     require: true
-
 
 
 Model["@require"] = ["models/base/bookshelf"]

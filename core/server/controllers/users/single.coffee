@@ -12,9 +12,8 @@ Controller = module.exports = (Users, NotFoundError) ->
 
 
 Controller["@require"] = [
-  "models/users"
+  "models/user"
   "libraries/errors/NotFoundError"
-  "models/news/comments"
 ]
 Controller["@routes"] = ["/user/:slug"]
 Controller["@singleton"] = true

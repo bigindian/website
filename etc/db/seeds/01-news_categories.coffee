@@ -5,7 +5,6 @@ exports.seed = (knex, Promise) ->
     values =
       id: ++uid
       hotness_mod: options.hotness_mod or 0
-      inactive: options.inactive or false
       meta: JSON.stringify color: options.color
       slug: "#{slug}-#{uid}"
       title: options.title

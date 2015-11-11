@@ -6,7 +6,7 @@ route = "/api/users/current"
 loginRoute = "/api/auth/email/login"
 
 
-Controller = module.exports = (IoC) -> (app) ->
+exports = module.exports = (IoC) -> (app) ->
   describe "#{route} GET", ->
     agent = supertest.agent app
 
@@ -87,5 +87,5 @@ Controller = module.exports = (IoC) -> (app) ->
           done()
 
 
-Controller["@require"] = ["$container"]
-Controller["@singleton"] = true
+exports["@require"] = ["$container"]
+exports["@singleton"] = true

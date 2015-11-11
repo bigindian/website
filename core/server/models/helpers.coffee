@@ -4,12 +4,13 @@ htmlToText    = require "html-to-text"
 readingTime   = require "reading-time"
 MetaInspector = require "node-metainspector"
 
+
 module.exports =
   ###
   **fetchInformation()** Gets information about the given URL and returns a
   JSON which can be used for initializing the story.
   ###
-  fetchInformation: (url, EXCERPT_LENGTH=500) -> new Promise (resolve,  reject) ->
+  fetchInformation: (url, EXCERPT_LENGTH=500) -> new Promise (resolve, reject) ->
     read url, (error, article, meta) ->
       if error then return reject error
 
@@ -17,7 +18,6 @@ module.exports =
         hideLinkHrefIfSameAsText: true
         ignoreHref: true
         ignoreImage: true
-
 
       onMetaInspectFinish = (meta={}) ->
         resolve
