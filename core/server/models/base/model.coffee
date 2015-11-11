@@ -50,6 +50,7 @@ BaseModel = (knex, Enum, Cache, NotFoundError, Settings) ->
     ###
     knex: knex
 
+    fields: []
 
     fullCache: false
     enableMD5: false
@@ -75,6 +76,7 @@ BaseModel = (knex, Enum, Cache, NotFoundError, Settings) ->
       extendPrameters =
         tableName: @tableName
         hasTimestamps: true
+        fields: []
         initialize: ->
           @on "created", -> @onCreated()
           @on "creating", -> @onCreate()
@@ -107,12 +109,20 @@ BaseModel = (knex, Enum, Cache, NotFoundError, Settings) ->
         ```
         ###
         clean: ->
-          # Traverse through each key
-          traverse(@attributes).forEach (value) ->
-            # If it is not defined then remove it.. (remove any annoying nulls)
+          for key of @attributes
+            #! First remove any unwanted fields
+            if key not in @fields then return @unset key
+
+            #! JSON stringify any JSON fields.
+            if key in @jsonFields
+              @attributes[key] = JSON.stringify @attributes[key]
+
+          #! Traverse through each key
+          traverse(@attributes).forEach (value, key) ->
+            #! If it is not defined then remove it.. (remove any annoying nulls)
             if not value? then @remove()
 
-            # If it is a string then perform an XSS filter on it
+            #! If it is a string then perform an XSS filter on it
             else if typeof value is "string" then value = xss value
 
           #! Return this instance to allow chaining.

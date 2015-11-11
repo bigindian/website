@@ -13,6 +13,7 @@ Controller = module.exports = (Users) ->
   (request, response, next) ->
     Users.get request.params.id
     .then (user) -> response.json user
+    .catch (e) -> next e
 
 
 Controller["@require"] = ["models/users"]

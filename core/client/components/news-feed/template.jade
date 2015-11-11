@@ -1,0 +1,20 @@
+.news-feed
+  ul
+    li(ng-repeat="link in feed.links", ng-class="{new: link.isNew}")
+      a.line-title(href="/api?{{ link.url }}" 
+        ping="/collect?id={{ link.id }}" 
+        target="_blank") {{ link.title }}
+      .excerpt
+        .title {{ link.title }}
+        .description
+          Three men were charged in a 23-count indictment in connection with the 2014 hacking of J.P. Morgan Chase and multiple other financial institutions. Gery Shalon and Ziv Orenstein were first arrested in Israel in July. 
+        .meta
+          span.read 2 min read 
+          span.posted posted 2 hours ago
+
+
+  .source(ng-style="{ 'background' : feed.color }", ng-class="{updating: feed.updating}")
+    a.domain(ng-href="/feed/{{ feed.domain }}") {{ feed.domain }}
+    span.update(ng-click="feed.updating = true; updateFeed()") click here to update
+    span.updated last story 3 hours ago
+    span.updating updating...

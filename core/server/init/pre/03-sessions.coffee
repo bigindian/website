@@ -18,8 +18,7 @@ WordpressStrategy     = (require "passport-wordpress").Strategy
 OpenIDStrategy        = (require "passport-openid").Strategy
 
 
-exports = module.exports = (IoC, settings, sessions, Logs,
-Users) ->
+exports = module.exports = (IoC, settings, sessions, Logs, Users) ->
   app = this
   logger = IoC.create "igloo/logger"
   name = "[session]"

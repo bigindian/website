@@ -50,8 +50,10 @@ validator = require "validator"
 markdown  = require("markdown").markdown
 url       = require "url"
 
+helpers   = require "../helpers"
 
-Model = (Elasticsearch, BaseModel, NewsVotes, Users) ->
+
+Model = module.exports = (Elasticsearch, BaseModel, NewsVotes, Users) ->
   # **MAX_EDIT_MINS** After this many minutes, a story cannot be edited.
   MAX_EDIT_MINS = 90
 
@@ -63,6 +65,8 @@ Model = (Elasticsearch, BaseModel, NewsVotes, Users) ->
   # **ACTIVITY_WEIGHT** Amount that any activity inside of the story gets.
   ACTIVITY_WEIGHT = 100
 
+  EXCERPT_LENGTH = 400
+
 
   # **CREATION_WINDOW** The window variable is used narrow down how effective
   # the creation date is when the post's hotness is calculated. A smaller window
@@ -71,17 +75,26 @@ Model = (Elasticsearch, BaseModel, NewsVotes, Users) ->
   # upvotes.
   #
   #! As the site grows, you might want to shrink this down to 12 or so.
-  CREATION_WINDOW = 60 * 60 * 60 * 60
+  CREATION_WINDOW = 60 * 60 * 60 * 10
 
 
   new class Stories extends BaseModel
     tableName: "news_stories"
+
 
     #! Get the static values from the DB
     enums: categories: tableName: "news_categories"
 
     # Properties to extend to the model!
     extends:
+      fields: ["categories", "comments_count", "created_at", "created_by",
+        "created_by_uname", "description", "description_markdown", "domain",
+        "excerpt", "hotness", "id", "image_meta", "image_url", "is_edited",
+        "is_expired", "is_moderated", "meta", "raw_hotness", "slug",
+        "story_cache", "title", "updated_at", "url", "votes_count"]
+
+      jsonFields: ["categories", "meta", "image_meta"]
+
       categories: -> @hasMany "news_story_category", "story"
       comments: -> @hasMany "news_comments", "story"
       created_by: -> @belongsTo "users", "created_by"
@@ -145,8 +158,8 @@ Model = (Elasticsearch, BaseModel, NewsVotes, Users) ->
         #! Round off the hotness so that postgres stays happy and set it to the
         #! model!
         #! See http://stackoverflow.com/questions/11832914/round-to-at-most-2-decimal-places-in-javascript
-        @set "hotness", Math.round(hotness * 10 * 7)/(10 * 7)
-        @set "raw_hotness", Math.round(activityPoints * 10 * 7)/(10 * 7)
+        @set "hotness", Math.round(hotness * 10 * 7) / (10 * 7)
+        @set "raw_hotness", Math.round(activityPoints * 10 * 7) / (10 * 7)
 
         #! Return this instance to allow chaining.
         this
@@ -181,7 +194,7 @@ Model = (Elasticsearch, BaseModel, NewsVotes, Users) ->
           story: @id
           user: user_id
 
-        # #! If the upvote could be added properly then we save the model!
+        #! If the upvote could be added properly then we save the model!
         .then =>
           #! Update the hotness and the upvotes counter
           @set "votes_count", 1 + @get "votes_count"
@@ -217,6 +230,15 @@ Model = (Elasticsearch, BaseModel, NewsVotes, Users) ->
 
         #! First set the slug from the right variable.
         @set "slug", @createSlug()
+
+        helpers.fetchInformation @get("url"), EXCERPT_LENGTH
+        .then (results) =>
+          @set "excerpt", results.excerpt
+          meta = @get "meta"
+          meta.image = results.meta.image
+          meta.time = results.meta.time
+        .catch (error) -> console.error error
+
 
 
       onCreated: ->
@@ -275,10 +297,11 @@ Model = (Elasticsearch, BaseModel, NewsVotes, Users) ->
 
       #! Now create the model and save it into the DB
       @model.forge(parameters).save()
-      # .then (model) ->
+      .then (model) =>
         #! For each category that was set in the parameters prepare the values
         #! for the insert query.
-        # insertQuery = do -> category: cat, story: model.id for cat in categories
+        insertQuery = do -> category: cat, story: model.id for cat in categories
+        @knex("news_story_category").insert insertQuery
 
 
     ###
@@ -303,6 +326,12 @@ Model = (Elasticsearch, BaseModel, NewsVotes, Users) ->
     comments: (id) -> @model.where(id: id).fetch withRelated: ["comments"]
 
 
+    ###
+    **fetchInformation()** Gets information about the given URL and returns a
+    JSON which can be used for initializing the story.
+    ###
+    fetchInformation: (url) -> helpers.fetchInformation url, EXCERPT_LENGTH
+
 
 Model["@singleton"] = true
 Model["@require"] = [
@@ -311,4 +340,3 @@ Model["@require"] = [
   "models/news/votes"
   "models/users"
 ]
-module.exports = Model
