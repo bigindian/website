@@ -9,7 +9,7 @@ nav#menu-header(ng-class="{'show-menuheader': showMenuHeader}"
     li.homelogo
       a(fn-route="/")
         img(src="/images/logo.2.png")
-    li(ng-repeat="link in links"
+    //- li(ng-repeat="link in links"
       class="{{ link.class }}"
       ng-mouseover="onMainLinkHover(link)"
       ng-class="{active: link.isActive}")

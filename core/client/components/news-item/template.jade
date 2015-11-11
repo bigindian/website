@@ -1,49 +1,61 @@
-.story_liner(ng-init="editMode = false; reportMode = false;")
+.story_liner(ng-init="editMode = false; reportMode = false;",
+  ng-class="{'has-image': story.hasImage()}")
   .votes(ng-if="!settings.storyHideScore", ng-class="{voted: storyJSON.voted}")
-    .score {{ storyJSON.votes_count || 1 | prettynumber }}
+    .score {{ storyJSON.votes_count | prettynumber }}
     .voter
       a(ng-click="upvote()")
 
-  .details
-    span.link(ng-if="!editMode")
-      span(ng-if="!storyJSON.is_gone")
-        a(fn-route="/story/{{ storyJSON.slug }}/open"
-          target="{{ openNewTab ? '_blank' : ''}}") {{ storyJSON.title }}
-      span(ng-if="storyJSON.is_gone").
-        [Story removed by {{ storyJSON.is_moderated ? "moderator" : "original submitter" }}]
+  .row.main-content
+    .columns.medium-3.hero(ng-if="story.hasImage()"
+      ng-style="{height: height + 'px'}")
+      img(ng-src="{{ storyJSON.image_url }}")
 
-    .link.edittext(contenteditable="true", ng-if="editMode", ng-model="edit.title")
+    .columns.details(class="{{ storyJSON.image_url ? 'medium-9' : '' }}")
+      .link(ng-if="!editMode")
+        span(ng-if="!storyJSON.is_gone")
+          a(fn-route="/story/{{ storyJSON.slug }}/open"
+            target="{{ openNewTab ? '_blank' : '_self'}}") {{ storyJSON.title }}
+        span(ng-if="storyJSON.is_gone").
+          [Story removed by {{ storyJSON.is_moderated ? "moderator" : "original submitter" }}]
 
+      .link.edittext(contenteditable="true", ng-if="editMode", ng-model="edit.title")
 
-    span.cats(ng-if="!storyJSON.is_gone && !settings.storyHideCategories && !editMode")
-      a(ng-repeat="cat in storyJSON.parsedCategories track by $index"
-        fn-route="/category/{{ cat.slug }}")
-        news-category(ng-model="cat")
+      .excerpt(clamp="3", ng-if="story.hasExcerpt()") {{ story.$attributes.excerpt }}
 
-    span.domain(ng-if="!settings.storyHideDomain && !editMode")
-      a(fn-route="/search?domain={{ storyJSON.domain }}"
-        target="{{ openNewTab ? '_blank' : ''}}") ({{ storyJSON.domain }})
-
-    .meta(ng-if="!editMode")
-      span.timestamp(ng-if="!settings.storyHideDate").
-        {{ storyJSON.created_at | prettydate }} by
-        <a class="author" fn-route="/user/{{ storyJSON.created_by_uname }}">{{ storyJSON.created_by_uname }}</a>
-
-      span.comments_label(ng-if="storyJSON.comments_count == 0 && !settings.storyHideComments")
-        a(fn-route="/story/{{ storyJSON.slug }}") discuss
-
-      span.comments_label(ng-if="storyJSON.comments_count != 0 && !settings.storyHideComments")
-        a(fn-route="/story/{{ storyJSON.slug }}").
-          {{ storyJSON.comments_count }} {{ storyJSON.comments_count == 1 ? "comment" : "comments" }}
-
-      span(ng-if="allowEditing && userCanEdit")
-        a(href="", ng-click="setEditMode(true)") edit
-
-      span.report-link(ng-if="allowReporting")
-        a(href="", ng-click="setReportMode(true)") report
+      .cats(ng-if="!storyJSON.is_gone && !settings.storyHideCategories && !editMode")
+        news-category(ng-model="cat"
+          ng-repeat="cat in storyJSON.categories track by $index")
 
 
-  form.report-box.box(ng-if="reportMode"
+      .meta(ng-if="!editMode")
+        span.domain(ng-if="!settings.storyHideDomain && !editMode")
+          a(fn-route="/search?domain={{ storyJSON.domain }}"
+            target="{{ openNewTab ? '_blank' : ''}}") {{ storyJSON.url | domain }}
+        span.timestamp(ng-if="!settings.storyHideDate").
+          {{ storyJSON.created_at | prettydate }} by
+          <a class="author" fn-route="/user/{{ storyJSON.created_by_uname }}">{{ storyJSON.created_by_uname }}</a>
+
+        span.comments_label(ng-if="storyJSON.comments_count == 0 && !settings.storyHideComments")
+          a(fn-route="/story/{{ storyJSON.slug }}") discuss
+
+        span.comments_label(ng-if="storyJSON.comments_count != 0 && !settings.storyHideComments")
+          a(fn-route="/story/{{ storyJSON.slug }}").
+            {{ storyJSON.comments_count }} {{ storyJSON.comments_count == 1 ? "comment" : "comments" }}
+
+        span(ng-if="allowEditing && userCanEdit")
+          a(href="", ng-click="setEditMode(true)") edit
+
+        span.report-link(ng-if="allowReporting && story.id")
+          a(href="", ng-click="setReportMode(true)") report
+
+        span.share-link(ng-if="allowSharing && story.id")
+          a(href="", ng-click="setReportMode(true)") share
+
+        span.share-link(ng-if="story.id")
+          a(href="/s/{{ storyJSON.id }}") shortlink
+
+
+  //- form.report-box.box(ng-if="reportMode"
     ng-init="data.report = {}"
     name="reportForm", ng-class="formClasses")
 

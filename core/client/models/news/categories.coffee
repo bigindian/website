@@ -11,6 +11,10 @@ Model = module.exports = ($http, $resource, BackboneModel, BackboneCollection) -
 
     @getAll: -> collection.toArray()
 
+    @getAllbyIds: -> collection.map (item) -> item.id
+
+    @collection: -> collection
+
 
     @Model: BackboneModel.extend {}
 

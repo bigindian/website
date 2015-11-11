@@ -2,11 +2,12 @@ bootloader = require "./bootloader"
 Angular    = window.angular
 
 bootloader.initialize()
-app = Angular.module "news",[
+app = Angular.module "news", [
   "ngCookies"
   "ngResource"
   "ui.router"
   "cfp.hotkeys"
+  "wu.masonry"
 ]
 
 # Add each of the angular components

@@ -4,34 +4,54 @@
 
 form.row(name="form"
   ng-class="formClasses"
-  ng-init="selectedCats = 0"
   accept-charset="UTF-8")
 
   .columns
     .row
       .columns.medium-2
         label URL *
-      .columns.medium-10
-        input(ng-model="story.url"
+      .columns(class="{{ urlValid ? 'medium-10' : 'medium-8' }}")
+        input(ng-model="data.story.$attributes.url"
           ng-disabled="formLoading"
           type="url"
           required)
 
-  .columns(ng-if="story.url")
+      .columns.medium-2(ng-if="!urlValid")
+        button(ng-click="checkURL()") Submit
+
+  .columns(ng-if="urlValid")
     .row
       .columns.medium-2
         label Title *
-      .columns(class="{{ story.title ? 'medium-10' : 'medium-8' }}")
-        input.title.field(ng-model="story.title"
+      .columns.medium-10
+        input.title.field(ng-model="data.story.$attributes.title"
           type="text"
           ng-disabled="formLoading"
           minlength="10"
           maxlength="255"
           required)
-      .columns.medium-2(ng-if="!story.title")
-        button(ng-click="getTitle()") Get Title
 
-  .columns(ng-if="story.url")
+  .columns(ng-if="urlValid")
+    .row
+      .columns.medium-2
+        label Excerpt
+      .columns.medium-10.excerpt {{ data.story.$attributes.excerpt }} . . .
+
+  .columns(ng-if="urlValid")
+    .row
+      .columns.medium-2
+        label Categories *
+        .hint Choose upto 3 categories
+      .columns.medium-10
+        news-category(ng-model="cat"
+          disable-href="true"
+          ng-class="{selected: isCatActive(cat)}"
+          ng-repeat="cat in categories | orderBy : 'slug'"
+          ng-click="toggleCat(cat)")
+
+
+
+  .columns(ng-if="urlValid")
     .row
       .columns.medium-2
         label Description
@@ -133,6 +153,14 @@ form.row(name="form"
           submit it, so make sure to double-check. You can however change the
           title and description even after you've submitted the link.
 
-  .columns(ng-if="story.url")
-    div(google-recaptcha, ng-model="form.gcaptcha", ng-if="!story.gcaptcha")
-    button(ng-click="submit(story)", ng-if="story.gcaptcha", ng-disabled="!form.$valid") Submit
+  .columns(ng-if="urlValid")
+    div(google-recaptcha, ng-model="data.story.gcaptcha", ng-if="!data.story.gcaptcha")
+    button(ng-click="submit(data.story)", ng-if="data.story.gcaptcha", ng-disabled="!form.$valid") Submit
+
+
+  .preview.columns(ng-if="urlValid")
+    .row
+      .columns
+        h3 Preview
+      .columns
+        news-item(ng-model="storyCopy")

@@ -1,4 +1,4 @@
-EventHandler = ($ga, $location, $log, $root, Notifications, Users) ->
+EventHandler = module.exports = ($ga, $location, $log, $root, Notifications, Session) ->
   logger = $log.init EventHandler.tag
   logger.log "initialized"
 
@@ -8,7 +8,7 @@ EventHandler = ($ga, $location, $log, $root, Notifications, Users) ->
     logger.log "captured event!"
 
     # If the login property is set then check if the user is logged in.
-    if value.needLogin then Users.withLogin redirect: true
+    if value.needLogin then Session.ensureLogin redirect: true
 
     # Send a pageview in google analytics
     $ga.sendPageView()
@@ -21,6 +21,5 @@ EventHandler.$inject = [
   "$log"
   "$rootScope"
   "@notifications"
-  "@models/users"
+  "@models/session"
 ]
-module.exports = EventHandler

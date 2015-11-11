@@ -3,6 +3,11 @@ news-item
   @extend .font-droid
   display: block
   font-weight: 400
+  margin-bottom: 15px
+  // min-height: 120px
+  .row
+    margin-left: 0 !important
+    margin-right: 0 !important
 
   a
     text-decoration: none
@@ -13,38 +18,45 @@ news-item
   .cats
     margin-right: 5px
 
-  .domain a
-    font-size: 11px
-    font-style: italic
-    margin-right: 5px
-    color: #888
-    opacity: 1
-    &:hover
-      color: blue
+
+  .hero
+    background: #EEE
+    overflow: hidden
+    height: 120px
+    padding: 0
+
+    img
+      min-height: 100%
+    //   max-width: none
+
+
 
   .details
     @extend .font-cantarell
-    color: #888
+    color: #555
     font-size: 13.2px
+    padding-left: 0
+    @media #{$small-only}
+      padding-right: 0 !important
 
     span:hover
       color: #000
+
 
     .link
       @extend .font-droid
       box-sizing: border-box
       color: rgb(0, 0, 0)
       cursor: auto
-      display: inline
       font-size: 14px
       font-weight: bold
       line-height: 20px
-      margin-right: 5px
+      margin-bottom: 5px
       text-align: left
       a
         text-decoration: none
         &:visited
-          color: #888
+          color: #555
         &:hover
           color: $news-color
       &.edittext
@@ -52,13 +64,22 @@ news-item
         display: block
 
 
+    .excerpt
+      font-size: 10px
+      max-height: 80px
+      margin-bottom: 5px
+      overflow: hidden
+      text-overflow: ellipsis
 
+  .has-image .details
+    padding-left: 10px
 
   .meta, .meta span, .domain
     vertical-align: text-bottom
 
   .meta
-    font-size: 11px
+    font-size: 10px
+    // opacity: 0.3
     span
       // vertical-align: text-bottom
       &:after
@@ -66,8 +87,14 @@ news-item
         padding: 0 4px
       &:last-child:after
         content: none
-    a:hover
-      text-decoration: underline
+      &:hover a
+        color: blue
+
+      &.report-link:hover a
+        color: $news-color
+
+      &.domain a
+        color: blue
 
   .votes
     float: left
@@ -112,6 +139,11 @@ news-item
       .voter a
         border-color: transparent transparent #000 transparent
 
+  .main-content
+    padding-left: 35px
+    .columns
+      margin-bottom: 0 !important
+
   .description
     font-size: 12px
     font-family: "helvetica neue", arial, sans-serif
@@ -139,14 +171,16 @@ news-item
       margin-right: 10px
 
   .comment-box form
-    margin-top: 15px
+    margin-top: 25px
     border: 0
 
-  .box, .editButton, .description, .details
+  .box, .editButton, .description,
     margin-left: 35px
 
-  .report-link:hover
-    color: $news-color
+  .meta
+
+  // .details
+    // margin-left: 35 + 10 + 175px
 
 
   .report-box

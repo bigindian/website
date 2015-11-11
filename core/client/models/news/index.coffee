@@ -10,8 +10,8 @@ Model = module.exports = ($http, $log, Environment) ->
     str.join '&'
 
 
-  new class NewsModel
-    search: (queryObject={}) ->
+  class NewsModel
+    @search: (queryObject={}) ->
       API = "#{Environment.url}/api/news?#{serialize queryObject}"
       $http.get "#{API}"
 

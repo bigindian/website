@@ -1,4 +1,4 @@
-Controller =  module.exports = ($sce, $scope, $location, $log, Notifications, Stories, Session, Categories, Settings) ->
+Controller =  module.exports = ($sce, $element, $scope, $location, $log, $timeout, angular, Notifications, Stories, Session, Categories, Settings) ->
   logger = $log.init Controller.tag
   logger.log "initializing"
 
@@ -8,26 +8,35 @@ Controller =  module.exports = ($sce, $scope, $location, $log, Notifications, St
   $scope.edit = {}
   $scope.story = {}
 
-
   $scope.$watch "_original", (value={}) ->
     if value.toJSON? then $scope.story = value
     else $scope.story = new Stories.Model value, parse: true
+    $scope.storyJSON = $scope.story.toJSON()
+
+    $scope.story.on "change", -> updateStory $scope.story
+    updateStory $scope.story
 
 
   # This function runs everytime the story gets updated!
-  updateStory = (story={}) ->
+  updateStory = (story) ->
+    if not story? then return
     currentUser = Session.user
-    $scope.storyJSON = story.toJSON()
-    # $scope.encodedURL = encodeURIComponent story.get "url"
+
+    $timeout(500).then ->
+      queryResult = $element[0].querySelector ".details"
+      wrappedQueryResult = angular.element queryResult
+      $scope.height = wrappedQueryResult[0].offsetHeight or 100
 
     $scope.edit.description_markdown = story.get "description_markdown"
     $scope.edit.title = story.get "title"
 
     # $scope.userCanEdit = $scope.story.created_by is currentUser.id or
     #   currentUser.isModerator() or currentUser.isAdmin()
+    $scope.categories = do ->
+      for category in $scope.storyJSON.categories
+        Categories.collection().findWhere(id: category).toJSON()
 
     $scope.storyJSON.description = $sce.trustAsHtml story.get "description"
-  $scope.$watch "story", updateStory
 
 
   # Add a listener for whenever settings change
@@ -49,7 +58,6 @@ Controller =  module.exports = ($sce, $scope, $location, $log, Notifications, St
   $scope.upvote = ->
     # Avoid upvoting if the comment has already been voting
     if $scope.storyJSON.voted then return
-
     Session.ensureLogin(redirect: true).then ->
       $scope.story.upvote().finally -> updateStory $scope.story
 
@@ -121,9 +129,12 @@ Controller =  module.exports = ($sce, $scope, $location, $log, Notifications, St
 Controller.tag = "component:news-item"
 Controller.$inject = [
   "$sce"
+  "$element"
   "$scope"
   "$location"
   "$log"
+  "$timeout"
+  "angular"
   "@notifications"
   "@models/news/stories"
   "@models/session"

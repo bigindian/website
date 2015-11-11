@@ -13,6 +13,7 @@ Controller = module.exports = ($cookies, $http, $log, $scope, $storage, Stories)
   $storage.local("options:newtab").then (val) ->
     $scope.options.newtab = val == "true" or false
 
+  $scope.feeds = require "./feed.json"
   # # Attach listeners to all our options
   # $scope.$watch "options.resultsPerPage", (val) -> $cookies.put "rpp", val
   # $scope.$watch "options.newtab", (val) -> $storage.local "options:newtab", val

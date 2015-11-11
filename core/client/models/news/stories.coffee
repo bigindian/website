@@ -21,15 +21,18 @@ Model = module.exports = ($log, $q, BackboneModel, BackboneCollection, Comments,
     @Model: BackboneModel.extend
       urlRoot: "/api/news/stories"
 
+      defaults:
+        created_at: Date.now()
+        comments_count: 0
+        votes_count: 1
+        created_by_uname: Session.user.get "username"
+        categories: []
+        meta: {}
+
       initialize: ->
         upvotesCacheKey = "votes:stories:user@#{Session.user.id}"
         Storage.local(upvotesCacheKey).then (value) => upvotesCache = value
         @set "voted", @id in upvotesCache
-
-
-      parse: (json) ->
-        json.categories = [1, 2, 3]
-        json
 
 
       createComment: (data) ->
@@ -58,6 +61,12 @@ Model = module.exports = ($log, $q, BackboneModel, BackboneCollection, Comments,
         # Create a report instance and save it in the DB
         report = new ReportModel data
         report.save()
+
+
+      hasExcerpt: -> @get("excerpt")? and @get("excerpt").length > 1
+
+
+      hasImage: -> @get("image_url")?
 
 
     @Collection: BackboneCollection.extend
