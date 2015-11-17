@@ -1,0 +1,19 @@
+style.
+  .news-feed-item:hover {
+    background: rgba({{ feed.rgb.r }}, {{ feed.rgb.g }}, {{ feed.rgb.b }}, 0.15)
+  }
+
+.source(ng-style="{ 'background' : feed.color }", 
+  ng-class="{updating: feed.updating, white: feed.meta.isWhite}")
+  .image
+    img(ng-src="/images/source/{{ feed.domain }}.png")
+  .info
+    a.domain(ng-href="{{ feed.url }}" target="_blank") {{ feed.domain }}
+    .update(ng-click="feed.updating = true; updateFeed()") click here to update
+    .updated last article {{ feed.last_article_at | prettydate }}
+    .updating updating...
+
+.news-feed(id="feed-{{ feed.id }}")      
+  packery.articles.row.collapse
+    .packery-brick.columns.medium-4.large-3(ng-repeat="article in feed.articles")
+      news-feed-item(ng-model="article", feed="feed")

@@ -1,0 +1,88 @@
+news-feed-item
+  display: block
+  position: relative
+
+.news-feed-item
+  +single-transition
+  position: relative
+  border-bottom: 1px solid #EEE !important
+  border-right: 1px solid #EEE !important
+  color: #444
+  font-size: rem-calc(11px)
+  &:hover
+    background: #eee
+
+  &.new
+    background: #FAFCD3
+
+  &.popular
+    .line-title
+      border-left: 3px solid #EEE
+      font-weight: bold
+
+
+
+  .line-title
+    display: block
+    padding: 3px 8px
+    text-decoration: none
+    &:visited
+      border-color: #EEE !important
+      color: #AAA
+
+    .meta, &
+      +single-transition
+    .meta
+      position: absolute
+      top: 3px
+      left: 8px
+      width: 100%
+      opacity: 0
+      font-weight: bold
+    &:hover
+      .title
+        opacity: 0
+      .meta
+        opacity: 0.8
+  //   display: none
+  //   float: left
+
+
+  .excerpt
+    @extend .font-roboto
+    color: #000
+    position: absolute
+    background: #FFF
+    z-index: 1
+    display: none
+    width: 300px
+    font-size: rem-calc(11px)
+
+    -webkit-box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.5)
+    -moz-box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.5)
+    box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.5)
+
+    .img-container
+      overflow: hidden
+      max-height: 150px
+
+    .content
+      padding: 10px
+
+    .title
+      font-weight: bold
+    .description, .title
+      margin-bottom: 5px
+    .meta
+      color: #666
+      margin-top: 10px
+      +clearfix
+      .posted
+        float: right
+
+  &:hover .excerpt
+    display: block
+
+  @media #{$small-only}
+    .excerpt
+      display: none !important
