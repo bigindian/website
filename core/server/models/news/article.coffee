@@ -38,7 +38,7 @@ Model = module.exports = (Bookshelf) ->
       # The creation points is set so that newer posts get more hotness than
       # older ones. The window variable is used narrow down how effective
       # already trending ones will take the top spot.
-      createdDate = Number new Date(@get "published_at").getTime() or Date.now()
+      createdDate = Number new Date(@get "created_at").getTime() or Date.now()
       creationPoints = createdDate / CREATION_WINDOW
 
       # The final hotness is simply the sum of all the different points.
@@ -71,10 +71,61 @@ Model = module.exports = (Bookshelf) ->
       @on "created", (model, attributes, options) ->
         model.related "feed"
         .fetch().then (feed) ->
+          # Fetch some old value
+          old_articles_count = @get("articles_count") or 0
+          old_refresh_interval = @get("refresh_interval") or 0
+          old_last_article_at = @get "last_article_at"
+
+          # Preprase some new valuse
+          new_articles_count = old_articles_count + 1
+          new_refresh_interval = old_refresh_interval
+
+          # Now sometimes the feed is empty, so we prepare a query for the first
+          # to insert the first post.
+          if not old_last_article_at? or old_articles_count is 0
+            return feed.save {
+              refresh_interval: 0
+              articles_count: 1
+              last_article_at: model.get "published_at"
+            }, patch: true
+
+          # If this is not our first time, then we start re-calculating the
+          # refresh_interval for this next post.
+
+          # Get the UTC time values for the given dates
+          old_last_article_at = old_last_article_at.getTime()
+          current_article_at = model.get("published_at").getTime()
+
+          # Find out how far away the two dates are. Will give a result in ms.
+          currentInterval = current_article_at - old_last_article_at
+
+          if currentInterval >= 0
+            # Sometimes some articles are pretty ancient and have a tendency to
+            # greatly influence the general average. So we, cap the interval so
+            # that articles are considered to be at most a day old from the
+            # last article.
+            #
+            # This way, we make sure that our refresh_interval will trigger a
+            # refresh at most withing a day.
+            currentInterval = Math.min currentInterval, 86400 * 1000
+
+            # The new_refresh_interval is simply an average of all the intervals
+            # together. The code below re-calculates the new average by simply
+            # re-using the previous average.
+            old_articles_interval = old_refresh_interval * old_articles_count
+            new_refresh_interval = (old_articles_interval + currentInterval) /
+              new_articles_count
+
+          # Once we've recalculated the refresh_interval, we update the
+          # next_refresh_date so that we can use that field and run simple DB
+          # queries to figure out which is the next article to be updated.
+          new_refresh_date = new Date Date.now() + new_refresh_interval
+
           feed.save {
-            # refresh_rate # do something about refresh rate here...
-            articles_count: 1 + @get("articles_count") or 0
-            last_article_at: new Date()
+            refresh_interval: new_refresh_interval
+            next_refresh_date: new_refresh_date
+            articles_count: new_articles_count
+            last_article_at: model.get "published_at"
           }, patch: true
 
 

@@ -15,6 +15,7 @@ Model = module.exports = (Bookshelf) ->
     articles: -> @hasMany "news.article", "feed"
 
 
+
     getFeed: -> new Promise (resolve, reject) =>
       @save {checked_at: new Date()}, patch: true
 
@@ -37,8 +38,8 @@ Model = module.exports = (Bookshelf) ->
         while item = stream.read() then items.push item
       feedparser.on "end", -> resolve items
 
-      # If the request does not complete in 5 seconds, then we skip it!
-      setTimeout (-> reject new Error "timeout"), 5000
+      # If the request does not complete in 10 seconds, then we skip it!
+      setTimeout (-> reject new Error "10s timeout"), 10000
 
 
 

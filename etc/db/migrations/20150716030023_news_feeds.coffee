@@ -9,9 +9,13 @@ exports.up = (knex, Promise) ->
     table.json("meta").defaultTo "{}"
     table.integer("hotness_mod").defaultTo 0
     table.decimal("hotness", 20, 10).index().notNull().defaultTo 0.0
-    table.decimal("refresh_rate", 20, 10).index().notNull().defaultTo 0.0
+
+    table.decimal("refresh_interval", 20).index().notNull().defaultTo 0
+    table.timestamp("next_refresh_date").notNull().defaultTo knex.raw "now()"
+
     table.integer("articles_count").notNull().defaultTo 0
-    table.timestamp("last_article_at").notNull().defaultTo knex.raw "now()"
+    table.timestamp("last_article_at")
+
     table.timestamp("checked_at").notNull().defaultTo knex.raw "now()"
     table.timestamp("updated_at").notNull().defaultTo knex.raw "now()"
     table.timestamp("created_at").notNull().defaultTo knex.raw "now()"

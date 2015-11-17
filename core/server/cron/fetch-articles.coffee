@@ -3,6 +3,8 @@ read          = require "node-readability"
 htmlToText    = require "html-to-text"
 readingTime   = require "reading-time"
 MetaInspector = require "node-metainspector"
+_             = require "underscore"
+
 
 
 Cron = module.exports = (IoC, Feed, Article) ->
@@ -51,6 +53,16 @@ Cron = module.exports = (IoC, Feed, Article) ->
 
     feed.getFeed().then (articles=[]) ->
       logger.debug name, "got feed, found #{articles.length} articles"
+
+      # Make sure that we're adding articles from the oldest first. This is
+      # because the algorithim we use for figuring how often we should check
+      # these feeds can only calculate properly if the articles are in ascending
+      # order of time.
+      articles.sort (a, b) ->
+        d1 = new Date a.pubDate
+        d2 = new Date b.pubDate
+        d1.getTime() - d2.getTime()
+
       Promise.each articles, (article) -> processArticles article, feed
     .catch (e) ->
       logger.error name, "fetching feed #{feed.get 'domain'} failed"
@@ -93,10 +105,15 @@ Cron = module.exports = (IoC, Feed, Article) ->
 
 
   job = ->
-    if isRunning
-      return logger.info name, "script is already running"
+    if isRunning then return logger.info name, "script is already running"
     else isRunning = true
-    Feed.fetchAll().then (collection) ->
+
+    # This is an efficient db query that fetches only feeds that we really
+    # need to update.
+    Feed.forge().query (qb) ->
+      qb.where "next_refresh_date", "<", new Date
+      qb.orderBy "next_refresh_date", "desc"
+    .fetchAll().then (collection) ->
       currentIndex = 0
 
       # Get the feeds as an Array
