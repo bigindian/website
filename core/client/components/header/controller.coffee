@@ -1,9 +1,17 @@
-# Allow upto 'X' unread notifications to be put in the sub-header
-maxUnreadNotifications = 3
-
-Header = ($scope, $root, $log, $timeout, $location, angular, Users) ->
+Header = module.exports = ($scope, $root, $log, $timeout, $location, angular, ModalGenerator, Users) ->
   logger = $log.init Header.tag
   logger.log "initialized"
+
+  # Allow upto 'X' unread notifications to be put in the sub-header
+  maxUnreadNotifications = 3
+
+  $outerScope = $scope
+
+  sourcesModal = new ModalGenerator
+    controller: ($scope) -> $scope.feeds = require "./feeds.json"
+    templateUrl: "components/header/sources-modal/template"
+  $scope.showSourcesModal = -> sourcesModal.show()
+
 
   $scope.activeLink = null
 
@@ -11,6 +19,8 @@ Header = ($scope, $root, $log, $timeout, $location, angular, Users) ->
     try $scope.route = $location.path().split("/")[1] or ""
     catch e then $scope.route = ""
 
+  $root.$on "page:feeds", (event, data) ->
+    $scope.feeds = data
 
   $scope.$on "model:language:change", ->
     $scope.links = angular.fromJson angular.toJson $scope.links
@@ -95,6 +105,6 @@ Header.$inject = [
   "$timeout"
   "$location"
   "angular"
+  "@modalGenerator"
   "@models/users"
 ]
-module.exports = Header

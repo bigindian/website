@@ -7,7 +7,7 @@ app = Angular.module "news", [
   "ngResource"
   "ui.router"
   "cfp.hotkeys"
-  "wu.masonry"
+  # "wu.packery"
 ]
 
 # Add each of the angular components

@@ -26,16 +26,33 @@ section[notifications]
 
       &, &.success
         background: #88C425
+        a
+          color: #88C425
       &.warn
         background: #F85931
+        a
+          color: #F85931
       &.error
         background: #CE1836
+        a
+          color: #CE1836
 
       &.animate-in
         opacity: 1
         -ms-transform: translateX(0)
         -webkit-transform: translateX(0)
         transform: translateX(0)
+
+      a
+        +radius(3px)
+        text-decoration: none
+        display: block
+        padding: 5px
+        background: #FFF
+        margin-top: 5px
+        text-align: center
+        &:hover
+          background: #EEE
 
       .icon
         cursor: pointer

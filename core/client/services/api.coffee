@@ -1,45 +1,26 @@
 ApiService = module.exports = ($log, $http, $q, Environment) ->
   _url = (relativeURL) -> "#{Environment.url}/api#{relativeURL}"
 
+  _getXhrOptions = (method, url="", options={}) ->
+    options.url = _url url
+    options.method = method
+    options
 
   class Api
-    constructor: (options={}) ->
-      {@baseUrl="", @model, @collection} = options
-      if options.postRequest then @postRequest = options.postRequest
+    @get: (url, options={}) ->
+      $http _getXhrOptions "GET", url, options
 
-    url: (path) -> "#{Environment.url}/api#{@baseUrl}#{path}"
-
-    postRequest: (model) -> model
-    preRequest: (options) -> options
-
-    _getXhrOptions: (method, url="", options={}) ->
-      options.url = @url url
-      options.method = method
-      options
-
-    _parseModelorCollection: (data) ->
-      if Array.isArray data then new @collection data
-      else new @model data
-
-
-    get: (url, options={}) ->
-      $http @preRequest @_getXhrOptions "GET", url, options
-      .then (response) => @postRequest @_parseModelorCollection response.data
-
-    put: (url, body, options={}) ->
+    @put: (url, body, options={}) ->
       options.body = body
-      $http @preRequest @_getXhrOptions "PUT", url, options
-      .then (response) => @postRequest @_parseModelorCollection response.data
+      $http _getXhrOptions "PUT", url, options
 
-    post: (url, body, options) ->
+    @post: (url, body, options={}) ->
       options.body = body
-      $http @preRequest @_getXhrOptions "POST", url, options
-      .then (response) => @postRequest @_parseModelorCollection response.data
+      $http _getXhrOptions "POST", url, options
 
-    delete: (url, body, options) ->
+    @delete: (url, body, options={}) ->
       options.body = body
-      $http @preRequest @_getXhrOptions "DELETE", url, options
-      .then (response) => @postRequest @_parseModelorCollection response.data
+      $http _getXhrOptions "DELETE", url, options
 
 
 ApiService.tag = "service:api"

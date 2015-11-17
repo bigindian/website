@@ -3,5 +3,5 @@
     class="{{ notification.type }}"
     ng-class="notification.class"
     ng-if="!notification.hasRead")
-    span {{ notification.message | translate:"notifications"}}
+    span(ng-bind-html="notification.message") 
     span.icon(ng-click="read(notification)") &#xf00d;

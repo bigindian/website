@@ -11,58 +11,24 @@ header
   width: 100%
   z-index: 4
 
-  -webkit-box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.3)
-  -moz-box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.3)
-  box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.3)
+  @import "style.topheader.sass";
+  @import "style.sideheader.sass";
 
-  @media #{$large-up}
-    border: 0
+  .homelogo
+    position: absolute
+    top: 11px
+    left: 8px
+    z-index: 2
+    a
+      display: block
+      // padding?: 8px 0 -4px 8px
+      // padding: 0
 
-  nav#menu-header
-    ul
-      +clearfix
-      margin: 0 auto
-      // max-width: $row-width
-
-      li
-        text-transform: lowercase
-        float: left
-        // opacity: 0.9
-        border-bottom: 3px solid transparent
-
-        &.nav-right
-          @media #{$medium-up}
-            float: right
-
-        &.title
-          @extend .font-bold
-          text-transform: none
-          font-weight: bold
-          padding-right: 10px
-          opacity: 1
-
-        &.active a
-          color: $news-color
-
-        a
-          display: block
-          font-size: 12px
-          color: #666
-          padding: 15px 8px 8px
-          text-transform: capitalize
-          text-decoration: none
-
-          @media #{$small-only}
-            padding-bottom: 0
-
-          &:hover
-            color: $news-color
-
-        &.homelogo
-          a
-            width: 30px
-            margin: 15px
-            padding: 0
+body.showSideHeader
+  main
+    padding-left: 60px
+  nav#side-header
+    display: block
 
 
 body.stickHeader

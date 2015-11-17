@@ -4,6 +4,7 @@ module.exports = (app) ->
   app.value "$log", console
 
 
-  app.value "angular", window.angular
+  app.value "Masonry", window.Masonry
   app.value "_", window._
+  app.value "angular", window.angular
   app.value "underscore", window._

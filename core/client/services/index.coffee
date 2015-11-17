@@ -8,3 +8,5 @@ module.exports = (app) ->
   app.service "@recursionHelper",   require "./recursionHelper"
   app.service "@settings",          require "./settings"
   app.service "@storage",           require "./storage"
+
+  app.factory "@modalGenerator",    require "./modalGenerator"

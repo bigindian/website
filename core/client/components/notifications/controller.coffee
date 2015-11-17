@@ -1,4 +1,4 @@
-Controller = module.exports = ($log, $root, $scope, $timeout) ->
+Controller = module.exports = ($sce, $log, $root, $scope, $timeout) ->
   logger = $log.init Controller.tag
   logger.log "initializing"
   $scope.notifications = []
@@ -10,6 +10,7 @@ Controller = module.exports = ($log, $root, $scope, $timeout) ->
   # Listen for a notification event to add the a flash notification
   $root.$on "notifications:add", (event, data) ->
     notification = data
+    notification.message = $sce.trustAsHtml data.message or ""
     notification.class = {}
     notification.class[notification.type] = true
 
@@ -32,6 +33,7 @@ Controller = module.exports = ($log, $root, $scope, $timeout) ->
 
 Controller.tag = "component:notification"
 Controller.$inject = [
+  "$sce"
   "$log"
   "$rootScope"
   "$scope"

@@ -1,41 +1,30 @@
-Controller =  module.exports = ($sce, $element, $scope, $location, $log, $timeout, angular, Notifications, Stories, Session, Categories, Settings) ->
+Controller =  module.exports = ($scope, $log, $timeout, Feeds) ->
   logger = $log.init Controller.tag
   logger.log "initializing"
 
-  # Initialize defaults!
-  $scope.settings = {}
-  $scope.data = {}
-  $scope.edit = {}
-  $scope.story = {}
+  feed = null
 
-  # This function runs everytime the story gets updated!
-  updateStory = (story) ->
-    if not story? then return
-    currentUser = Session.user
-    $scope.edit.description_markdown = story.get "description_markdown"
-    $scope.edit.title = story.get "title"
+  $scope.$watch "_original", (value) ->
+    if value not instanceof Feeds.Model
+      feed = $scope.feed = new Feeds.Model value
+    else feed = $scope.feed = value
 
-    # $scope.userCanEdit = $scope.story.created_by is currentUser.id or
-    #   currentUser.isModerator() or currentUser.isAdmin()
-    $scope.categories = do ->
-      for category in $scope.storyJSON.categories
-        Categories.collection().findWhere(id: category).toJSON()
-
-    $scope.storyJSON.description = $sce.trustAsHtml story.get "description"
+    setTimeout (-> $scope.$emit "packery.reload"), 500
 
 
-Controller.tag = "component:news-form"
+  $scope.updateArticles = ->
+    feed.articles.update().finally ->
+      $scope.$emit "packery.reload"
+
+      # Unset the flag after 0.5s so that the user doesn't miss the 'updating'
+      # message.
+      $timeout(500).then -> feed.updating = false
+
+
+Controller.tag = "component:news-feed"
 Controller.$inject = [
-  "$sce"
-  "$element"
   "$scope"
-  "$location"
   "$log"
   "$timeout"
-  "angular"
-  "@notifications"
-  "@models/news/stories"
-  "@models/session"
-  "@models/news/categories"
-  "@settings"
+  "@models/news/feeds"
 ]

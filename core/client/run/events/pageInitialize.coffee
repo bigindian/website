@@ -10,6 +10,8 @@ EventHandler = module.exports = ($ga, $location, $log, $root, Notifications, Ses
     # If the login property is set then check if the user is logged in.
     if value.needLogin then Session.ensureLogin redirect: true
 
+    $root.bodyClasses.showSideHeader = value.showSideHeader or false
+
     # Send a pageview in google analytics
     $ga.sendPageView()
 

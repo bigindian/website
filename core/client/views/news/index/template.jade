@@ -1,7 +1,11 @@
 //- The stories list
-ul.stories.row
-  li.story.columns.large-3.medium-4.end(ng-repeat="story in feeds track by $index")
-    news-feed(ng-model="story")
+.feeds.row(packery="{gutter: 0}")
+  .packery-brick.columns.large-3.medium-4.end
+    news-list(ng-model="top", feeds="feeds", title="Popular News")
+  .packery-brick.columns.large-3.medium-4.end
+    news-list(ng-model="recent", feeds="feeds", title="Recent News")
+  .packery-brick.columns.large-3.medium-4(ng-repeat="feed in feeds.$models track by $index")
+    news-feed(ng-model="feed")
     //- news-item(ng-model="story")
 
 //- .page-links

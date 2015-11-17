@@ -4,3 +4,4 @@ module.exports = (app) ->
   app.config require "./decorators/$templateCache"
   app.config require "./decorators/$log"
   app.config require "./xhrHttpConfig"
+  app.factory "$exceptionHandler", require "./$exceptionHandler"

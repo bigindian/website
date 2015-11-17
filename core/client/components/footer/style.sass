@@ -1,24 +1,24 @@
 footer
-  font-size: 12px
-  padding: 10px
-  text-align: center
+  width: 100%
+  display: block
+  padding: 1px
+  padding-left: 60px
 
-  ul
-    +clearfix
-    margin: 0 auto
-    max-width: $row-width
-    li
-      float: right
-      a
-        +single-transition
-        opacity: 0.75
-        display: block
-        padding: 0 10px
-        text-decoration: none
-
-        &:hover
-          color: $news-color
-          opacity: 1
-
-body.hideFooter footer
-  display: none
+  .subscribe
+    @extend .font-roboto
+    width: 300px
+    margin: 15px auto
+    font-size: 12px
+    font-weight: bold
+    text-align: center
+    p
+      color: #666
+    button
+      +radius(3px)
+      background: #e11528
+      color: #FFF
+      padding: 12px
+      text-transform: uppercase
+      width: 100%
+      &:hover
+        background: #b10a19

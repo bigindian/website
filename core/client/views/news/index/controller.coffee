@@ -1,36 +1,32 @@
-Controller = module.exports = ($cookies, $http, $log, $scope, $storage, Stories) ->
+Controller = module.exports = ($http, $log, $scope, $storage, Notifications, Articles, Feeds) ->
   logger = $log.init Controller.tag
   logger.log "initializing"
-  $scope.$emit "page:initialize"
+  $scope.$emit "page:initialize", showSideHeader: true
 
-  # Set the options for the 'results per page' dropdown
-  resultOptions = $scope.resultOptions = [20, 30, 40, 50]
-
-  # Get values from the localStorage and cookies for the value of our
-  # different options.
-  $scope.options =
-    resultsPerPage: $cookies.get("rpp") or resultOptions[0]
-  $storage.local("options:newtab").then (val) ->
-    $scope.options.newtab = val == "true" or false
-
-  $scope.feeds = require "./feed.json"
-  # # Attach listeners to all our options
-  # $scope.$watch "options.resultsPerPage", (val) -> $cookies.put "rpp", val
-  # $scope.$watch "options.newtab", (val) -> $storage.local "options:newtab", val
+  # Notifications.warn "Is this your first time here? <a href='/info/tutorial'>Let's get you started</a>", 10 * 1000
 
   # Fetch data from the page.
   $http.pageAsJSON().success (data) ->
-    $scope.pagination = data.pagination
-    $scope.stories = new Stories.Collection data.collection, parse: true
+    $scope.feeds = new Feeds.Collection data.feeds
+    $scope.recent = new Articles.Collection data.recent,
+      updateUrl: "/news/articles?limit=10"
+    $scope.top = new Articles.Collection data.top,
+      updateUrl: "/news/articles?top=true&limit=15"
+
+    # $scope.pagination = data.pagination
+    # $scope.stories = new Stories.Collection data.collection, parse: true
     $scope.$emit "page:start"
+    $scope.$emit "page:feeds", data.feeds
+    setTimeout (-> $scope.$broadcast "packery.reload"), 1000
 
 
 Controller.tag = "page:news/index"
 Controller.$inject = [
-  "$cookies"
   "$http"
   "$log"
   "$scope"
   "@storage"
-  "@models/news/stories"
+  "@notifications"
+  "@models/news/articles"
+  "@models/news/feeds"
 ]

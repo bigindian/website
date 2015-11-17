@@ -1,32 +1,36 @@
 [
   {
-    "class": "recent",
-    "name": "news.recent",
-    "url": "/recent",
+    "class": "top active",
+    "name": "All",
+    "url": "/",
   }, {
     "class": "comment",
-    "name": "news.comments",
+    "name": "India",
     "url": "/comments",
   }, {
     "class": "submit",
-    "name": "news.search",
+    "name": "Business",
     "url": "/search",
   }, {
     "class": "submit",
-    "name": "news.submit",
+    "name": "Technology",
     "url": "/submit",
   }, {
-    "class": "settings nav-right",
-    "name": "settings",
-    "url": "/settings",
-  }, {
-    "class": "hide-if-loggedin nav-right",
-    "name": "login",
-    "url": "/login",
-  }, {
-    "class": "show-if-loggedin nav-right",
-    "name": "logout",
-    "url": "/logout",
+    "class": "submit",
+    "name": "Startups",
+    "url": "/submit",
+  // }, {
+  //   "class": "settings nav-right",
+  //   "name": "settings",
+  //   "url": "/settings",
+  // }, {
+  //   "class": "hide-if-loggedin nav-right",
+  //   "name": "login",
+  //   "url": "/login",
+  // }, {
+  //   "class": "show-if-loggedin nav-right",
+  //   "name": "logout",
+  //   "url": "/logout",
   // }, {
   //   "class": "divider",
   // }, {
