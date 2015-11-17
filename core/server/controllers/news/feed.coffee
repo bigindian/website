@@ -9,11 +9,12 @@ Controller = module.exports = (Cache, Feed, Article) ->
 
     Feed.forge slug: request.params.slug
     .fetch().then (feed) ->
-      feed.related "articles"
-      .query (qb) ->
-        qb.orderBy "id", "desc"
-        qb.offset 0
+
+      # Get the articles for the feed
+      feed.related("articles").query (qb) ->
+        qb.orderBy "published_at", "desc"
         qb.limit 100
+
       .fetch().then (articles) ->
         feed.set "articles", articles
         response.render "main/info/about",
