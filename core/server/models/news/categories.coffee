@@ -4,11 +4,10 @@ validator = require "validator"
 
 
 Model = module.exports = (Bookshelf) ->
-  Bookshelf.Model.extend
+  Bookshelf.model "news.category", Bookshelf.Model.extend
     tableName: "news_categories"
     cache: true
     require: true
-
 
 
 Model["@require"] = ["models/base/bookshelf"]

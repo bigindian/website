@@ -5,15 +5,21 @@ readingTime   = require "reading-time"
 MetaInspector = require "node-metainspector"
 
 
-exports = module.exports = (IoC, Feed, Article) ->
+Cron = module.exports = (IoC, Feed, Article) ->
   logger = IoC.create "igloo/logger"
   name = "[cron:fetch-articles]"
 
+  # A lock variable to avoid multiple instances of the cron script.
+  isRunning = false
+
   ###
-  **fetchInformation()** Gets information about the given URL and returns a
-  JSON which can be used for initializing the story.
+  **fetchInformation()** Gets information about the given feed article and
+  returns a Promise which resolves to a JSON with properties about the article
+  (excerpt, reading time etc..).
+
+  The promise fails if any error occurs.
   ###
-  fetchInformation = (url, EXCERPT_LENGTH=500) -> new Promise (resolve, reject) ->
+  fetchInformation = (url, EXCERPT_LENGTH=200) -> new Promise (resolve, reject) ->
     read url, (error, article, meta) ->
       if error then return reject error
 
@@ -24,12 +30,10 @@ exports = module.exports = (IoC, Feed, Article) ->
 
       onMetaInspectFinish = (meta={}) ->
         resolve
-          title: meta.title
+          title: article.title
           excerpt: text.substr 0, text.lastIndexOf " ", EXCERPT_LENGTH
           image_url: meta.image
-          meta:
-            time: readingTime text
-
+          meta: time: readingTime text
 
       client = new MetaInspector url
       client.on "fetch", -> onMetaInspectFinish client
@@ -37,67 +41,78 @@ exports = module.exports = (IoC, Feed, Article) ->
       client.fetch()
 
 
+
+  ###
+  **processFeed()** A helper function to take a feed (Bookshelf Model) and
+  scrape the articles in it.
+  ###
   processFeed = (feed) ->
-    feed.getFeed().then (articles) ->
-      _performAsQueue articles, (article) -> processArticles article, feed
+    logger.debug name, "processing feed #{feed.get 'domain'}"
+
+    feed.getFeed().then (articles=[]) ->
+      logger.debug name, "got feed, found #{articles.length} articles"
+      Promise.each articles, (article) -> processArticles article, feed
+    .catch (e) ->
+      logger.error name, "fetching feed #{feed.get 'domain'} failed"
+      logger.error e
 
 
+  ###
+  **processArticles()** A helper function that takes an article (JSON) and
+  fetches information about it and saves it into the DB.
+  ###
   processArticles = (article, feed) ->
+    logger.debug name, "processing article #{article.link}"
     url = article.link
 
+    # First check if the article exists in the DB
     Article.forge(url: url).fetch()
-    .then -> logger.debug name, "article #{url} exists"
+    .then -> logger.debug name, "skipping article #{url}"
+
+    # If it didn't then it'll throw a NotFound error and end up here.
     .catch ->
+      logger.debug name, "adding article #{url}"
+
+      # Fetch information about the article and then save it into the DB
       fetchInformation url
       .then (data) ->
         data.url = url
         data.feed = feed.id
-        logger.debug name, "adding article #{url}"
 
-        article = new Article data
-        article.save()
-        .then -> feed.onArticleAdded article
+        # Get the published date
+        data.published_at = new Date article.pubDate
 
+        # This ensures that the published date stay below today's date
+        data.published_at = new Date Math.min data.published_at, new Date
 
-  _performAsQueue = (array=[], fn, index=0) ->
-    if index >= array.length then return
+        Article.forge(data).save()
+        .then (model) -> logger.info name, "added article #{url}"
+    .catch (e) ->
+      logger.error name, "failed processing article #{article.link}"
+      logger.error e
 
-    job = array[index]
-
-    fn(job).finally -> _performAsQueue array, fn, index + 1
 
   job = ->
+    if isRunning
+      return logger.info name, "script is already running"
+    else isRunning = true
     Feed.fetchAll().then (collection) ->
       currentIndex = 0
 
-      feeds = do -> collection.at index for index in [0...collection.length]
+      # Get the feeds as an Array
+      feeds = collection.toArray()
 
-      _performAsQueue feeds, processFeed
-      .then -> console.log "done"
-
-      # for index in [0...collection.length]
-      #   feed = collection.at index
-      #   feed.getFeed().then (json) ->
-      #     #   console.log "hit"
-      #     # link = new Links
-      #     #   title: json.title
-      #     #   url: json.url
-
-      #     new Promise (resolve, reject) ->
-
-      #     # link.save
-      #     # Links.register
-      #     for article in json
-      #       processArticles article.link
-
+      Promise.each feeds, processFeed
+      .finally ->
+        isRunning = false
+        logger.debug name, "done"
 
     logger.info name, "running"
-    # Cache.del "route:api/categories/counters"
 
 
-exports["@require"] = [
+Cron["@require"] = [
   "$container"
   "models/news/feed"
   "models/news/article"
 ]
-exports["@singleton"] = true
+Cron["@singleton"] = true

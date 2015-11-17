@@ -23,9 +23,9 @@ xss                 = require "xss"
 module.exports = BaseModel = (knex, Cache, NotFoundError, Settings) ->
   bookshelf = Bookshelf knex
 
-  # # Load the Bookshelf registry plugin, which helps us avoid circular
-  # # dependencies.
-  # bookshelf.plugin "registry"
+  # Load the Bookshelf registry plugin, which helps us avoid circular
+  # dependencies.
+  bookshelf.plugin "registry"
 
   # Load validation plugin for any schema related changes.
   bookshelf.plugin BookshelfValidator.plugin

@@ -1,7 +1,7 @@
 cron = require "cron"
 
 
-exports = module.exports = (IoC, settings) ->
+Initializer = module.exports = (IoC, settings) ->
   name = "[cron]"
   cronJob = cron.CronJob
   logger = IoC.create "igloo/logger"
@@ -40,14 +40,23 @@ exports = module.exports = (IoC, settings) ->
     backupDatabase()
 
 
-  # Setup the cron tasks
-  new cronJob "0  0  *  *  *  *", cronHourly, null, true, "Asia/Kuwait"
-  new cronJob "0  0  1  *  *  5", cronWeekly, null, true, "Asia/Kuwait"
-  new cronJob "0  0  21 *  *  *", cronDaily,  null, true, "Asia/Kuwait"
-  fetchNews()
+  ###
+    This function runs every 5 minutes
+  ###
+  cron5Minutes = ->
+    logger.info name, "running 5min cron scripts"
+    fetchNews()
 
-exports["@require"] = [
+
+  # Setup the cron tasks
+  new cronJob "0  0    *  *  *  *", cronHourly, null, true, "Asia/Kuwait"
+  new cronJob "0  0    1  *  *  5", cronWeekly, null, true, "Asia/Kuwait"
+  new cronJob "0  0    21 *  *  *", cronDaily,  null, true, "Asia/Kuwait"
+  new cronJob "0  */5  *  *  *  *", cron5Minutes,  null, true, "Asia/Kuwait"
+
+
+Initializer["@require"]  =[
   "$container"
   "igloo/settings"
 ]
-exports["@singleton"] = true
+Initializer["@singleton"] = true

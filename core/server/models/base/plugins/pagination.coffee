@@ -125,7 +125,7 @@ paginationUtils =
 ###
 module.exports = pagination = (bookshelf) ->
   # Extend updates the first object passed to it, no need for an assignment
-  _.extend bookshelf.Model.prototype, fetchPage: (buildQuery, options) ->
+  _.extend bookshelf.Model.prototype, fetchPage: (buildQuery, options={}) ->
     buildQuery ?= ->
 
     # Setup pagination options

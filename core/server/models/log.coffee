@@ -4,7 +4,7 @@ validator = require "validator"
 
 
 Model = module.exports = (Bookshelf) ->
-  Bookshelf.Model.extend
+  Bookshelf.model "logs", Bookshelf.Model.extend
     tableName: "logs"
     cache: true
     require: true

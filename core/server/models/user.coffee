@@ -4,7 +4,7 @@ validator = require "validator"
 
 
 Model = module.exports = (Bookshelf) ->
-  Bookshelf.Model.extend
+  Bookshelf.model "users", Bookshelf.Model.extend
     tableName: "users"
     require: true
     resultsPerPage: 20

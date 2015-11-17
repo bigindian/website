@@ -1,25 +1,46 @@
-Controller = module.exports = (Cache, Feed) ->
+Promise = require "bluebird"
+
+
+Controller = module.exports = (Cache, Feed, Article) ->
   (request, response, next) ->
     page = request.params.page or 1
     cacheKey = "main/news/index/#{page}"
 
-    # Cache.get cacheKey
-    # .catch ->
-    #   Feeds.forge().top null, page: page
-    #   .then (results) ->
 
-    #     json = JSON.stringify results
+    feedsPromise = ->
+      Feed.forge().fetchAll().then (collection) ->
+        feeds = do -> collection.at i for i in [0...collection.length]
 
-    #     #! Cache only the first fifty pages!
-    #     if 0 <= page and page >= 50 then Cache.set cacheKey, json, 60 * 1 # 1 minute cache
-    #     else json
+        Promise.map feeds, (feed) ->
+          # For every feed, take out at most 10 articles
+          feed.related "articles"
+          .query (qb) ->
+            qb.orderBy "published_at", "desc"
+            qb.limit 10
+          .fetch().then (articles) -> feed.set "articles", articles
 
 
-    # .then (results) ->
-    Feed.fetchAll().then (data) ->
-      console.log data
+    topArticlesPromise = ->
+      Article.forge().query (qb) ->
+        qb.orderBy "hotness", "desc"
+        qb.limit 15
+      .fetchAll()
+
+
+    recentArticlesPromise = ->
+      Article.forge().query (qb) ->
+        qb.orderBy "published_at", "desc"
+        qb.limit 10
+      .fetchAll()
+
+
+    Promise.props
+      top: topArticlesPromise()
+      recent: recentArticlesPromise()
+      feeds: feedsPromise()
+    .then (data) ->
       response.render "main/news/index",
-        # data: JSON.parse results
+        data: data
         metaRobots: "noarchive"
         title: null
 
@@ -29,6 +50,7 @@ Controller = module.exports = (Cache, Feed) ->
 Controller["@require"] = [
   "libraries/cache"
   "models/news/feed"
+  "models/news/article"
 ]
 Controller["@routes"] = [
   ""
