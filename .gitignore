@@ -101,3 +101,5 @@ dist/
 docs
 tmp
 var/backups/*.tgz
+etc/db/seeds/*news_feed*
+content/images/source/*.png
