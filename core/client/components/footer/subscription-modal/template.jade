@@ -1,0 +1,19 @@
+#subscription-modal(ng-init="tab = 1")
+  .modal-header
+    .title Subscribe
+    p Always stay updated. Get news <u><b>from sources you choose</b></u>, delivered straight to your inbox for free.
+    p You can un-subscribe at any time.
+
+
+  .modal-content.row
+    .columns(ng-class="{hide: tab != 1}")
+      h2 Choose Categories (1/3)
+      button(ng-click="tab = 2") Next
+
+    .columns(ng-class="{hide: tab != 2}")
+      h2 Choose Sources (2/3)
+      button(ng-click="tab = 3") Next
+
+    .columns(ng-class="{hide: tab != 3}")
+      h2 Your Email and preferences (3/3)
+      button(ng-click="subscribe()") Subscribe

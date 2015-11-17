@@ -1,0 +1,53 @@
+nav#top-header
+  padding-left: 60px
+  z-index: 4
+
+  -webkit-box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.3)
+  -moz-box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.3)
+  box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.3)
+
+  ul
+    +clearfix
+    font-size: rem-calc(10px)
+    margin: 0 auto
+    padding: 0 12px
+
+    li
+      @extend .font-roboto
+      text-transform: lowercase
+      font-weight: bold
+      float: left
+      // opacity: 0.9
+      border-bottom: 3px solid transparent
+
+      &.nav-right
+        @media #{$medium-up}
+          float: right
+
+      &.title
+        text-transform: none
+        font-weight: bold
+        padding-right: 10px
+        opacity: 1
+
+      &.add-more
+        padding: 18px 10px
+
+      &.active a
+        color: #cf271f
+
+      &.settings a
+        padding-top: 18px
+        padding-bottom: 14px
+      a
+        display: block
+        color: #909090
+        padding: 20px 12px 13px 12px
+        text-transform: uppercase
+        text-decoration: none
+
+        @media #{$small-only}
+          padding-bottom: 0
+
+        &:hover
+          color: $news-color
