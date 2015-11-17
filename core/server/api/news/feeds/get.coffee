@@ -5,5 +5,5 @@ Controller = module.exports = (Feed) ->
 
 
 Controller["@require"] = ["models/news/feed"]
-Controller["@routes"] = ["/news/feed"]
+Controller["@routes"] = ["/news/feeds"]
 Controller["@singleton"] = true
