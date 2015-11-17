@@ -1,8 +1,9 @@
 exports.seed = (knex, Promise) ->
   knex("logs").del()
   .then -> knex("log_types").del()
+  # .then -> knex("news_feed_articles").del()
+  # .then -> knex("news_feeds").del()
   .then -> knex("news_feed_category").del()
-  .then -> knex("news_feeds").del()
   .then -> knex("news_categories").del()
   .then -> knex("users").del()
   .then -> knex("user_statuses").del()
