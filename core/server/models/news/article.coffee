@@ -1,11 +1,9 @@
 Model = module.exports = (Bookshelf) ->
   createUID = (length=5)->
-    text = ''
-    possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
-    i = 0
-    while i < length
+    text = ""
+    possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
+    for i in [0...length]
       text += possible.charAt Math.floor Math.random() * possible.length
-      i++
     text
 
   # **ACTIVITY_WEIGHT** Amount that any activity inside an article gets.

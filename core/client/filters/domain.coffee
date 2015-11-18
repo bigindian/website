@@ -1,4 +1,4 @@
-exports = module.exports = -> (url="") ->
+Filter = module.exports = -> (url="") ->
   # find & remove protocol (http, ftp, etc.) and get domain
   if url.indexOf("://") > -1 then domain = url.split('/')[2];
   else domain = url.split('/')[0]
