@@ -1,7 +1,7 @@
 Controller = module.exports = ($http, $log, $scope, $storage, Notifications, Articles, Feeds) ->
   logger = $log.init Controller.tag
   logger.log "initializing"
-  $scope.$emit "page:initialize", showSideHeader: true
+  $scope.$emit "page:initialize", showSideHeader: true, allowSubscription: true
 
   # Notifications.warn "Is this your first time here? <a href='/info/tutorial'>Let's get you started</a>", 10 * 1000
 

@@ -1,20 +1,25 @@
-//- ul
+.subscribe
+  p Get all the latest news delivered straight to <br> your inbox (we take your privacy seriously)
+  button(ng-click="showSubscriptionModal()") Subscribe for free
+
+ul#footer-nav
   li
     a(fn-route="/info/contribute") Contribute
+  li.dot &middot;
   li
     a(fn-route="/info/terms-privacy") Terms &amp; Privacy
+  li.dot &middot;
   li
     a(fn-route="/info/about") About
+  li.dot &middot;
   //- li
     a(fn-route="/info/tutorial") How to use
   //- li
     a Moderation Log
   li
     a(target="_self" href="/rss") RSS
+  li.dot &middot;
   //- li
     a(href="https://api.thebigindian.news") API
   li
     a(target="_self" href="https://github.com/thebigindiannews/website") GitHub
-.subscribe
-  p Get all the latest news delivered straight to <br> your inbox (we take your privacy seriously)
-  button(ng-click="showSubscriptionModal()") Subscribe for free

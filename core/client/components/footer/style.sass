@@ -2,7 +2,6 @@ footer
   width: 100%
   display: block
   padding: 1px
-  padding-left: 60px
 
   .subscribe
     @extend .font-roboto
@@ -11,6 +10,7 @@ footer
     font-size: 12px
     font-weight: bold
     text-align: center
+    display: none
     p
       color: #666
     button
@@ -22,3 +22,26 @@ footer
       width: 100%
       &:hover
         background: #b10a19
+
+  ul#footer-nav
+    +clearfix
+    text-align: center
+    li
+      display: inline-block
+      &.dot
+        vertical-align: middle
+    a
+      +single-transition
+      text-decoration: none
+      font-weight: bold
+      display: block
+      padding: 15px 5px
+      font-size: rem-calc(12px)
+      opacity: 0.5
+      &:hover
+        opacity: 1
+        color: $news-color
+
+body.allowSubscription
+  .subscribe
+    display: block
