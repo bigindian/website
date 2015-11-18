@@ -7,14 +7,11 @@ Model = module.exports = (Bookshelf) ->
   Bookshelf.model "news.feed", Bookshelf.Model.extend
     tableName: "news_feeds"
     require: true
-    cache: true
+    # cache: true
     resultsPerPage: 20
-
 
     categories: -> @hasMany "news_categories"
     articles: -> @hasMany "news.article", "feed"
-
-
 
     getFeed: -> new Promise (resolve, reject) =>
       @save {checked_at: new Date()}, patch: true

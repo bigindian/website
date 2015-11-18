@@ -15,7 +15,7 @@
       .update(ng-click="feed.updating = true; updateArticles()") click here to update
       .updated last article {{ feed.$attributes.last_article_at | prettydate }}
       .updating updating...
-      .update-timeout updating in {{ feed.$attributes.next_refresh_date | prettydate }}
+      .update-timeout updating in {{ feed.update_countdown_date | prettydate }}
       
   .articles(ng-class="{updating: feed.updating}")
     news-feed-item(ng-repeat="article in feed.articles.$models", ng-model="article", 

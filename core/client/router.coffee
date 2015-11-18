@@ -14,7 +14,7 @@ Router = module.exports = ($stateProvider, $locationProvider, $urlMatcher, $urlR
       resolve:
         0: ["@models/session",         (m) -> m.refresh()]
         1: ["@models/languages",       (m) -> m.download()]
-        2: ["@models/news/categories", (m) -> m.download()]
+        # 2: ["@models/news/categories", (m) -> m.download()]
 
 
   # Start adding each route one by one

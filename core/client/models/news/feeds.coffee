@@ -1,4 +1,4 @@
-Model = module.exports = ($log, BackboneModel, BackboneCollection, Api, Articles) ->
+Model = module.exports = ($log, $interval, BackboneModel, BackboneCollection, Api, Articles) ->
   logger = $log.init Model.tag
   logger.log "initializing"
 
@@ -20,15 +20,37 @@ Model = module.exports = ($log, BackboneModel, BackboneCollection, Api, Articles
           @articles = new Articles.Collection articles,
             updateUrl: "/news/feeds/#{@id}/articles"
 
+        # Give it the RGB component
         @rgb = hexToRgb @get "color"
+
+        # Start the update countdown
+        @startUpdateCountdown()
+
+      startUpdateCountdown: ->
+        @update_countdown_date = new Date @get "next_refresh_date"
+        interval = =>
+          old_date = @update_countdown_date.getTime()
+          @update_countdown_date = new Date old_date - 1000
+
+          if old_date < Date.now()
+            @stopUpdateCountdown()
+            @onCountdownFinish()
+
+        @interval_promise = $interval interval, 1000
+
+
+      stopUpdateCountdown: -> $interval.cancel @interval_promise
+
+      onCountdownFinish: -> @articles.update().finally => @startUpdateCountdown()
 
 
     @Collection = BackboneCollection.extend model: Feeds.Model
 
 
-Model.tag = "model:user"
+Model.tag = "model:feeds"
 Model.$inject = [
   "$log"
+  "$interval"
   "BackboneModel"
   "BackboneCollection"
   "@api"
