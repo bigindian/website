@@ -43,8 +43,8 @@ Initializer = module.exports = (IoC, settings) ->
   ###
     This function runs every 5 minutes
   ###
-  cron5Minutes = ->
-    logger.info name, "running 5min cron scripts"
+  cronMinute = ->
+    logger.info name, "running 1 min cron scripts"
     fetchNews()
 
 
@@ -52,7 +52,7 @@ Initializer = module.exports = (IoC, settings) ->
   new cronJob "0  0    *  *  *  *", cronHourly, null, true, "Asia/Kuwait"
   new cronJob "0  0    1  *  *  5", cronWeekly, null, true, "Asia/Kuwait"
   new cronJob "0  0    21 *  *  *", cronDaily,  null, true, "Asia/Kuwait"
-  new cronJob "0  */5  *  *  *  *", cron5Minutes,  null, true, "Asia/Kuwait"
+  new cronJob "0  */1  *  *  *  *", cronMinute,  null, true, "Asia/Kuwait"
 
 
 Initializer["@require"]  =[
