@@ -1,4 +1,13 @@
 Model = module.exports = (Bookshelf) ->
+  createUID = (length=5)->
+    text = ''
+    possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
+    i = 0
+    while i < length
+      text += possible.charAt Math.floor Math.random() * possible.length
+      i++
+    text
+
   # **ACTIVITY_WEIGHT** Amount that any activity inside an article gets.
   ACTIVITY_WEIGHT = 1
 
@@ -55,6 +64,12 @@ Model = module.exports = (Bookshelf) ->
 
     constructor: ->
       Bookshelf.Model.apply this, arguments
+
+      # Every time an Article is being created, we have to give it some unique
+      # values.
+      @on "creating", (model, attributes={}, options) ->
+        model.set "slug", createUID 10
+
 
       # Every time an Article is being saved, we'll update it's hotness so that
       # our algorithims can properly learn properly.

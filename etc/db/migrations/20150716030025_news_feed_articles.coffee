@@ -3,6 +3,7 @@ exports.up = (knex, Promise) ->
     table.increments().primary()
     table.string("url", 1000).unique().defaultTo ""
     table.string("image_url", 1000).defaultTo ""
+    table.string("slug", 250).index().notNull()
     table.string("title", 300).defaultTo ""
     table.string("excerpt", 500).defaultTo ""
     table.json("meta").defaultTo "{}"
