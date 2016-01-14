@@ -1,11 +1,11 @@
 path      = require "path"
 
 # Setup the different directory variables
-parentDir    = path.join __dirname, "../../.."
+parentDir    = path.join __dirname, "../.."
 
 appDir       = path.join parentDir, "core/server"
-assetsDir    = path.join parentDir, "content"
-publicDir    = path.join parentDir, "content"
+assetsDir    = path.join parentDir, "public_html"
+publicDir    = path.join parentDir, "public_html"
 backupDir    = path.join parentDir, "var/backups"
 
 viewsDir     = path.join appDir,    "views"

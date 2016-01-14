@@ -1,9 +1,5 @@
-knexConfig   = require "../knexfile"
-
-
 module.exports =
   cache: true
-  knex: knexConfig["production"]
   staticUrl: "https://cdn.thebigindian.news"
   url: "https://thebigindian.news"
   password:

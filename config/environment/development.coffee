@@ -1,9 +1,5 @@
-knexConfig   = require "../knexfile"
-
-
 module.exports =
   cache: true
-  knex: knexConfig["development"]
   staticUrl: "http://localhost:3000"
   url: "http://localhost:3000"
   server:
