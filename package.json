@@ -16,6 +16,7 @@
     "test": "NODE_TLS_REJECT_UNAUTHORIZED=0 mocha src/server/mocha.coffee --compilers coffee:coffee-script/register --check-leaks --bail"
   },
   "dependencies": {
+    "async": "^1.5.2",
     "basic-auth": "^1.0.3",
     "bcrypt-nodejs": "^0.0.3",
     "bluebird": "^3.1.1",
