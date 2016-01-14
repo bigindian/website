@@ -11,7 +11,7 @@ i18n    = require "i18n"
 fs      = require "fs"
 path    = require "path"
 walk    = require "fs-walk"
-MD5     = require "MD5"
+MD5     = require "md5"
 _       = require "underscore"
 
 
