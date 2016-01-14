@@ -10,18 +10,22 @@ html(lang= lang, dir= dir, data-ng-strict-di)
     ng-class="bodyClasses"
     ng-style="bodyStyles")
 
-    section(modal)
-    section(notifications)
     include ./include/header.jade
-    section(site-previewer)
 
     #page-loader
       #page-loading-bar
 
-    //- Here goes the main content of the site
-    main(ui-view)
-      .robots
-        block robots
-      block content
+    #bg-overlay
 
-    include ./include/footer.jade
+    //- The rest of the content goes in here
+    section#main
+      //- Progress loader for when the page is loading
+      #page-loader
+        md-progress-circular.md-warn(md-mode='indeterminate')
+      //- Main content goes in here
+      main(ui-view='')
+        block robots
+        block content
+
+  //- Footer goes in here
+  include ./include/footer.jade

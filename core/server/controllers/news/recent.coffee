@@ -6,7 +6,7 @@ Controller = module.exports = (Cache, Story) ->
 
     Story
     .find()
-    .sort "-hotness"
+    .sort "-created_at"
     .limit 15
     .exec()
     .then (results) ->
@@ -21,7 +21,7 @@ Controller["@require"] = [
   "models/news/story"
 ]
 Controller["@routes"] = [
-  ""
-  "/page/:page"
+  "/recent"
+  "/recent/page/:page"
 ]
 Controller["@singleton"] = true

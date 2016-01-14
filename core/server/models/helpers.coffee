@@ -1,7 +1,6 @@
 Promise       = require "bluebird"
 read          = require "node-readability"
 htmlToText    = require "html-to-text"
-readingTime   = require "reading-time"
 MetaInspector = require "node-metainspector"
 
 
@@ -24,8 +23,7 @@ module.exports =
           title: meta.title
           excerpt: text.substr 0, text.lastIndexOf " ", EXCERPT_LENGTH
           image_url: meta.image
-          meta:
-            time: readingTime text
+          words_count: text.split(" ").length
 
 
       client = new MetaInspector url

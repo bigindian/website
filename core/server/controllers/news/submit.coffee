@@ -5,6 +5,6 @@ Controller = module.exports = ->
       metaRobots: "noindex"
 
 
-Controller["@middlewares"] = ["EnsureLoggedIn"]
-Controller["@routes"] = ["/submit"]
+# Controller["@middlewares"] = ["EnsureLoggedIn"]
+Controller["@routes"] = ["/stories/new"]
 Controller["@singleton"] = true

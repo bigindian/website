@@ -7,8 +7,7 @@ script.
 //- If we are in production, then add the minified version of the scripts
 //- and include google analytics too!
 if environment != "production"
-  script
-    include ./asyncloader/build/files.js
+  include ./asyncloader/fileloader
 
   //- Extra scripts go in here
   block extraScripts
@@ -16,8 +15,7 @@ if environment != "production"
   script
     include ./asyncloader/build/loader.js
 else
-  script
-    include ./asyncloader/build/files.min.js
+  include ./asyncloader/fileloader
 
   //- Extra scripts go in here
   block extraScripts

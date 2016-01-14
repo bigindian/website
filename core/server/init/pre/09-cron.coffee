@@ -9,7 +9,7 @@ Initializer = module.exports = (IoC, settings) ->
   # Start initializing the different cron scripts we have..
   backupDatabase = IoC.create "cron/backup-database"
   clearCache = IoC.create "cron/clear-cache"
-  fetchNews = IoC.create "cron/fetch-articles"
+  # fetchNews = IoC.create "cron/fetch-articles"
   # emailReport = IoC.create "cron/email-report"
   # deleteBadUsers = IoC.create "cron/delete-bad-users"
   # expireClassifieds = IoC.create "cron/expire-classifieds"
@@ -40,19 +40,10 @@ Initializer = module.exports = (IoC, settings) ->
     backupDatabase()
 
 
-  ###
-    This function runs every 5 minutes
-  ###
-  cronMinute = ->
-    logger.info name, "running 1 min cron scripts"
-    fetchNews()
-
-
   # Setup the cron tasks
   new cronJob "0  0    *  *  *  *", cronHourly, null, true, "Asia/Kuwait"
   new cronJob "0  0    1  *  *  5", cronWeekly, null, true, "Asia/Kuwait"
   new cronJob "0  0    21 *  *  *", cronDaily,  null, true, "Asia/Kuwait"
-  new cronJob "0  */1  *  *  *  *", cronMinute,  null, true, "Asia/Kuwait"
 
 
 Initializer["@require"]  =[

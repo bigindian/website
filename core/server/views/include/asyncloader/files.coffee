@@ -1,9 +1,16 @@
+md5 = window.publicData.md5
 u = window.publicData.staticUrl
+
 window.scripts = [
   {
+    id: "libraries.css"
+    remote: ["#{u}/build/md5/libraries_#{ md5['libraries.css'] }.css"]
+    local: "/build/md5/libraries_#{ md5['libraries.css'] }.css"
+  }
+  {
     id: "style.css"
-    remote: ["#{u}/build/md5/style_#{ publicData.md5['style.css'] }.css"]
-    local: "/build/md5/style_#{ publicData.md5['style.css'] }.css"
+    remote: ["#{u}/build/md5/style_#{ md5['style.css'] }.css"]
+    local: "/build/md5/style_#{ md5['style.css'] }.css"
   }
   {
     id: "libraries.js"
@@ -14,25 +21,22 @@ window.scripts = [
       "//cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.14/angular-ui-router.min.js"
       "//cdnjs.cloudflare.com/ajax/libs/backbone.js/1.2.3/backbone-min.js"
     ]
-    local: "/build/md5/libraries_#{ publicData.md5['libraries.js'] }.js"
+    local: "/build/md5/libraries_#{ md5['libraries.js'] }.js"
   }
   {
     id: "templates.js"
-    remote: ["#{u}/build/md5/templates_#{ publicData.md5['templates.js'] }.js"]
-    local: "/build/md5/templates_#{ publicData.md5['templates.js'] }.js"
+    remote: ["#{u}/build/md5/templates_#{ md5['templates.js'] }.js"]
+    local: "/build/md5/templates_#{ md5['templates.js'] }.js"
   }
   {
     id: "main.js"
-    remote: ["#{u}/build/md5/main_#{ publicData.md5['main.js'] }.js"]
-    local: "/build/md5/main_#{ publicData.md5['main.js'] }.js"
+    remote: ["#{u}/build/md5/main_#{ md5['main.js'] }.js"]
+    local: "/build/md5/main_#{ md5['main.js'] }.js"
   }
   {
     id: "fonts.css"
     remote: [
-      "//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css"
-      "//fonts.googleapis.com/css?family=Cantarell"
-      "//fonts.googleapis.com/css?family=Roboto:400,700"
-      "//fonts.googleapis.com/css?family=Source+Sans+Pro:900,400,700"
+      "//fonts.googleapis.com/css?family=Roboto:300,400,600,700,800"
     ]
   }
 ]

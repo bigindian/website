@@ -55,7 +55,7 @@ exports = module.exports = (IoC, settings) ->
     # the captcha failed.
     verify: (request) ->
       # If the captcha is not set in the settings then ignore it.
-      if settings.reCaptcha.enabled then return Promise.resolve request
+      if !settings.reCaptcha.enabled then return Promise.resolve request
 
       # Check if we are allowed to bypass the captcha.
       bypass_counter = request.session.recaptcha_bypass_counter or 0
@@ -71,10 +71,9 @@ exports = module.exports = (IoC, settings) ->
 
       # Get the ip and the user's captcha response.
       remoteIP = request.connection.remoteAddress
-      console.log request.body
       captchaData = request.query.captcha or
         request.body["g-recaptcha-response"] or
-        request.body["gcaptcha"] or
+        request.body["recaptcha"] or
         request.headers["x-recaptcha"]
 
       # Prepare the data to be sent to the API

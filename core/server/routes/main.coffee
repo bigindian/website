@@ -44,15 +44,15 @@ exports = module.exports = (IoC) ->
   Modify this if you want to customize how routes and controllers get added.
   ###
   _route = (url, rawMiddlewares=[], controller) ->
-    #! If a string was passed to us, then we instansiate the controller
-    #! manually.
+    # If a string was passed to us, then we instansiate the controller
+    # manually.
     if typeof controller is "string" then controller = getController controller
 
 
-    #! Get all the middlewares now!
+    # Get all the middlewares now!
     middlewares = do -> getMiddleware(m) for m in rawMiddlewares
 
-    #! Finally add the route to Express's router!
+    # Finally add the route to Express's router!
     if url? then router.get url, middlewares, controller
     else router.get middlewares, controller
 
@@ -86,37 +86,37 @@ exports = module.exports = (IoC) ->
   ###
   isController = (fn) -> fn.indexOf("test") is -1 and /coffee$/.test(fn)
 
-  #! Add the common middlewares here!
+  # Add the common middlewares here!
   router.use getMiddleware "UpdateLastOnlineForUser"
 
-  #! Add a middleware to check all the integer parameters
+  # Add a middleware to check all the integer parameters
   params = ["id", "page", "moderation"]
   router.param p, getMiddleware "CheckIfParameterInteger" for p in params
 
-  #! Add a middleware to check all the slug parametesr
+  # Add a middleware to check all the slug parametesr
   params = ["slug", "username", "story", "comment"]
   router.param p, getMiddleware "CheckIfParameterSlug" for p in params
 
 
-  #! Now start walking!
+  # Now start walking!
   walkPath = path.join __dirname, "../controllers"
   Walk.walkSync walkPath, (basedir, filename, stat) ->
-    #! If the filename does not match the rules for a controller then we skip.
+    # If the filename does not match the rules for a controller then we skip.
     if not isController filename then return
 
-    #! Now we get the proper controller name from which we can pass on to IoC.
+    # Now we get the proper controller name from which we can pass on to IoC.
     file = path.join basedir, filename.split(".coffee")[0]
     relativePath = path.relative walkPath, file
 
-    #! Invoke IoC and get an instance of our controller
+    # Invoke IoC and get an instance of our controller
     routes = require("../controllers/#{relativePath}")["@routes"]
     middlewares = require("../controllers/#{relativePath}")["@middlewares"]
     controller = getController relativePath
 
-    #! Now if this controller does not have any routes then we skip it!
+    # Now if this controller does not have any routes then we skip it!
     if not routes? then return
 
-    #! If it did have routes set, then we set it for each of its routes
+    # If it did have routes set, then we set it for each of its routes
     for route in routes
       _route route, middlewares, controller
 
@@ -124,10 +124,10 @@ exports = module.exports = (IoC) ->
       logger.debug "GET\t#{route} -> #{relativePath}"
 
 
-  #! If none of the routes matched, then route to the 404 controller!
+  # If none of the routes matched, then route to the 404 controller!
   _route null, [], "errors/404"
 
-  #! Finally attach the router into the app
+  # Finally attach the router into the app
   app.use router
 
 
