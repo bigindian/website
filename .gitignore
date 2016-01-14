@@ -95,7 +95,6 @@ content/checksums
 content/javascripts/*.js
 content/stylesheets/*.css
 core/server/locales/.generated/*.json
-core/server/views/**/*.js
 coverage/
 dist/
 docs
