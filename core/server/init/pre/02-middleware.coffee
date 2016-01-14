@@ -1,8 +1,6 @@
 _                    = require "underscore"
 auth                 = require "basic-auth"
 bodyParser           = require "body-parser"
-jadeAmd              = require "jade-amd"
-lessMiddleware       = require "less-middleware"
 methodOverride       = require "method-override"
 paginate             = require "express-paginate"
 path                 = require "path"
@@ -17,10 +15,6 @@ exports = module.exports = (IoC, logger, settings) ->
 
   # ignore GET /favicon.ico
   app.use serveFavicon path.join settings.publicDir, "favicon.ico"
-
-  # # jade-amd templates
-  # if settings.server.env == "development"
-  #   app.use settings.jade.amd.path, jadeAmd.jadeAmdMiddleware(settings.jade.amd.options)
 
   # Static server (always keep this first).
   # <http://goo.gl/j2BEl5>
