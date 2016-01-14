@@ -90,7 +90,7 @@ dwsync.xml
 bin/activate
 boot/local.js
 bower_components/
-content/build
+public_html/build
 content/checksums
 content/javascripts/*.js
 content/stylesheets/*.css
@@ -101,5 +101,6 @@ dist/
 docs
 tmp
 var/backups/*.tgz
-etc/db/seeds/*news_feed*
-content/images/source/*.png
+public_html/uploads/*
+!.gitkeep
+privateKeys.json
