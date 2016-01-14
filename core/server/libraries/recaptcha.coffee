@@ -58,7 +58,8 @@ exports = module.exports = (IoC, settings) ->
       if !settings.reCaptcha.enabled then return Promise.resolve request
 
       # Check if we are allowed to bypass the captcha.
-      bypass_counter = request.session.recaptcha_bypass_counter or 0
+      # bypass_counter = request.session.recaptcha_bypass_counter or 0
+      bypass_counter = 0
       if bypass_counter > 0
         logger.debug tag, "bypassing reCaptcha"
 
