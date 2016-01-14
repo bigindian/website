@@ -1,7 +1,0 @@
-.container
-  .item(ng-repeat="notification in notifications track by $index"
-    class="{{ notification.type }}"
-    ng-class="notification.class"
-    ng-if="!notification.hasRead")
-    span(ng-bind-html="notification.message") 
-    span.icon(ng-click="read(notification)") &#xf00d;

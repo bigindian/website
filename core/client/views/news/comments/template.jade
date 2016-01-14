@@ -1,9 +1,0 @@
-//- The stories list
-ul.stories
-  li.story(ng-repeat="comment in comments.$models track by $index")
-    news-comment(ng-model="comment", is-not-in-story="true")
-
-.page-links
-  a(fn-route="/comments/page/{{ pagination.prev }}", ng-if="pagination.prev") Page {{ pagination.prev }}
-  span(ng-if="pagination.prev && pagination.next") &nbsp;&middot;&nbsp;
-  a(fn-route="/comments/page/{{ pagination.next }}", ng-if="pagination.next") Page {{ pagination.next }}

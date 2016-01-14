@@ -1,9 +1,0 @@
-section(ng-if="story.id")
-  news-item(ng-model="story"
-    show-comment-box="true"
-    allow-editing="true"
-    allow-reporting="true"
-    show-description="true")
-
-  p#comments(ng-repeat="comment in comments.$models | orderBy : 'hotness'")
-    news-comment(ng-model="comment")

@@ -1,0 +1,44 @@
+.news-card(layout="row")
+  .feature-image(flex-sm="25" flex="15"
+    ng-if="model.$attributes.thumbnail" ng-style="{'background': model.$attributes.thumbnail.color }")
+    img(fn-image-loader="/uploads/{{ model.$attributes.thumbnail.filename }}"
+      fn-image-fail="model.$attributes.thumbnail = false")
+
+  .content(flex)
+    a.title(ng-href="{{ model.$attributes.url }}" ng-click="openLink()" ping="/api/news/stories/{{ model.id }}/open" target="_blank") {{ model.$attributes.title  }}
+    .excerpt(clamp="3") {{ model.$attributes.excerpt }}
+
+    .meta
+      a.domain(fn-route-dis="/search?domain={{ model.$attributes.url | domain }}") {{ model.$attributes.url | domain }}
+    .meta
+      span read {{ model.$attributes.clicks_count | prettynumber }} times
+      | &nbsp;&middot;&nbsp;
+      span {{ model.$attributes.words_count | readtime }} read
+      | &nbsp;&middot;&nbsp;
+      span posted {{ model.$attributes.created_at | prettydate }}
+
+
+  //- md-menu
+    md-button.more-button.md-icon-button(aria-label="More" ng-click="$mdOpenMenu($event)") 
+      md-icon(md-font-set="material-icons" md-menu-align-target) expand_more
+
+    md-menu-content
+      md-menu-item
+        md-button(aria-label="Comments" ng-href="/stories/{{ model.$attributes.short_id }}")
+          md-icon(md-font-set="material-icons" md-menu-align-target) &#xE0ca;
+          | View Comments
+      //- md-menu-item
+        md-button(aria-label="Share", ng-click="showShareSheet()")
+          md-icon(md-font-set="material-icons" md-menu-align-target) &#xE80b;
+          | Share
+      //- md-menu-item
+        md-button(aria-label="Bookmark")
+          md-icon(md-font-set="material-icons" md-menu-align-target) &#xE866;
+          | Bookmark
+
+      md-menu-divider
+
+      md-menu-item
+        md-button.md-warn(aria-label="Report")
+          md-icon(md-font-set="material-icons" md-menu-align-target) &#xE153;
+          | Report

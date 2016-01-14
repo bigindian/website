@@ -1,0 +1,16 @@
+md-dialog#comments-modal(ng-cloak)
+  form
+    md-toolbar
+      .md-toolbar-tools
+        h2 Add a new comment
+        span(flex="")
+        md-button.md-icon-button(ng-click="cancel()")
+          md-icon(md-font-set="material-icons" md-menu-align-target) close
+
+    md-dialog-content
+      .md-dialog-content
+        textarea(placeholder="type your comment here ...")
+
+    md-dialog-actions(layout="row")
+      md-button.md-raised.md-primary Submit
+      md-button(ng-click="cancel()") Cancel

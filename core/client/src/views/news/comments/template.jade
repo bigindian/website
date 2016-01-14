@@ -1,0 +1,9 @@
+//- The comments list
+.comments
+  news-comment(ng-model="comment", is-not-in-story="true" 
+    ng-repeat="comment in comments.$models")
+
+.page-links
+  a(fn-route="/comments/page/{{ pagination.prev }}", ng-if="pagination.prev") Page {{ pagination.prev }}
+  span(ng-if="pagination.prev && pagination.next") &nbsp;&middot;&nbsp;
+  a(fn-route="/comments/page/{{ pagination.next }}", ng-if="pagination.next") Page {{ pagination.next }}

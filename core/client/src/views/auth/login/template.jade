@@ -1,0 +1,54 @@
+md-card
+  md-card-content
+    form(ng-init="showHints=true")
+      //- div(layout="row" layout-xs="column" layout-sm="column" layout-align="space-between center")
+      div(layout-gt-sm="row" layout-wrap)
+        md-input-container(flex="100")
+          label Name
+          input(md-maxlength='30', required='', name='name', ng-model='user.name')
+          .hint(ng-if='showHints') Tell us what we should call you!
+          div(ng-messages='userForm.name.$error', ng-if='!showHints')
+            div(ng-message='required') Name is required.
+            div(ng-message='md-maxlength') The name has to be less than 30 characters long.
+
+        div(flex="5" hide-xs hide-sm)
+
+        //- div(layout-gt-sm="row")
+        md-input-container(flex="100")
+          label Email
+          input(name='email', ng-model='user.email', required='', minlength='10', maxlength='100', ng-pattern='/^.+@.+\..+$/')
+          .hint(ng-show='showHints') How can we reach you?
+          div(ng-messages='userForm.email.$error', ng-if='!showHints')
+            div(ng-message-exp="['required', 'minlength', 'maxlength', 'pattern']")
+              | Your email must be between 10 and 100 characters long and look like an e-mail address.
+
+
+//- .row
+  form(name="form", ng-class="formClasses")
+    .columns
+      h3 Login
+    .columns
+      label Username or Email
+      input(type="text"
+        maxlength="140"
+        minlength="4"
+        ng-disabled="formLoading"
+        ng-model="login.username"
+        size=30
+        required="true")
+
+    .columns
+      label Password
+      input(maxlength="140"
+        minlength="4"
+        ng-disabled="formLoading"
+        ng-model="login.password"
+        required="true"
+        size=30
+        type="password")
+
+
+    .columns
+      button.submit(ng-click="doLogin(login)", ng-if="form.$valid") Login
+    .other-options.columns.
+      If you don't have an account, then <a ng-click="goSignup()">signup!</a>

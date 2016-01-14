@@ -1,0 +1,53 @@
+//- #feature-image
+  img(src="{{ model.$attributes.image_url }}")
+
+md-button.md-fab.md-warn#back-button(aria-label="Back", ng-click="goBack()")
+  md-icon(md-font-set="material-icons" md-menu-align-target) keyboard_backspace
+
+#story
+  h1.title {{ model.$attributes.title }}
+  //- .excerpt(clamp="3") {{ model.$attributes.description }}
+
+  //- md-button.domain Read full story on {{ model.$attributes.url | domain }}
+
+  //- md-chips(ng-model="model.$attributes.tags", readonly="true")
+
+//- .seperator
+
+#story-meta(layout="row" layout-wrap)
+  .stat(flex="25" flex-sm="100")
+    md-icon(md-font-set="material-icons" md-menu-align-target) remove_red_eye
+    span {{ model.$attributes.upvotes | prettynumber }} reads
+
+  .stat(flex="25" flex-sm="100")
+    md-icon(md-font-set="material-icons" md-menu-align-target) comment
+    span {{ model.$attributes.comments.length | prettynumber }} comment(s).
+
+  .stat(flex="25" flex-sm="100")
+    md-icon(md-font-set="material-icons" md-menu-align-target) update
+    span {{ model.$attributes.created_at | prettydate }}
+
+  .stat(flex="25" flex-sm="100")
+    md-icon(md-font-set="material-icons" md-menu-align-target) timer
+    span 2 min read
+
+md-fab-speed-dial#comment-add-fab
+  md-fab-trigger
+    md-button.md-primary(aria-label="menu" class="md-fab md-warn", 
+      ng-click="showCommentsModal()")
+      md-icon(md-font-set="material-icons" md-menu-align-target) add
+
+#comments
+  .comment(ng-repeat="comment in model.$attributes.comments")
+    news-comment(ng-model="comment")
+
+  p.instruction to add your own comment, click/touch on the green plus button
+//- #comments-input
+    h2 Leave a comment
+    //- .wysiwyg
+    .content
+      textarea(placeholder="type your comment here ...")
+
+      section.buttons(layout='row' layout-sm='column' layout-wrap)
+        md-button.md-raised.md-primary Submit
+        md-button Preview

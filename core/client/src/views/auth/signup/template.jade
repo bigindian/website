@@ -1,0 +1,129 @@
+form(name="userForm" ng-init="showHints=true")
+  md-card
+    md-card-title(md-theme="docs-dark")
+      md-card-title-text
+        .md-headline Signup
+        //- .md-subhead Join us, thy reader
+
+    md-card-content
+      div(layout-gt-sm="row" layout-wrap)
+        md-input-container(flex="100")
+          label Name
+          input(md-maxlength='30', required='', name='name', ng-model='user.name')
+          .hint(ng-if='showHints') Tell us what we should call you!
+          div(ng-messages='userForm.name.$error', ng-if='!showHints')
+            div(ng-message='required') Name is required.
+            div(ng-message='md-maxlength') The name has to be less than 30 characters long.
+
+        //- div(flex="5" hide-xs hide-sm)
+
+        //- div(layout-gt-sm="row")
+        md-input-container(flex="100")
+          label Email
+          input(name='email', ng-model='user.email', required='', minlength='10', maxlength='100', ng-pattern='/^.+@.+\..+$/')
+          .hint(ng-show='showHints') This is what you'll use to login. No spam, ever!
+          div(ng-messages='userForm.email.$error', ng-if='!showHints')
+            div(ng-message-exp="['required', 'minlength', 'maxlength', 'pattern']")
+              | Your email must be between 10 and 100 characters long and look like an e-mail address.
+
+        md-input-container(flex="100")
+          label Password
+          input(name='password', ng-model='user.password', required='', 
+            type="password"
+            minlength='8', maxlength='100')
+
+          .hint(ng-show='showHints') Keep this super secret and easy to remember
+          div(ng-messages='userForm.password.$error', ng-if='!showHints')
+            div(ng-message-exp="['required', 'minlength', 'maxlength']")
+              | Your password must be between 8 to 100 characters long.
+
+        md-input-container(flex="100", ng-if="userForm.password.$valid")
+          label Re-enter Password
+          input(name='repassword', ng-model='user.repassword', required='', 
+            type="password"
+            minlength='8', maxlength='100')
+          .hint(ng-show='showHints') To make sure you typed it properly
+          div(ng-messages='userForm.password.$error', ng-if='!showHints')
+            div(ng-message-exp="['required', 'minlength', 'maxlength']")
+              | Your password must be between 8 to 100 characters long.
+
+    md-card-action(ng-if="userForm.$valid")
+      md-button.md-raised.md-primary Signup
+
+
+
+
+//- form(name="form", ng-class="formClasses", ng-init="page = 1")
+  .row(ng-if="page == 1")
+    .columns
+      h3 Create your account
+    .columns
+      label Email
+      input(maxlength="140"
+        ng-model="signup.email"
+        ng-focus="hideLogin=true"
+        type="email"
+        required="true"
+        size=30
+        ng-disabled="formLoading")
+
+    .columns(ng-if="signup.email")
+      label Username
+      input(maxlength="140"
+        minlength="4"
+        ng-disabled="formLoading"
+        ng-model="signup.username"
+        required="true"
+        size=30
+        type="text")
+
+    .columns(ng-if="usernameValid")
+      label Password
+      input(maxlength="140"
+        minlength="6"
+        ng-disabled="formLoading"
+        ng-model="signup.password"
+        required="true"
+        size=30
+        type="password")
+
+    .columns(ng-if="usernameValid")
+      label Re-enter Password
+      input(maxlength="140"
+        minlength="4"
+        ng-disabled="formLoading"
+        ng-class="{badpass: signup.password != signup.repassword}"
+        ng-model="signup.repassword"
+        required="true"
+        size=30
+        type="password")
+
+
+    .other-options.columns(ng-if="form.$valid && signup.repassword").
+      By creating an account, you agree that you have read our <a href="/info/terms-privacy">terms and services</a>
+
+    .columns.captcha(ng-if="form.$valid && signup.password && !form.gcaptcha")
+      div(google-recaptcha, ng-model="form.gcaptcha", ng-if="!form.gcaptcha")
+
+    .columns(ng-if="form.gcaptcha")
+      button.submit(ng-click="doSignup(signup)") Sign Up
+
+    .other-options.columns(ng-if="!hideLogin").
+      Already have an account? then <a ng-click="goLogin()">login!</a>
+
+
+  #page-2.row(ng-if="page == 2")
+    .columns
+      h3 You have been registered
+
+      b
+        p.
+          Yeah... We keep getting <a href="http://mailinator.com/" target="_blank">Mailinator</a> trolls so
+          we're not going to trouble you with an activation email.
+      p So go ahead, submit your first link <a fn-route="/submit">here</a>.
+      p And welcome to the community : )
+
+      //- h2
+        | Your account now needs to be <b>activated</b>. To activate it, click on
+        | the link in the email we just sent you.
+      //- h2 Make sure to check your spam folder, just in case.

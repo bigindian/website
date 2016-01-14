@@ -1,0 +1,68 @@
+news-card
+  display: block
+  max-width: $row-width
+  width: 100%
+  margin: 0 auto
+
+.news-card
+  background: #FFF
+  position: relative
+  overflow: hidden
+  border-bottom: 1px solid #EEE
+
+  a
+    text-decoration: none
+
+  .content
+    // padding: 10px 0 10px 15px
+    padding: 10px 15px
+    .title
+      font-size: 16px
+      font-weight: bold
+      color: #2562dc
+
+    .meta, .excerpt
+      font-size: 12px
+
+    .excerpt
+      color: #666
+      font-weight: 400
+      margin-bottom: 0
+
+    .meta
+      font-size: 12px
+      font-style: italic
+      color: #999
+      .domain
+        color: #000
+        // font-weight: bold
+
+  .md-menu
+    padding: 0
+
+
+  .categories
+    line-height: 1
+    a
+      // +radius(10px)
+      background-color: #fffcd7
+      border-bottom: 1px solid #d5d458
+      color: #555
+      font-size: 7.5pt
+      margin-left: 6px
+      padding: 3px 6px
+
+  .more-button
+    margin: 0
+
+  .feature-image
+    position: relative
+    overflow: hidden
+    max-width: 100px
+    img
+      position: absolute
+      top: 0
+      bottom: 0
+      right: -50%
+      height: 100%
+      max-width: none

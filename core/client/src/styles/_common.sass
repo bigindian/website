@@ -1,0 +1,37 @@
+a, a:visited, a:active
+  color: inherit
+  &.clean
+    text-decoration: none
+
+// html, body
+//   overflow-y: hidden !important
+//   +single-transition
+
+li, ul
+  list-style: none
+ul
+  padding-left: 0
+ol
+  > li
+    list-style: decimal
+
+*
+  outline: none
+
+.seperator
+  background: #DDD
+  height: 1px
+  margin: 15px 0
+  width: 100%
+
+.shadowed, .shadow
+  box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.1), 0px 1px 1px 0px rgba(0, 0, 0, 0.1), 0px 2px 1px -1px rgba(0, 0, 0, 0.1)
+
+.ajax-spinner
+  padding: 20px
+  text-align: center
+
+
+.stop-scrolling
+  height: 100%
+  overflow: hidden

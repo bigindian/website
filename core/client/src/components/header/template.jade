@@ -1,0 +1,68 @@
+.md-toolbar-tools 
+
+  //- md-button.md-icon-button(aria-label="Menu" ng-click="showSidenav()")
+  //-   md-icon(md-font-set="material-icons" md-menu-align-target) &#xe5d2;
+
+  a.logo(fn-route="/")
+    img(src="/images/logo.png")
+  //- h2(flex)
+  a.title(fn-route="/") The Big Indian News
+  nav(flex)
+    a.link(fn-route="/recent") Recent
+    //- a.link(fn-route="/comments") Comments
+    //- a.link(fn-route="/search") Search
+    a.link(fn-route="/stories/new") Submit
+
+  //- nav
+    a.link(fn-route="/search") Login
+
+  //- span(flex)
+
+  //- Notifcations
+  //- md-menu.right
+    md-button-button.notification-icon.md-icon-button(aria-label="Notifications", ng-click="$mdOpenMenu($event)")
+      md-icon(md-font-set="material-icons" md-menu-align-target) &#xe7f4;
+
+    md-menu-content.header-menu-content.notifications
+      .title Notifications
+      md-menu-item
+        md-button
+          md-icon(md-font-set="material-icons" md-menu-align-target) &#xe86c;
+          | Your story has been published
+      md-menu-item
+        md-button.md-warn
+          md-icon(md-font-set="material-icons" md-menu-align-target) &#xe002;
+          | Your story has been deleted
+
+
+  //- Account
+  //- md-menu.right
+    md-button.right.md-icon-button(aria-label="Account" ng-click="$mdOpenMenu($event)")
+      md-icon(md-font-set="material-icons" md-menu-align-target) &#xe5d4;
+
+    md-menu-content.header-menu-content.user-menu(width="3")
+      .avatar
+        img(src="https://secure.gravatar.com/avatar/a9f3b44ea7f32da3b5deab25080856e1?r=pg&d=identicon&s=200")
+        .bg
+        .username hi <span>enamakel</span>
+      md-menu-item
+        md-button
+          md-icon(md-font-set="material-icons" md-menu-align-target) &#xe7fd;
+          | Profile
+
+      md-menu-item
+        md-button
+          md-icon(md-font-set="material-icons" md-menu-align-target) &#xe0bf;
+          | Messages
+
+      md-menu-divider
+
+      md-menu-item
+        md-button
+          md-icon(md-font-set="material-icons" md-menu-align-target) &#xe8b8;
+          | Settings
+
+      md-menu-item
+        md-button.md-warn
+          md-icon(md-font-set="material-icons" md-menu-align-target) &#xe8ac;
+          | Logout

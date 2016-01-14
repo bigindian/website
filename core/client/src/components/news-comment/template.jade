@@ -1,0 +1,51 @@
+md-card.news-comment
+  .top-meta(layout="row" layout-wrap)
+    //- upvote button
+    //- md-button.score-box.md-icon-button(
+      ng-click="voted = true" aria-label="Up Vote")
+      md-icon(md-font-set="material-icons" ng-if="!voted" ng-click="upvote()" 
+        md-menu-align-target) star_border
+      md-icon(md-font-set="material-icons" ng-if="voted" md-menu-align-target) star
+
+    //- user details
+    .user(flex)
+      div(layout="row")
+        //- .avatar(flex)
+          img(ng-src="{{ model.$attributes.commenting_user.avatar_url }}")
+        .user-title(flex)
+          span.name {{ model.$attributes.commenting_user.username || 'anonymous' }}
+          span.date(hide show-gt-sm) posted {{ model.$attributes.created_at | prettydate }}
+          //- span.story : on {{ model.$attributes.}}
+
+    //- more button
+    //- md-menu.comment-more-menu
+      md-button.md-icon-button(aria-label="More" ng-click="$mdOpenMenu($event)")
+        md-icon(md-font-set="material-icons" md-menu-align-target) more_vert
+
+      md-menu-content(width="3")
+        md-menu-item
+          md-button
+            md-icon(md-font-set="material-icons" md-menu-align-target) comment
+            | Reply
+
+        md-menu-item
+          md-button
+            md-icon(md-font-set="material-icons" md-menu-align-target) link
+            | Get Link
+
+        md-menu-item
+          md-button
+            md-icon(md-font-set="material-icons" md-menu-align-target) share
+            | Share
+
+        md-menu-divider
+
+        md-menu-item
+          md-button.md-warn
+            md-icon(md-font-set="material-icons" md-menu-align-target) flag
+            | Report
+
+  md-card-content.comment-content(ng-bind-html="content")
+  //- The Millennium Falcon goes upside down and the screen goes upside down! BB-8 is the cutest! New Star Wars is the best! Pew pew!
+
+  hide

@@ -1,0 +1,15 @@
+module.exports = (app) ->
+  console.log "initializing components"
+
+  # app.directive "newsComment",     require "./news-comment/directive"
+  # app.directive "newsFeed",        require "./news-feed/directive"
+  # app.directive "newsFeedItem",    require "./news-feed/news-feed-item/directive"
+  # app.directive "newsItem",        require "./news-item/directive"
+  # app.directive "notifications",   require "./notifications/directive"
+  app.directive "clamp",           require "./clamp/directive"
+  app.directive "footer",          require "./footer/directive"
+  app.directive "header",          require "./header/directive"
+  app.directive "headerSidenav",   require "./header/sidenav/directive"
+  app.directive "newsCard",        require "./news-card/directive"
+  app.directive "newsComment",     require "./news-comment/directive"
+  app.directive "newsStoryList",   require "./news-story-list/directive"
