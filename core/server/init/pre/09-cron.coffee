@@ -7,7 +7,7 @@ Initializer = module.exports = (IoC, settings) ->
   logger = IoC.create "igloo/logger"
 
   # Start initializing the different cron scripts we have..
-  backupDatabase = IoC.create "cron/backup-database"
+  # backupDatabase = IoC.create "cron/backup-database"
   clearCache = IoC.create "cron/clear-cache"
   # fetchNews = IoC.create "cron/fetch-articles"
   # emailReport = IoC.create "cron/email-report"
@@ -37,7 +37,7 @@ Initializer = module.exports = (IoC, settings) ->
   ###
   cronWeekly = ->
     logger.info name, "running weekly cron scripts"
-    backupDatabase()
+    # backupDatabase()
 
 
   # Setup the cron tasks
