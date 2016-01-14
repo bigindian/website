@@ -1,6 +1,5 @@
 Promise   = require "bluebird"
 Schema    = (require "mongoose").Schema
-markdown  = require("markdown").markdown
 url       = require "url"
 validator = require "validator"
 
