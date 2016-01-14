@@ -9,9 +9,9 @@ EventHandler = module.exports = ($log, $root, $state, $timeout, Environment, Lan
     setTitle = ->
       title = value.title or Languages.translate "title", $state.current.page
 
-      if not title? or title == ""
-        document.title = "#{Environment.sitename}"
-      else document.title = "#{title} - #{Environment.sitename}"
+      # if not title? or title == ""
+      #   document.title = "#{Environment.sitename}"
+      # else document.title = "#{title} - #{Environment.sitename}"
     setTitle()
     $root.$on "model:language:change", setTitle
 
