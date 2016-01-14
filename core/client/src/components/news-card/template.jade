@@ -4,8 +4,8 @@
     img(fn-image-loader="/uploads/{{ model.$attributes.thumbnail.filename }}"
       fn-image-fail="model.$attributes.thumbnail = false")
 
-  .content(flex)
-    a.title(ng-href="{{ model.$attributes.url }}" ng-click="openLink()" ping="/api/news/stories/{{ model.id }}/open" target="_blank") {{ model.$attributes.title  }}
+  .content(flex ng-click="openLink()")
+    .title {{ model.$attributes.title  }}
     .excerpt(clamp="3") {{ model.$attributes.excerpt }}
 
     .meta
