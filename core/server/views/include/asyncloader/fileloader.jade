@@ -6,7 +6,7 @@ script
     window.scripts = [
       {
         id: "libraries.css"
-        remote: ["#{u}/build/md5/libraries_#{ md5['libraries.css'] }.css"]
+        remote: ["//ajax.googleapis.com/ajax/libs/angular_material/1.0.0/angular-material.min.css"]
         local: "/build/md5/libraries_#{ md5['libraries.css'] }.css"
       }
       {
@@ -17,10 +17,16 @@ script
       {
         id: "libraries.js"
         remote: [
-          "//ajax.googleapis.com/ajax/libs/angularjs/1.4.0/angular.min.js"
+          "//ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"
+          "//ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-animate.min.js"
+          "//ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-aria.min.js"
+          "//ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-messages.min.js"
+
           "//cdnjs.cloudflare.com/ajax/libs/angular-hotkeys/1.4.5/hotkeys.min.js"
           "//cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.0/angular-cookies.min.js"
           "//cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.14/angular-ui-router.min.js"
+          "//cdnjs.cloudflare.com/ajax/libs/angular-material/1.0.1/angular-material.min.js"
+          
           "//cdnjs.cloudflare.com/ajax/libs/backbone.js/1.2.3/backbone-min.js"
         ]
         local: "/build/md5/libraries_#{ md5['libraries.js'] }.js"
