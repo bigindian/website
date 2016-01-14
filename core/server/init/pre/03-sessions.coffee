@@ -2,7 +2,6 @@ passport              = require "passport"
 session               = require "express-session"
 cookieParser          = require "cookie-parser"
 randomstring          = require "randomstring-extended"
-connectLiveReload     = require "connect-livereload"
 validator             = require "validator"
 _                     = require "underscore"
 
