@@ -7,13 +7,13 @@
     "db-init": "npm run-script schema-up && npm run-script seed",
     "db-refresh": "npm run-script schema-down && npm run-script db-init",
     "docs": "groc",
-    "docs-api": "apidoc -i core/server -o docs/api -c etc",
+    "docs-api": "apidoc -i server -o docs/api -c etc",
     "init-config": "sh ./etc/init-config.sh",
     "schema-down": "knex --knexfile ./etc/config/knexfile.coffee migrate:rollback --cwd ./etc/db",
     "schema-up": "knex --knexfile ./etc/config/knexfile.coffee migrate:latest --cwd ./etc/db",
     "seed": "knex seed:run --cwd ./etc/db --knexfile ./etc/config/knexfile.coffee",
-    "start": "coffee ./bin/server.coffee",
-    "test": "NODE_TLS_REJECT_UNAUTHORIZED=0 mocha src/server/mocha.coffee --compilers coffee:coffee-script/register --check-leaks --bail"
+    "start": "coffee app.coffee",
+    "test": "NODE_TLS_REJECT_UNAUTHORIZED=0 mocha mocha.coffee --compilers coffee:coffee-script/register --check-leaks --bail"
   },
   "dependencies": {
     "async": "^1.5.2",
