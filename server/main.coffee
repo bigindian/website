@@ -40,7 +40,7 @@ IoC.loader "libraries",   _library "libraries"
 IoC.loader "models",      _library "models"
 
 # Load all igloo components.
-IoC.loader                _library "../../config"
+IoC.loader                _library "../config"
 IoC.loader "igloo",       igloo
 
 
