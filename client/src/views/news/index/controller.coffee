@@ -4,7 +4,8 @@ Controller = module.exports = ($http, $log, $scope, Stories) ->
   $scope.$emit "page:initialize"
 
   $http.pageAsJSON().success (data) ->
-    $scope.stories = new Stories.Collection data
+    $scope.stories = new Stories.Collection data.docs
+    $scope.data = data
     $scope.$emit "page:start"
 
 

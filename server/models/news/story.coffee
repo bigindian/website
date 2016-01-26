@@ -1,7 +1,8 @@
-Promise   = require "bluebird"
-Schema    = (require "mongoose").Schema
-url       = require "url"
-validator = require "validator"
+Promise          = require "bluebird"
+Schema           = (require "mongoose").Schema
+url              = require "url"
+validator        = require "validator"
+mongoosePaginate = require('mongoose-paginate');
 
 # helpers   = require "../helpers"
 
@@ -62,6 +63,7 @@ Model = module.exports = (Elasticsearch, Mongoose, User) ->
     created_by: { type: Schema.Types.ObjectId, ref: "User" }
     created_at: { type: Date, default: Date.now, index: true}
 
+  schema.plugin mongoosePaginate
 
   schema.pre "save", (next) ->
     createdDate = Number new Date(@created_at).getTime() or Date.now()
