@@ -4,7 +4,9 @@
     img(fn-image-loader="/uploads/{{ model.$attributes.thumbnail.filename }}"
       fn-image-fail="model.$attributes.thumbnail = false")
 
-  .content(flex ng-click="openLink()")
+  .content(flex-sm="{{ model.$attributes.thumbnail ? 75 : 100 }}" 
+    flex="{{ model.$attributes.thumbnail ? 85 : 100 }}" 
+    ng-click="openLink()")
     .title {{ model.$attributes.title  }}
     .excerpt(clamp="3") {{ model.$attributes.excerpt }}
 

@@ -20,6 +20,7 @@ exports = module.exports = (IoC, settings, Cache) ->
 
   # This function reads and updates the md5 sums from the checksum file.
   readChecksums = ->
+    logger.debug "reading checksums"
     md5sums = {}
 
     # Start reading the checksums file and save them into a local variable
@@ -44,7 +45,7 @@ exports = module.exports = (IoC, settings, Cache) ->
   catch e then logger.error e
 
   # Finally, read the checksums for the first time.
-  readChecksums()
+  do readChecksums
 
 exports["@require"] = [
   "$container"
