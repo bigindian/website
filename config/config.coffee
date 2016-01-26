@@ -7,7 +7,7 @@ Config = module.exports = ->
   test = require "./environment/test"               # Testing-specific options
   development = require "./environment/development" # Development-specific options
   production = require "./environment/production"   # Production specific options
-  privateKeys = require "./privateKeys.json"        # Private production keys
+  privateKeys = require "./privateKeys"        # Private production keys
 
   {
     defaults: _.deepExtend {}, defaults, privateKeys

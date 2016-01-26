@@ -102,4 +102,4 @@ tmp
 var/backups/*.tgz
 public_html/uploads/*
 !.gitkeep
-privateKeys.json
+privateKeys.coffee
