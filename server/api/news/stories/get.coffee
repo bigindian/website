@@ -3,7 +3,8 @@ Controller = module.exports = (Story) ->
     options =
       offset: 0
       limit: 10
-      sort: hotness: -1
+
+    options.sort = if request.query.recent then created_at: -1 else hotness: -1
 
     Story.paginate {}, options
     .then (result) -> response.json result
