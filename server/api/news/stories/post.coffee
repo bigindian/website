@@ -1,12 +1,13 @@
-Request       = require "request"
-fs            = require "fs"
-colorThief    = require "color-thief"
-gm            = require "gm"
-Promise       = require "bluebird"
-read          = require "node-readability"
-htmlToText    = require "html-to-text"
 MetaInspector = require "node-metainspector"
+Promise       = require "bluebird"
+Request       = require "request"
 _             = require "underscore"
+colorThief    = require "color-thief"
+fs            = require "fs"
+gm            = require "gm"
+htmlToText    = require "html-to-text"
+normalizeUrl  = require "normalize-url"
+read          = require "node-readability"
 slug          = require "slug"
 
 
@@ -62,10 +63,18 @@ IMAGE_MAXSIZE_THUMB = 400 # 400px x 400px
 
 
 Controller = module.exports = (Settings, Story) ->
-  (request, response, next) ->
-    Story.create request.body
-    .then (story) ->
+  validateStory = (story={}) ->
+    story.url = normalizeUrl story.url
+    Story.findOne url: story.url
+    .then (result) ->
+      if result? then throw new Error "story exists"
+      story
 
+
+  (request, response, next) ->
+    validateStory request.body
+    .then (story) -> Story.create story
+    .then (story) ->
       fetchInformation story.url
       .then (info) ->
         story.excerpt = info.excerpt
@@ -101,7 +110,7 @@ Controller = module.exports = (Settings, Story) ->
 
                 story.save().then -> resolve story
 
-    .then (story) -> response.json story
+    .then ((story) -> response.json story), (e) -> next e
 
 
 Controller["@middlewares"] = ["CheckCaptcha"]

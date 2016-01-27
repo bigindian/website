@@ -57,6 +57,7 @@
     "mv": "^2.1.1",
     "node-metainspector": "^1.2.0",
     "node-readability": "^2.1.0",
+    "normalize-url": "^1.4.0",
     "ouch": "^0.2.0-beta",
     "passport": "^0.3.2",
     "passport-amazon": "^1.0.0",
