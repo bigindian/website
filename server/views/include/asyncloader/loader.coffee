@@ -6,14 +6,14 @@ dependencies don't change that often.
 maxScriptCount = 10
 
 
-#! Define some variables
+# Define some variables
 head = (document.getElementsByTagName "head")[0]
 body = (document.getElementsByTagName "body")[0]
 totalScriptsLoaded = 0
 isDevelopment = publicData.environment == "development"
 
 
-#! Create this helper function to automatically increment the progress bar.
+# Create this helper function to automatically increment the progress bar.
 incrementProgressBar = ->
   setProgressBar = (i, total) ->
     progressBarStyle = (document.getElementById "page-loading-bar").style
@@ -35,26 +35,26 @@ _addScript = (urlsOrCode, isCSS) ->
     $fileref.rel = "stylesheet"
     $fileref.type = "text/css"
 
-    #! This line is sort-of a hack to make the CSS page non-render blocking.
-    #! We must make sure that when the stylesheet is loaded fully, we must
-    #! replace this attribute with the standard 'all' otherwise the browser
-    #! won't apply the CSS.
-    #!
-    #! This media tag is used to match different devices. Setting it to none
-    #! makes it not match any device and causes the browser to truely load in
-    #! async.
+    # This line is sort-of a hack to make the CSS page non-render blocking.
+    # We must make sure that when the stylesheet is loaded fully, we must
+    # replace this attribute with the standard 'all' otherwise the browser
+    # won't apply the CSS.
+    #
+    # This media tag is used to match different devices. Setting it to none
+    # makes it not match any device and causes the browser to truely load in
+    # async.
     $fileref.media = "none"
   else
     $fileref = document.createElement "script"
     $fileref.type = "text/javascript"
 
-  #! Populate the element with our cached code
-  #! Load the script from the URL
+  # Populate the element with our cached code
+  # Load the script from the URL
   if isCSS then $fileref.href = urlsOrCode
   else $fileref.src = urlsOrCode
   $fileref.async = false
 
-  #! Setup our listeners for when the script/css has been inserted
+  # Setup our listeners for when the script/css has been inserted
   $fileref.onreadystatechange = ->
     if this.media is "none" then this.media = "all"
     if @readyState is "complete" then incrementProgressBar()
@@ -62,7 +62,7 @@ _addScript = (urlsOrCode, isCSS) ->
     if this.media is "none" then this.media = "all"
     incrementProgressBar()
 
-  #! Finally with whatever element we have created, insert it into the body
+  # Finally with whatever element we have created, insert it into the body
   if isCSS then head.appendChild $fileref
   else head.insertBefore $fileref, head.firstChild
 
@@ -75,15 +75,14 @@ processScript = (script) ->
   isCSS = (script.id.substr -3) == "css"
   urlsOrCode = script.remote
 
-  #! If we are in development mode, then we simply load the local scripts
-  #! to avoid delays from the remote servers.
-  if isDevelopment and script.local?
-    urlsOrCode = [script.local]
+  # If we are in development mode, then we simply load the local scripts
+  # to avoid delays from the remote servers.
+  if isDevelopment and script.local? then urlsOrCode = script.local
 
-  #! Finally!! load the processed script into the DOM.
+  # Finally!! load the processed script into the DOM.
   _addScript urlOrCode, isCSS for urlOrCode in urlsOrCode
 
 
-#! Now that all our helper functions have been defined, we start processing each
-#! script one-by-one..
+# Now that all our helper functions have been defined, we start processing each
+# script one-by-one..
 processScript script for script in scripts
