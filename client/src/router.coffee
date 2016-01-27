@@ -12,9 +12,9 @@ Router = module.exports = ($stateProvider, $locationProvider, $urlMatcher, $urlR
       templateUrl: templateUrl
       url: route
       resolve:
-        0: ["@models/news/tags", (m) -> m.Cache.download()]
+        # 0: ["@models/news/tags", (m) -> m.Cache.download()]
       #   0: ["@models/session",         (m) -> m.refresh()]
-      #   1: ["@models/languages",       (m) -> m.download()]
+        1: ["@models/languages",       (m) -> m.download()]
 
 
   # Start adding each route one by one
@@ -36,7 +36,7 @@ Router = module.exports = ($stateProvider, $locationProvider, $urlMatcher, $urlR
 
   _route "news/comments",      "/comments"
   _route "news/comments",      "/comments/page/{page:[0-9]+}"
-  _route "news/index",         ""
+  _route "news/index",         "/"
   _route "news/index",         "/page/{page:[0-9]+}"
   _route "news/new",           "/stories/new"
   _route "news/single",        "/stories/{short_id:[^/]+}"
@@ -51,7 +51,11 @@ Router = module.exports = ($stateProvider, $locationProvider, $urlMatcher, $urlR
 
   _route "users/single",       "/user/{username:[^/]+}"
 
-  _route "error/404",          "*page"
+  _route "error/404",          "/not-found"
+
+  # if none of the above states are matched, use this as the fallback
+  $urlRouterProvider.otherwise "/not-found"
+
 
 
   # Enable HTML5 pushstate for hash-less URLs

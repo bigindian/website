@@ -1,11 +1,11 @@
 .news-card(layout="row")
-  .feature-image(flex-sm="25" flex="15"
+  .feature-image(flex-sm="15" flex="10"
     ng-if="model.$attributes.thumbnail" ng-style="{'background': model.$attributes.thumbnail.color }")
     img(fn-image-loader="/uploads/{{ model.$attributes.thumbnail.filename }}"
       fn-image-fail="model.$attributes.thumbnail = false")
 
-  .content(flex-sm="{{ model.$attributes.thumbnail ? 75 : 100 }}" 
-    flex="{{ model.$attributes.thumbnail ? 85 : 100 }}" 
+  .content(flex-sm="{{ model.$attributes.thumbnail ? 85 : 100 }}" 
+    flex="{{ model.$attributes.thumbnail ? 90 : 100 }}" 
     ng-click="openLink()")
     .title {{ model.$attributes.title  }}
     .excerpt(clamp="3") {{ model.$attributes.excerpt }}

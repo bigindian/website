@@ -2,7 +2,7 @@
 Controller = ($log) ->
   logger = $log.init Controller.tag
   logger.log "initializing"
-  location.reload()
+  # location.reload()
 
 
 Controller.tag = "error/404"
