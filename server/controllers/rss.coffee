@@ -1,7 +1,5 @@
 RSS = require "rss"
 
-### lets create an rss feed ###
-
 
 
 # ### loop over data and add to feed ###
@@ -13,35 +11,35 @@ RSS = require "rss"
 #   author: "Guest Author"
 #   date: "May 27, 2012"
 
-
-# Controller for the privacy page. Simply displays the privacy policy view.
-Controller = module.exports = (Cache, Stories) ->
-
+Controller = module.exports = (Cache, Story) ->
   createFeed = ->
     new RSS
       title: "The Big Indian News"
       description: "description"
-      feed_url: "http://example.com/rss.xml"
-      site_url: "http://example.com"
-      image_url: "http://example.com/icon.png"
+      feed_url: "https://thebigindian.news/rss.xml"
+      site_url: "https://thebigindian.news"
+      image_url: "https://thebigindian.news/images/logo.png"
       managingEditor: "Steven Enamakel"
       webMaster: "Steven Enamakel"
-      copyright: "2013 Steven Enamakel"
+      copyright: "2015 The Big Indian News"
       language: "en"
-      pubDate: "May 20, 2012 04:00:00 GMT"
+      pubDate: "August 20, 2015 04:00:00 GMT"
       ttl: "60"
-      custom_namespaces: "itunes": "http://www.itunes.com/dtds/podcast-1.0.dtd"
 
   (request, response, next) ->
     cacheKey = "main/rss"
 
     Cache.get cacheKey
     .catch ->
-
       feed = createFeed()
 
-      Stories.top().then (results) ->
-        for story in results.collection.toJSON()
+      options =
+        limit: 30
+        sort: hotness: -1
+
+      Story.paginate {}, options
+      .then (results) ->
+        for story in results.docs
           feed.item
             title: story.title
             description: story.description
@@ -49,7 +47,7 @@ Controller = module.exports = (Cache, Stories) ->
 
         xml = feed.xml()
 
-        #! And then cache it
+        # And then cache it
         Cache.set cacheKey, xml, 60 * 1 # 1 minute cache
 
     .then (xml) ->
@@ -62,7 +60,7 @@ Controller = module.exports = (Cache, Stories) ->
 
 Controller["@require"] = [
   "libraries/cache"
-  # "models/news/stories"
+  "models/news/story"
 ]
 Controller["@routes"] = ["/rss"]
 Controller["@singleton"] = true
