@@ -94,7 +94,7 @@ public_html/build
 content/checksums
 content/javascripts/*.js
 content/stylesheets/*.css
-core/server/locales/.generated/*.json
+server/locales/.generated/*.json
 coverage/
 dist/
 docs
