@@ -98,7 +98,6 @@ module.exports =
     requests: true
     slack: false
 
-  knex: client: "postgres"
   jade: amd:
     path: "/js/tmpl/"
     options: {}
