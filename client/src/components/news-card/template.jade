@@ -1,5 +1,6 @@
 .news-card(layout="row")
   .feature-image(flex-sm="15" flex="10"
+    id="{{ model.id }}"
     ng-if="model.$attributes.thumbnail" ng-style="{'background': model.$attributes.thumbnail.color }")
     img(fn-image-loader="/uploads/{{ model.$attributes.thumbnail.filename }}"
       fn-image-fail="model.$attributes.thumbnail = false")
