@@ -4,13 +4,12 @@ require("coffee-script/register");
 var runSequence = require("run-sequence");
 
 var dependencies = [
+  "checksum",
   "coffee",
   "jade",
-  "sass",
-  "watch",
   "md5",
-  "checksum",
-  "bower"
+  "sass",
+  "watch"
 ];
 
 
@@ -23,4 +22,4 @@ gulp.task("build", runSequence(
   )
 );
 
-gulp.task("default", ["bower", "build", "watch"]);
+gulp.task("default", ["build", "watch"]);

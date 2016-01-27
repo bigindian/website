@@ -49,9 +49,3 @@ module.exports =
       dest: "../../docs/client"
       src: "src/**/*.coffee"
     hostname: "http://localhost:8000"
-
-
-  bower:
-    dest: "../public_html/build/"
-    targetFilenameJs: "libraries.js"
-    targetFilenameCss: "libraries.css"
