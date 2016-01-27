@@ -2,23 +2,24 @@ Promise          = require "bluebird"
 Schema           = (require "mongoose").Schema
 url              = require "url"
 validator        = require "validator"
-mongoosePaginate = require('mongoose-paginate');
-
-# helpers   = require "../helpers"
+# mongoosastic     = require "mongoosastic"
+mongoosePaginate = require "mongoose-paginate"
 
 
 Model = module.exports = (Elasticsearch, Mongoose, User) ->
   # **MAX_EDIT_MINS** After this many minutes, a story cannot be edited.
   MAX_EDIT_MINS = 90
 
-
   # **RECENT_DAYS** Days a story is considered recent, for resubmitting
   RECENT_DAYS = 30
 
-
-  COMMENTS_WEIGHT = 400
-  CLICKS_WEIGHT = 1
-
+  # **COOMENTS_WEIGHT**, **CLICKS_WEIGHT**, **ACTIVITY_WEIGHT** are weights
+  # given while calculating a story's score.
+  #
+  # As the site grows, make ACTIVITY_WEIGHT go lower (0.5).
+  COMMENTS_WEIGHT = 1
+  CLICKS_WEIGHT = 0.01
+  ACTIVITY_WEIGHT = 1
 
   # **CREATION_WINDOW** The window variable is used narrow down how effective
   # the creation date is when the post's hotness is calculated. A smaller window
@@ -26,23 +27,27 @@ Model = module.exports = (Elasticsearch, Mongoose, User) ->
   # window allows more room for old stories to become popular with comments and
   # upvotes.
   #
-  # As the site grows, you might want to shrink this down to 12 or so.
-  CREATION_WINDOW = 60 * 60 * 60 * 10
+  # Right now you're giving a 12 hour window for a new story to raise it's
+  # initial hotness by 1 point.
+  #
+  # As the site grows, you might want to shrink this down to a 6 hour interval
+  # or so.
+  CREATION_WINDOW = 1000 * 60 * 60 * 12
 
 
   schema = new Schema
     title: String
     excerpt: String
 
-    hotness: { type: Number, index: true }
+    hotness: type: Number, index: true
     activity_hotness: Number
 
-    clicks_count: { type: Number, default: 1 }
+    clicks_count: type: Number, default: 1
     comments_count: Number
     is_expired: Boolean
     is_moderated: Boolean
     kind: String
-    merged_story: { type: Schema.Types.ObjectId, ref: "Story" }
+    merged_story: type: Schema.Types.ObjectId, ref: "Story"
     slug: String
     story_cache: String
     unavailable_at: Date
@@ -60,10 +65,11 @@ Model = module.exports = (Elasticsearch, Mongoose, User) ->
       latitude: Number
       longitude: Number
 
-    created_by: { type: Schema.Types.ObjectId, ref: "User" }
-    created_at: { type: Date, default: Date.now, index: true}
+    created_by: type: Schema.Types.ObjectId, ref: "User"
+    created_at: type: Date, default: Date.now, index: true
 
   schema.plugin mongoosePaginate
+
 
   schema.pre "save", (next) ->
     createdDate = Number new Date(@created_at).getTime() or Date.now()
@@ -75,12 +81,12 @@ Model = module.exports = (Elasticsearch, Mongoose, User) ->
     commentsScore = (@comments_count or 0) * COMMENTS_WEIGHT
 
     # Calculate the activity's score
-    activityScore = Math.max (Math.abs(clickScore + 1) + commentsScore), 2
+    activityScore = (clickScore + commentsScore) * ACTIVITY_WEIGHT
 
     # Now using the log function (which is really nice because it evens out
     # activity after a bunch of comments and clicks), calculate the number of
     # points we'll need to raise the hotness by
-    activityPoints = Math.log Math.max(activityScore, 1), 10
+    activityPoints = Math.log Math.max activityScore, 1
 
     # The creation points is set so that newer posts get more hotness than
     # older ones. The window variable is used narrow down how effectively
@@ -91,7 +97,7 @@ Model = module.exports = (Elasticsearch, Mongoose, User) ->
     @hotness = activityPoints + creationPoints
     @activity_hotness = activityPoints
 
-    next()
+    do next
 
 
   Mongoose.model "Story", schema
