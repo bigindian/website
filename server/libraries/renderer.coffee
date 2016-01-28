@@ -36,52 +36,49 @@ Middleware = module.exports = (settings, Cache) ->
         analyticsCode: settings.analyticsCode
         reCaptchaKey: settings.reCaptcha.siteKey
 
+  console.log defaults.cryptedData
 
-  #! Base64 encode the crypted data key.. (it gets decoded in the client side,
-  #! but this just makes sure that bots don't fetch any sensitive info)..
+  # Base64 encode the crypted data key.. (it gets decoded in the client side,
+  # but this just makes sure that bots don't fetch any sensitive info)..
   defaults.cryptedData = (new Buffer(JSON.stringify defaults.cryptedData))
     .toString "base64"
 
 
-  ###
-  TODO: Write this...
-  ###
+  ### TODO: Write this... ###
   (filePath, options, callback) ->
-    #! Setup the cache variables
+    # Setup the cache variables
     cacheKey = "never-set"
 
-    # options = options.customs or {}
-
-    #! If cache is set then setup cache variables, if this was a JSON request
-    #! then don't look in the cache. (We cache only rendered HTML)
+    # If cache is set then setup cache variables, if this was a JSON request
+    # then don't look in the cache. (We cache only rendered HTML)
     if options.cache?
       cacheEnable = options.cache.enable
       cacheKey = "renderer@#{filePath}"
       cacheTimeout = options.cache.timeout
 
-    #! Everything has been set so now check the cache for the HTML of this page
+    # Everything has been set so now check the cache for the HTML of this page
     Cache.get cacheKey
 
-    #! If there was nothing found in the cache, then start the compilation
-    #! procedures.
+    # If there was nothing found in the cache, then start the compilation
+    # procedures.
     .catch ->
-      #! Immediately bail out if we are doing a JSON request.
+      # Immediately bail out if we are doing a JSON request.
       if options.json? then return options.data
 
-      #! # Set the language options
-      #! options.lang = request.getLocale()
+      # # Set the language options
+      # options.lang = request.getLocale()
       if options.lang == "ar" then options.dir = "rtl"
 
-      #! Give the default page title if title is undefined. If a title was
-      #! defined but set to null, then don't do anything!
+      # Give the default page title if title is undefined. If a title was
+      # defined but set to null, then don't do anything!
       if options.title == undefined
         page = path.relative settings.views.dir, filePath.replace "main/", ""
         page = page.replace ".jade", ""
-        subTitle = __ "#{page}:title"
+        subTitle = global.__ "#{page}:title"
         options.title = "#{subTitle} - #{settings.sitename}"
       else if options.title == null then options.title = settings.sitename
 
-      #! Setup options for the jade compiler and HTML compiler
+      # Setup options for the jade compiler and HTML compiler
       jadeOptions =
         cache: cacheEnable
         pretty: defaults.environment is "development"
@@ -112,7 +109,7 @@ Middleware = module.exports = (settings, Cache) ->
       # else if cacheEnable then return Cache.set cacheKey, html
       return html
 
-    #! Finally write to the response!
+    # Finally write to the response!
     .then (data) -> callback null, data
 
 
