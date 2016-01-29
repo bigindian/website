@@ -2,7 +2,9 @@ mongoose = require "mongoose"
 
 
 Library = module.exports = (IoC, settings) ->
-  mongoose.connect "mongodb://localhost/thebigindian"
+  config = settings.mongo
+  url = "mongodb://#{config.username}:#{config.password}@#{config.host}:#{config.port}/#{config.database}"
+  mongoose.connect url
   mongoose
 
 

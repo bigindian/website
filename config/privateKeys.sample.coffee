@@ -32,3 +32,10 @@ module.exports =
       enabled: true
       clientID: "XXXXXXXXXXXXX"
       clientSecret: "XXXXXXXXXXXXX"
+
+  mongo:
+    database: "thebigindian"
+    host: "localhost"
+    password: "XXXXXXXXXXXXXXXXXX"
+    port: 27017
+    username: "XXXXXXXXXXXXXXXXXX"
