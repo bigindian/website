@@ -7,6 +7,7 @@ Controller = module.exports = (settings) ->
       ]
       description: "This is the API for communicating with all frontend apps"
       md5: settings.md5
+      androidVersion: settings.androidVersion
       status: "online"
     response.json data
 
