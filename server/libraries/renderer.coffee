@@ -36,8 +36,6 @@ Middleware = module.exports = (settings, Cache) ->
         analyticsCode: settings.analyticsCode
         reCaptchaKey: settings.reCaptcha.siteKey
 
-  console.log defaults.cryptedData
-
   # Base64 encode the crypted data key.. (it gets decoded in the client side,
   # but this just makes sure that bots don't fetch any sensitive info)..
   defaults.cryptedData = (new Buffer(JSON.stringify defaults.cryptedData))
