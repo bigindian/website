@@ -4,7 +4,7 @@ https          = require "https"
 querystring    = require "querystring"
 
 
-exports = module.exports = (IoC, settings) ->
+exports = module.exports = (IoC, settings, ReCaptchaError) ->
   logger = IoC.create "igloo/logger"
   tag = "[reCaptcha]"
 
@@ -49,11 +49,11 @@ exports = module.exports = (IoC, settings) ->
     request.end()
 
 
-  new class ReCaptcha
+  class ReCaptcha
     # This is a function that returns a Promise function. It returns back the
     # request if the captcha successfully validated. It throws an error if
     # the captcha failed.
-    verify: (request) ->
+    @verify: (request) ->
       # If the captcha is not set in the settings then ignore it.
       if not settings.reCaptcha.enabled then return Promise.resolve request
 
@@ -86,8 +86,8 @@ exports = module.exports = (IoC, settings) ->
         logger.debug tag, "captcha failed"
         throw error
       .then ->
-        # Once succesful, then reset the bypass counter!
-        request.session.recaptcha_bypass_counter = 4
+        # # Once succesful, then reset the bypass counter!
+        # request.session.recaptcha_bypass_counter = 4
         request
 
 
@@ -95,4 +95,5 @@ exports["@singleton"] = true
 exports["@require"] = [
   "$container"
   "igloo/settings"
+  "libraries/errors/ReCaptchaError"
 ]
