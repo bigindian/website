@@ -4,11 +4,12 @@ Controller = module.exports = (Cache, Story) ->
     cacheKey = "main/news/index/#{page}"
 
 
-    Story
-    .find()
-    .sort "-created_at"
-    .limit 15
-    .exec()
+    options =
+      offset: 0
+      limit: 10
+      sort: created_at: -1
+
+    Story.paginate {}, options
     .then (results) ->
       response.render "main/news/index",
         data: results
