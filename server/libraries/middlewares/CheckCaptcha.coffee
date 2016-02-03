@@ -25,7 +25,7 @@ Middleware = module.exports = (settings, reCaptcha, reCaptchaError) ->
 
   (request, response, next) ->
     if request.headers["x-recaptcha-bypass"] is bypassKey or
-    request.headers["x-apikey"] is bypassKey then return next()
+    request.headers["x-apikey"] is apiKey then return next()
 
     reCaptcha.verify request
     .then -> next()
