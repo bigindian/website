@@ -21,7 +21,7 @@ mobile (because reCaptcha wouldn't be ideal there).
 ###
 Middleware = module.exports = (settings, reCaptcha, reCaptchaError) ->
   bypassKey = settings.reCaptcha.bypassKey
-  apiKey = settings.reCaptcha.apiKey
+  apiKey = settings.apiKey
 
   (request, response, next) ->
     if request.headers["x-recaptcha-bypass"] is bypassKey or
