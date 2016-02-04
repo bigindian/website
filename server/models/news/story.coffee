@@ -17,8 +17,8 @@ Model = module.exports = (Elasticsearch, Mongoose, User) ->
   # given while calculating a story's score.
   #
   # As the site grows, make ACTIVITY_WEIGHT go lower (0.5).
-  COMMENTS_WEIGHT = 1
-  CLICKS_WEIGHT = 0.01
+  COMMENTS_WEIGHT = 0.5
+  CLICKS_WEIGHT = 1
   ACTIVITY_WEIGHT = 1
 
   # **CREATION_WINDOW** The window variable is used narrow down how effective
@@ -81,7 +81,7 @@ Model = module.exports = (Elasticsearch, Mongoose, User) ->
     commentsScore = (@comments_count or 0) * COMMENTS_WEIGHT
 
     # Calculate the activity's score
-    activityScore = (clickScore + commentsScore) * ACTIVITY_WEIGHT
+    activityScore = (clickScore + commentsScore) * ACTIVITY_WEIGHT * 1.0
 
     # Now using the log function (which is really nice because it evens out
     # activity after a bunch of comments and clicks), calculate the number of
