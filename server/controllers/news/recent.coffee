@@ -9,7 +9,7 @@ Controller = module.exports = (Cache, Story) ->
       limit: 10
       sort: created_at: -1
 
-    Story.paginate {}, options
+    Story.paginate is_banned: null, options
     .then (results) ->
       response.render "main/news/index",
         data: results

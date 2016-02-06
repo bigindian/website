@@ -7,7 +7,7 @@ Controller = module.exports = (Story) ->
 
     options.sort = if request.query.recent then created_at: -1 else hotness: -1
 
-    Story.paginate {}, options
+    Story.paginate is_banned: null, options
     .then (result) -> response.json result
 
 

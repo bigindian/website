@@ -46,12 +46,14 @@ Model = module.exports = (Elasticsearch, Mongoose, User) ->
     comments_count: Number
     is_expired: Boolean
     is_moderated: Boolean
+    is_banned: Boolean
     kind: String
     merged_story: type: Schema.Types.ObjectId, ref: "Story"
     slug: String
     story_cache: String
     unavailable_at: Date
     url: String
+    report_count: type: Number, default: 0
     words_count: Number
 
     image_url: String
