@@ -1,6 +1,6 @@
 Controller = module.exports = (Story) ->
   (request, response, next) ->
-    stories_per_page = 10
+    stories_per_page = 40
     options =
       offset: stories_per_page * (request.query.page - 1)
       limit: stories_per_page
