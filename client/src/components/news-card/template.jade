@@ -7,7 +7,7 @@
 
   .content(flex-sm="{{ model.$attributes.thumbnail ? 85 : 100 }}" 
     flex="{{ model.$attributes.thumbnail ? 90 : 100 }}" 
-    ng-click="openLink()")
+    ng-click="openLink()" ng-click-dis="model.gotoStoryPage()")
     .title {{ model.$attributes.title  }}
     .excerpt(clamp="3") {{ model.$attributes.excerpt }}
 

@@ -16,7 +16,8 @@ form.chipsdemoCustomInputs(name="form", ng-submit="onSubmit()")
           input(ng-model="story.title" required type="text" minlength="10" maxlength="300")
           .hint The title of the story (min 20 characters)
         div
-          md-button.md-raised.md-primary(ng-if="!story.title" ng-click="getTitle()") Fetch title
+          md-progress-circular(md-mode="indeterminate" ng-if="fetchingTitle")
+          md-button.md-raised.md-primary(ng-click="getTitle()" ng-if="!story.title && !fetchingTitle") Fetch title
 
       //- md-chips(ng-model="selected_tags"
         ng-required
@@ -40,10 +41,11 @@ form.chipsdemoCustomInputs(name="form", ng-submit="onSubmit()")
           span
             strong {{ $chip.tag }}
 
-      google-recaptcha(ng-model="story.recaptcha" ng-if="!story.recaptcha")
+      google-recaptcha(ng-model="story.recaptcha" ng-required ng-if="!story.recaptcha")
 
-      md-button.md-raised.md-primary(ng-disabled="!form.$valid || form.loading" ng-if="story.recaptcha" ng-click="onSubmit()") Submit
+      md-button.md-raised.md-primary(ng-disabled="!form.$valid || form.loading" ng-if="!form.loading" ng-click="onSubmit()") Submit
 
+      md-progress-circular(md-mode="indeterminate" ng-if="form.loading")
 //- .row
 //-   .columns
 //-     h3 Submit your link

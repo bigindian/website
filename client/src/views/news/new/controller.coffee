@@ -9,8 +9,10 @@ Controller = module.exports = ($location, $log, $scope, $http, $toast, angular, 
 
 
   $scope.getTitle = ->
+    $scope.fetchingTitle = true
     $http.post "/api/news/helpers/fetch_title?url=#{$scope.story.url}"
     .success (data) -> $scope.story.title = data.title
+    .finally -> $scope.fetchingTitle = false
 
 
 
@@ -22,8 +24,9 @@ Controller = module.exports = ($location, $log, $scope, $http, $toast, angular, 
         .content "Your story has been submitted!"
         .position "top right"
       $toast.show modal
-      # $location.url "#{story._id}/#{story}"
-      $location.url "/"
+      # story.gotoStoryPage()
+      $location.url "/story/#{story._id}"
+      # $location.url "/"
     .finally -> $scope.form.loading = false
 
 

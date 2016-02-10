@@ -1,4 +1,4 @@
-Model = module.exports = ($log, $q, BackboneModel, BackboneCollection, Comments, Storage, Session) ->
+Model = module.exports = ($location, $log, $q, BackboneModel, BackboneCollection, Comments, Storage, Session) ->
   logger = $log.init Model.tag
   logger.log "initializing"
 
@@ -69,6 +69,9 @@ Model = module.exports = ($log, $q, BackboneModel, BackboneCollection, Comments,
       hasImage: -> @get("image_url")?
 
 
+      gotoStoryPage: -> $location.url "/story/#{@id}/#{@get 'slug'}"
+
+
     @Collection: BackboneCollection.extend
       model: Stories.Model
       type: "normal" # "recent", "top"
@@ -82,6 +85,7 @@ Model = module.exports = ($log, $q, BackboneModel, BackboneCollection, Comments,
 
 Model.tag = "model:stories"
 Model.$inject = [
+  "$location"
   "$log"
   "$q"
   "BackboneModel"

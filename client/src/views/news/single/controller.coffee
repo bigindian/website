@@ -1,4 +1,4 @@
-Controller = module.exports = ($http, $log, $scope, $toast, $window, $root, $mdDialog, Articles) ->
+Controller = module.exports = ($http, $log, $scope, $toast, $window, $root, $mdDialog, Stories) ->
   logger = $log.init Controller.tag
   logger.log "initializing"
   $scope.$emit "page:initialize"
@@ -12,7 +12,7 @@ Controller = module.exports = ($http, $log, $scope, $toast, $window, $root, $mdD
 
   $http.pageAsJSON().success (data) ->
     logger.debug data
-    $scope.model = new Articles.Model data
+    $scope.model = new Stories.Model data
 
     $root.bodyClasses["with_image"] = data.image_url
     if data.image_url
@@ -43,5 +43,5 @@ Controller.$inject = [
   "$window"
   "$rootScope"
   "$mdDialog"
-  "@models/news/articles"
+  "@models/news/stories"
 ]
