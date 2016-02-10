@@ -72,7 +72,7 @@ Model = module.exports = (Elasticsearch, Mongoose, User) ->
       height: Number
 
     created_by: type: Schema.Types.ObjectId, ref: "User"
-    created_at: type: Number, default: Date.now, index: true
+    created_at: type: Date, default: Date.now, index: true
 
   schema.plugin mongoosePaginate
 
