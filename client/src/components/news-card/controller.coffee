@@ -3,7 +3,7 @@ Controller =  module.exports = ($scope, $location, $mdBottomSheet, $window, $htt
     short_id = $scope.model.get "short_id"
     $window.open $scope.model.get("url"), "_blank"
     $http.post "/api/news/stories/#{ $scope.model.id }/open"
-    # $location.url "/stories/#{short_id}"
+    $location.url "/recent"
 
   $scope.openStory = ->
     short_id = $scope.model.get "short_id"
