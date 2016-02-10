@@ -134,12 +134,12 @@ createThumbnail = (story, uploadDir) ->
     setTimeout (-> resolve story), 10 * 1000
 
 
-Controller = module.exports = (Settings, Story) ->
+Controller = module.exports = (Settings, Story, StoryExistsError) ->
   validateStory = (story={}) ->
     story.url = normalizeUrl story.url
     Story.findOne url: story.url
     .then (result) ->
-      if result? then throw new Error "story exists"
+      if result? then throw new StoryExistsError
       story
 
 
@@ -160,8 +160,6 @@ Controller = module.exports = (Settings, Story) ->
         story.slug = slug story.title
         story.story_html = info.story_html
 
-        console.log story.image_url
-
         if not story.image_url? then return story.save()
 
         createThumbnail story, "#{Settings.publicDir}/uploads"
@@ -179,6 +177,7 @@ Controller["@middlewares"] = ["CheckCaptcha"]
 Controller["@require"] = [
   "igloo/settings"
   "models/news/story"
+  "libraries/errors/StoryExistsError"
 ]
 Controller["@routes"] = ["/news/stories"]
 Controller["@singleton"] = true

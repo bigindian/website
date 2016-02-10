@@ -1,13 +1,13 @@
 exports = module.exports = (IoC) ->
-  ReCaptchaError = ->
+  StoryExistsError = ->
     Error.captureStackTrace this, @constructor
     this.name = @constructor.name
-    this.message = "ReCaptchaError"
+    this.message = "StoryExistsError"
     this.status = 400
 
-  require("util").inherits ReCaptchaError, Error
-  ReCaptchaError
+  require("util").inherits StoryExistsError, Error
+  StoryExistsError
 
 
-exports["@require"] = ["$container"]
 exports["@singleton"] = true
+exports["@require"] = ["$container"]

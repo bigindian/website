@@ -2,7 +2,7 @@ exports = module.exports = (IoC) ->
   NeedAuthenticationError = ->
     Error.captureStackTrace this, @constructor
     this.name = @constructor.name
-    this.message = "NeedAuthentication"
+    this.message = "NeedAuthenticationError"
     this.status = 401
 
   require("util").inherits NeedAuthenticationError, Error
