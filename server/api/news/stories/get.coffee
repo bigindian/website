@@ -6,12 +6,12 @@ Controller = module.exports = (Story) ->
       limit: stories_per_page
 
     query =
-      is_banned: request.query.banned or null
+      is_banned: request.query.banned or false
 
 
     options.sort = if request.query.recent then created_at: -1 else hotness: -1
 
-    Story.paginate is_banned: null, options
+    Story.paginate query, options
     .then (result) -> response.json result
 
 
