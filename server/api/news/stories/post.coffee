@@ -9,6 +9,7 @@ htmlToText    = require "html-to-text"
 normalizeUrl  = require "normalize-url"
 read          = require "node-readability"
 slug          = require "slug"
+Boilerpipe    = require "boilerpipe"
 
 
 ###
@@ -33,11 +34,54 @@ getDominantColor = (filepath) ->
   rgbToHex thief.getColor filepath
 
 
+IMAGE_MAXSIZE_THUMB = 400 # 400px x 400px
+
+
+excerptify = (text="") ->
+  EXCERPT_LENGTH = 500
+  text.substr 0, text.lastIndexOf " ", EXCERPT_LENGTH
+
+
 ###
 **fetchInformation()** Gets information about the given URL and returns a
 JSON which can be used for initializing the story.
 ###
-fetchInformation = (url, EXCERPT_LENGTH=500) -> new Promise (resolve, reject) ->
+fetchInformationWithBoilerplate = (url) -> new Promise (resolve, reject) ->
+  boilerpipe = new Boilerpipe
+    extractor: Boilerpipe.Extractor.Article
+    url: url
+
+  textPromise = new Promise (resolve, reject) ->
+    boilerpipe.getText (error, text="") ->
+      if error then reject error
+      resolve excerptify text
+
+  htmlPromise = new Promise (resolve, reject) ->
+    boilerpipe.getHtml (error, html) ->
+      if error then reject error else return resolve html
+
+  imagesPromise = new Promise (resolve, reject) ->
+    boilerpipe.getImages (error, images=[]) ->
+      if error then resolve null
+
+      if images.length > 0
+        for image in images
+          if image.area > 300 * 300 then return resolve image.src
+
+      resolve null
+
+
+  Promise.props
+    excerpt: textPromise
+    image_url: imagesPromise
+    story_html: htmlPromise
+  .then (values) ->
+    values.words_count = values.excerpt.split(" ").length
+    resolve values
+  .catch (error) -> reject error
+
+
+fetchInformationWithRead = (url) -> new Promise (resolve, reject) ->
   read url, (error, article, meta) ->
     if error then return reject error
 
@@ -48,7 +92,8 @@ fetchInformation = (url, EXCERPT_LENGTH=500) -> new Promise (resolve, reject) ->
 
     onMetaInspectFinish = (meta={}) ->
       resolve
-        excerpt: text.substr 0, text.lastIndexOf " ", EXCERPT_LENGTH
+        excerpt: excerptify text
+        story_html: article.content
         image_url: meta.image
         words_count: text.split(" ").length
 
@@ -59,7 +104,34 @@ fetchInformation = (url, EXCERPT_LENGTH=500) -> new Promise (resolve, reject) ->
     client.fetch()
 
 
-IMAGE_MAXSIZE_THUMB = 400 # 400px x 400px
+createThumbnail = (story, uploadDir) ->
+  extension = getExtension story.image_url
+  filename = "#{story._id}.#{extension}"
+  uploadPath = "#{uploadDir}/#{filename}"
+
+  new Promise (resolve) ->
+    Request story.image_url
+    .pipe fs.createWriteStream uploadPath
+    .on "close", ->
+
+      gm uploadPath
+      .resize IMAGE_MAXSIZE_THUMB, IMAGE_MAXSIZE_THUMB
+      .compress "Lossless"
+      .crop IMAGE_MAXSIZE_THUMB, IMAGE_MAXSIZE_THUMB, 0, 0
+      .autoOrient()
+      .write uploadPath, ->
+
+        gm uploadPath
+        .size (err, size={}) ->
+          story.thumbnail =
+            color: getDominantColor uploadPath
+            filename: filename
+            width: size.width
+            height: size.height
+
+          resolve story.save()
+
+    setTimeout (-> resolve story), 10 * 1000
 
 
 Controller = module.exports = (Settings, Story) ->
@@ -75,40 +147,30 @@ Controller = module.exports = (Settings, Story) ->
     validateStory request.body
     .then (story) -> Story.create story
     .then (story) ->
-      fetchInformation story.url
+
+      # Attempt to read the story with Boilerplate first, if that fails then
+      # with Readability.
+      fetchInformationWithBoilerplate story.url
+      .catch (e) -> fetchInformationWithRead story.url
+
       .then (info) ->
         story.excerpt = info.excerpt
         story.image_url = info.image_url
         story.words_count = info.words_count
         story.slug = slug story.title
+        story.story_html = info.story_html
 
-        if not story.image_url? then return story
+        console.log story.image_url
 
-        extension = getExtension story.image_url
-        filename = "#{story._id}.#{extension}"
-        uploadPath = "#{Settings.publicDir}/uploads/#{filename}"
+        if not story.image_url? then return story.save()
 
-        new Promise (resolve) ->
-          Request story.image_url
-          .pipe fs.createWriteStream uploadPath
-          .on "close", ->
+        createThumbnail story, "#{Settings.publicDir}/uploads"
 
-            gm uploadPath
-            .resize IMAGE_MAXSIZE_THUMB, IMAGE_MAXSIZE_THUMB
-            .compress "Lossless"
-            .crop IMAGE_MAXSIZE_THUMB, IMAGE_MAXSIZE_THUMB, 0, 0
-            .autoOrient()
-            .write uploadPath, ->
+        .finally -> story.save()
 
-              gm uploadPath
-              .size (err, size={}) ->
-                story.thumbnail =
-                  color: getDominantColor uploadPath
-                  filename: filename
-                  width: size.width
-                  height: size.height
-
-                story.save().then -> resolve story
+      .catch (e) ->
+        # Delete the story and show an error.
+        throw e
 
     .then ((story) -> response.json story), (e) -> next e
 
