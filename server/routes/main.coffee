@@ -91,7 +91,7 @@ exports = module.exports = (IoC) ->
 
   # Add a middleware to check all the integer parameters
   params = ["id", "page", "moderation"]
-  router.param p, getMiddleware "CheckIfParameterInteger" for p in params
+  router.param p, getMiddleware "CheckIfParameterId" for p in params
 
   # Add a middleware to check all the slug parametesr
   params = ["slug", "username", "story", "comment"]

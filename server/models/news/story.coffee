@@ -4,6 +4,7 @@ url              = require "url"
 validator        = require "validator"
 # mongoosastic     = require "mongoosastic"
 mongoosePaginate = require "mongoose-paginate"
+shortid          = require "shortid"
 
 
 Model = module.exports = (Elasticsearch, Mongoose, User) ->
@@ -21,6 +22,10 @@ Model = module.exports = (Elasticsearch, Mongoose, User) ->
   CLICKS_WEIGHT = 1
   ACTIVITY_WEIGHT = 1
 
+  # **FEED_PUNISH** is a special function that punishes the hotness of feed
+  # stories
+  FEED_PUNISH = (hotness) -> hotness - 5
+
   # **CREATION_WINDOW** The window variable is used narrow down how effective
   # the creation date is when the post's hotness is calculated. A smaller window
   # allows lesser activity before the post makes it to the front page. A bigger
@@ -37,23 +42,26 @@ Model = module.exports = (Elasticsearch, Mongoose, User) ->
 
   schema = new Schema
     title: String
+    story_html: String
     excerpt: String
 
     hotness: type: Number, index: true
     activity_hotness: Number
 
     clicks_count: type: Number, default: 1
-    comments_count: Number
-    is_expired: Boolean
-    is_moderated: Boolean
-    is_banned: Boolean
+    comments_count: type: Number, default: 1
+    is_banned: type: Boolean, default: false
+    is_expired: type: Boolean, default: false
+    is_from_feed: Boolean
+    is_moderated: type: Boolean, default: false
     kind: String
     merged_story: type: Schema.Types.ObjectId, ref: "Story"
+    report_count: type: Number, default: 0
+    short_id: type: String, index: true, default: shortid.generate
     slug: String
     story_cache: String
     unavailable_at: Date
     url: String
-    report_count: type: Number, default: 0
     words_count: Number
 
     image_url: String
@@ -63,17 +71,15 @@ Model = module.exports = (Elasticsearch, Mongoose, User) ->
       width: Number
       height: Number
 
-    location:
-      latitude: Number
-      longitude: Number
-
     created_by: type: Schema.Types.ObjectId, ref: "User"
-    created_at: type: Date, default: Date.now, index: true
+    created_at: type: Number, default: Date.now, index: true
 
   schema.plugin mongoosePaginate
 
 
   schema.pre "save", (next) ->
+    punishFeed = (score) => if @is_from_feed then FEED_PUNISH score else score
+
     createdDate = Number new Date(@created_at).getTime() or Date.now()
 
     # Calculate the score of the clicks
@@ -98,6 +104,10 @@ Model = module.exports = (Elasticsearch, Mongoose, User) ->
     # The final hotness is simply the sum of all the different points.
     @hotness = activityPoints + creationPoints
     @activity_hotness = activityPoints
+
+    # If the story was given from a feed, then we punish it. Because we want to
+    # give more priority to crowd-sourced news than the ones from feeds.
+    if @is_from_feed then @hotness = FEED_PUNISH @hotness
 
     do next
 
