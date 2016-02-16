@@ -2,7 +2,7 @@
   .feature-image(flex-sm="15" flex="10"
     id="{{ model.id }}"
     ng-if="model.$attributes.thumbnail" ng-style="{'background': model.$attributes.thumbnail.color }")
-    img(fn-image-loader!="<%= staticUrl %>/uploads/{{ model.$attributes.thumbnail.filename }}"
+    img(fn-image-loader="{{ model.getThumbnail() }}"
       fn-image-fail="model.$attributes.thumbnail = false")
 
   .content(flex-sm="{{ model.$attributes.thumbnail ? 85 : 100 }}" 

@@ -1,7 +1,8 @@
-Model = module.exports = ($location, $log, $q, BackboneModel, BackboneCollection, Comments, Storage, Session) ->
+Model = module.exports = ($location, $log, $q, Environment, BackboneModel, BackboneCollection, Comments, Storage, Session) ->
   logger = $log.init Model.tag
   logger.log "initializing"
 
+  console.log
 
   # A Backbone model to represent an upvote
   UpvoteModel = BackboneModel.extend
@@ -69,6 +70,11 @@ Model = module.exports = ($location, $log, $q, BackboneModel, BackboneCollection
       hasImage: -> @get("image_url")?
 
 
+      getThumbnail: ->
+        host = Environment.staticUrl
+        "#{host}/uploads/#{ @get('thumbnail').filename }"
+
+
       gotoStoryPage: -> $location.url "/story/#{@id}/#{@get 'slug'}"
 
 
@@ -88,6 +94,7 @@ Model.$inject = [
   "$location"
   "$log"
   "$q"
+  "@environment"
   "BackboneModel"
   "BackboneCollection"
   "@models/news/comments"
