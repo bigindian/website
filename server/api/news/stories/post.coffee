@@ -9,8 +9,7 @@ htmlToText    = require "html-to-text"
 normalizeUrl  = require "normalize-url"
 read          = require "node-readability"
 slug          = require "slug"
-Boilerpipe    = require "boilerpipe"
-
+# Boilerpipe    = require "boilerpipe"
 
 ###
 **getExtension()** Returns the extension of the given filename.
@@ -148,10 +147,11 @@ Controller = module.exports = (Settings, Story, StoryExistsError) ->
     .then (story) -> Story.create story
     .then (story) ->
 
-      # Attempt to read the story with Boilerplate first, if that fails then
+      ### # Attempt to read the story with Boilerplate first, if that fails then
       # with Readability.
       fetchInformationWithBoilerplate story.url
-      .catch (e) -> fetchInformationWithRead story.url
+      .catch (e) -> fetchInformationWithRead story.url ###
+      fetchInformationWithRead story.url
 
       .then (info) ->
         story.excerpt = info.excerpt
