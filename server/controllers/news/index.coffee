@@ -4,7 +4,7 @@ Controller = module.exports = (Cache, Story) ->
     cacheKey = "main/news/index/#{page}"
 
     options =
-      offset: 0
+      offset: 10 * request.params.page
       limit: 10
       sort: hotness: -1
 

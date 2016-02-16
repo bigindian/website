@@ -90,8 +90,12 @@ exports = module.exports = (IoC) ->
   router.use getMiddleware "UpdateLastOnlineForUser"
 
   # Add a middleware to check all the integer parameters
-  params = ["id", "page", "moderation"]
+  params = ["id", "moderation"]
   router.param p, getMiddleware "CheckIfParameterId" for p in params
+
+# Add a middleware to check all the integer parameters
+  params = ["page"]
+  router.param p, getMiddleware "CheckIfParameterInteger" for p in params
 
   # Add a middleware to check all the slug parametesr
   params = ["slug", "username", "story", "comment"]

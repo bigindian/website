@@ -2,3 +2,10 @@
 
 section.stories
   news-story-list(ng-model="stories")
+
+.pagination
+  md-button.md-icon-button(ng-disabled="page <= 1" ng-click="prev()" )
+    md-icon(md-font-set="material-icons") keyboard_arrow_left
+
+  md-button.md-icon-button(ng-disabled="page >= totalPages - 1" ng-click="next()" )
+    md-icon(md-font-set="material-icons") keyboard_arrow_right

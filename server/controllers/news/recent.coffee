@@ -3,9 +3,8 @@ Controller = module.exports = (Cache, Story) ->
     page = request.params.page or 1
     cacheKey = "main/news/index/#{page}"
 
-
     options =
-      offset: 0
+      offset: 10 * request.params.page
       limit: 10
       sort: created_at: -1
 
