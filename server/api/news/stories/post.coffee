@@ -23,8 +23,8 @@ getExtension = (filename) -> (/(?:\.([^.]+))?$/.exec filename)[1] or "jpeg"
 image
 ###
 getDominantColor = (filepath) ->
-  rgbToHex = (rgb) ->
-    componentToHex = (c) ->
+  rgbToHex = (rgb=[]) ->
+    componentToHex = (c="") ->
       hex = c.toString 16
       if hex.length == 1 then "0#{hex}" else hex
     "##{componentToHex rgb[0]}#{componentToHex rgb[1]}#{componentToHex rgb[2]}"
@@ -84,6 +84,9 @@ fetchInformationWithRead = (url) -> new Promise (resolve, reject) ->
   read url, (error, article, meta) ->
     if error then return reject error
 
+    if not article.title? then return reject new Error "no title"
+    title = article.title.replace /[|].*/, ""
+
     text = htmlToText.fromString article.content,
       hideLinkHrefIfSameAsText: true
       ignoreHref: true
@@ -95,6 +98,7 @@ fetchInformationWithRead = (url) -> new Promise (resolve, reject) ->
         story_html: article.content
         image_url: meta.image
         words_count: text.split(" ").length
+        title: title
 
 
     client = new MetaInspector url
@@ -136,6 +140,7 @@ createThumbnail = (story, uploadDir) ->
 Controller = module.exports = (Settings, Story, StoryExistsError) ->
   validateStory = (story={}) ->
     story.url = normalizeUrl story.url
+
     Story.findOne url: story.url
     .then (result) ->
       if result? then throw new StoryExistsError
@@ -147,6 +152,7 @@ Controller = module.exports = (Settings, Story, StoryExistsError) ->
     .then (story) -> Story.create story
     .then (story) ->
 
+
       ### # Attempt to read the story with Boilerplate first, if that fails then
       # with Readability.
       fetchInformationWithBoilerplate story.url
@@ -154,23 +160,20 @@ Controller = module.exports = (Settings, Story, StoryExistsError) ->
       fetchInformationWithRead story.url
 
       .then (info) ->
-        story.excerpt = info.excerpt
-        story.image_url = info.image_url
-        story.words_count = info.words_count
-        story.slug = slug story.title
-        # story.story_html = info.story_html
+        _.extendOwn story, info
 
         if not story.image_url? then return story.save()
 
         createThumbnail story, "#{Settings.publicDir}/uploads"
-
         .finally -> story.save()
 
       .catch (e) ->
         # Delete the story and show an error.
         throw e
 
-    .then ((story) -> response.json story), (e) -> next e
+    .then ((story) -> response.json story), (e) ->
+      console.trace e
+      next e
 
 
 Controller["@middlewares"] = ["CheckCaptcha"]
