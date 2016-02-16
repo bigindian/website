@@ -10,7 +10,7 @@ form.chipsdemoCustomInputs(name="form", ng-submit="onSubmit()")
           input(ng-model="story.url" required type="url" maxlength="500")
           .hint The link to the story
 
-      div(layout="row")
+      //- div(layout="row")
         md-input-container(flex)
           label Title
           input(ng-model="story.title" required type="text" minlength="10" maxlength="300")
@@ -43,7 +43,7 @@ form.chipsdemoCustomInputs(name="form", ng-submit="onSubmit()")
 
       google-recaptcha(ng-model="story.recaptcha" ng-required ng-if="!story.recaptcha")
 
-      md-button.md-raised.md-primary(ng-disabled="!form.$valid || form.loading" ng-if="!form.loading" ng-click="onSubmit()") Submit
+      md-button#submit.md-raised.md-primary(ng-disabled="!form.$valid || form.loading" ng-if="!form.loading" ng-click="onSubmit()") Submit
 
       md-progress-circular(md-mode="indeterminate" ng-if="form.loading")
 //- .row

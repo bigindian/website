@@ -25,8 +25,15 @@ Controller = module.exports = ($location, $log, $scope, $http, $toast, angular, 
         .position "top right"
       $toast.show modal
       # story.gotoStoryPage()
-      $location.url "/story/#{story._id}"
-      # $location.url "/"
+      # $location.url "/story/#{story._id}"
+      $location.url "/"
+    .error (response) ->
+      if response.error is "StoryExistsError"
+        modal = $toast.simple()
+          .content "That story has already been submitted"
+          .position "top right"
+        $toast.show modal
+
     .finally -> $scope.form.loading = false
 
 
