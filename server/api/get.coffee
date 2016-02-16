@@ -48,8 +48,8 @@ blah = (text="") ->
 
 
 Controller = module.exports = (settings) ->
-  fetchInformationWithRead "http://yourstory.com/2016/02/uncool-non_tech-company-era/"
-  .then blah
+  # fetchInformationWithRead "http://yourstory.com/2016/02/uncool-non_tech-company-era/"
+  # .then blah
 
   (request, response, next) ->
     data =
