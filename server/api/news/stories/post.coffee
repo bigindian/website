@@ -158,7 +158,7 @@ Controller = module.exports = (Settings, Story, StoryExistsError) ->
         story.image_url = info.image_url
         story.words_count = info.words_count
         story.slug = slug story.title
-        story.story_html = info.story_html
+        # story.story_html = info.story_html
 
         if not story.image_url? then return story.save()
 
