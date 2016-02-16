@@ -94,6 +94,8 @@ exports = module.exports = (IoC) ->
   params = ["slug", "username", "lang"]
   router.param p, getMiddleware "CheckIfParameterSlug" for p in params
 
+  router.use getMiddleware "AndroidLogin"
+
   # Now start walking!
   walkPath = path.join __dirname, "../api"
   Walk.walkSync walkPath, (basedir, filename, stat) ->
