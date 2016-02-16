@@ -17,7 +17,7 @@ WordpressStrategy     = (require "passport-wordpress").Strategy
 OpenIDStrategy        = (require "passport-openid").Strategy
 
 
-exports = module.exports = (IoC, settings, sessions, Logs, Users) ->
+exports = module.exports = (IoC, settings, sessions, Users) ->
   app = this
   logger = IoC.create "igloo/logger"
   name = "[session]"
@@ -26,12 +26,10 @@ exports = module.exports = (IoC, settings, sessions, Logs, Users) ->
   # Add cookie parsing support
   app.use cookieParser settings.cookieParser
 
-
   # add request.session cookie support, and use Redis for storage
   settings.session.store = sessions
   app.sessionInstance = session settings.session
   app.use app.sessionInstance
-
 
   # Initialize passport
   app.use passport.initialize()
@@ -70,6 +68,5 @@ exports["@require"] = [
   "igloo/settings"
   "igloo/sessions"
 
-  "models/log"
   "models/user"
 ]

@@ -65,6 +65,6 @@ Controller = module.exports = (Events) ->
     passport.authenticate("local", finish) request, response, next
 
 
-Controller["@require"] = ["models/log"]
+# Controller["@require"] = ["models/log"]
 Controller["@routes"] = ["/session/email/login"]
 Controller["@singleton"] = true
