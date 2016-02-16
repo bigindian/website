@@ -1,8 +1,8 @@
 Controller = module.exports = (Settings, Stories) ->
 
-  #! This array will contain the list of urls for our sitemal in JSON format.
+  # This array will contain the list of urls for our sitemal in JSON format.
   urlList = [
-    #! Daily urls
+    # Daily urls
     {url: "/", priority: 1, freq: "daily"}
     {url: "/page/2", priority: 0.7, freq: "daily"}
     {url: "/page/3", priority: 0.7, freq: "daily"}
@@ -15,7 +15,7 @@ Controller = module.exports = (Settings, Stories) ->
     {url: "/recent/page/2", priority: 0.7, freq: "daily"}
     {url: "/recent/page/3", priority: 0.7, freq: "daily"}
 
-    #! Monthly urls
+    # Monthly urls
     {url: "/info/about", priority: 0.3, freq: "monthly"}
     {url: "/info/terms-privacy", priority: 0.3, freq: "monthly"}
     {url: "/info/contribute", priority: 0.3, freq: "monthly"}

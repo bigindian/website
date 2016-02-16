@@ -20,10 +20,10 @@ Controller = module.exports = (settings, Cache) ->
       response.status 404
       return response.json "language not found"
 
-    #! Check in cache
+    # Check in cache
     Cache.get "route:api/lang/#{lang}"
 
-    #! Language was not cached, so query and then save in cache
+    # Language was not cached, so query and then save in cache
     .catch ->
       fs.readFileAsync "#{settings.localeDest}/#{lang}.json"
       .then (data) -> Cache.set "route:api/lang/#{lang}", data.toString()

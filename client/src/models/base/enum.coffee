@@ -37,13 +37,13 @@ BaseEnum = module.exports = ($http, $log, $q, Environment, Storage, $resource) -
 
   #     Storage.local md5CacheKey
   #     .then (md5Hash) =>
-  #       #! If the md5 key changes then we clear the cache so that it reloads
+  #       # If the md5 key changes then we clear the cache so that it reloads
   #       if md5Hash != Environment.md5[@md5Key]
   #         @logger.log "local md5 hash is different; flushing cache"
   #         Storage.local cacheKey, null
   #       else @logger.log "local md5 hash is the same; not flushing cache"
 
-  #       #! Now check for the data in cache if it exists
+  #       # Now check for the data in cache if it exists
   #       Storage.local cacheKey
 
   #     .then (cache) =>

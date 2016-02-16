@@ -6,10 +6,10 @@ module.exports = Service = ($log, $window, Environment) ->
       logger.log "initializing"
       logger.debug Environment.google.reCaptchaKey
 
-      #! Prepare the URL for the reCaptcha API
+      # Prepare the URL for the reCaptcha API
       url = "//www.google.com/recaptcha/api.js"
 
-      #! Insert the script into the DOM
+      # Insert the script into the DOM
       $fileref = document.createElement "script"
       $fileref.type = "text/javascript"
       $fileref.src = url

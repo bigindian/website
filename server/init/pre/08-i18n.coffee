@@ -81,7 +81,7 @@ exports = module.exports = (IoC, settings) ->
     # Stringify JSON and write to the file.
     json = JSON.stringify obj, null, 2
 
-    #! Save the MD5!
+    # Save the MD5!
     settings.md5["locale:#{locale}"] = MD5 json
 
     fs.writeFile "#{settings.localeDest}/#{locale}.json", json, (err) ->

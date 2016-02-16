@@ -244,28 +244,28 @@ exports = module.exports = (settings) ->
       asyncTasks = []
       ret = []
 
-      #! Files uploads that have only one file, get passed as an object, so we
-      #! recast it into an array to avoid breaking our iterators..
+      # Files uploads that have only one file, get passed as an object, so we
+      # recast it into an array to avoid breaking our iterators..
       if not files.length? then files = [files]
 
-      #! Avoid reading empty file uploads.
+      # Avoid reading empty file uploads.
       if files.length is 0 then return Promise.resolve []
 
-      #! Find if there is any file prefix set (used to rename images under
-      #! a classified's id).
+      # Find if there is any file prefix set (used to rename images under
+      # a classified's id).
       if options.prefix then prefix = "#{options.prefix}-"
       else prefix = ""
 
-      #! Start iterating through each file
+      # Start iterating through each file
       for file in files
-        #! First, check if the file is valid or not
+        # First, check if the file is valid or not
         isValid = validate file
 
-        #! Then check if we have exceed our files per classified limit. If
-        #! so then mark all files, starting from this file onwards as invalid
+        # Then check if we have exceed our files per classified limit. If
+        # so then mark all files, starting from this file onwards as invalid
         if asyncTasks.length >= MAX_FILES_PER_UPLOAD then isValid = false
 
-        #! Add a task to operate on this file
+        # Add a task to operate on this file
         newFilename = "#{prefix}#{_createUniqueFilename file.path}"
         uploadPath = "#{uploadDir}/#{newFilename}"
         asyncTasks.push
@@ -274,22 +274,22 @@ exports = module.exports = (settings) ->
           newPath: path.normalize uploadPath
           oldPath: file.path
 
-        #! If the file is valid, then call the dominant color fn;
+        # If the file is valid, then call the dominant color fn;
         dominantColor = if isValid then _getDominantColor file.path
 
-        #! Add the file into our list of processed files.
+        # Add the file into our list of processed files.
         ret.push
           color: dominantColor
           isUploaded: isValid
           newFilename: newFilename
           oldFilename: file.name
 
-      #! Perform file operations to move the file from the temporary storage
-      #! into the public uploads folder.
+      # Perform file operations to move the file from the temporary storage
+      # into the public uploads folder.
       operate asyncTasks
 
-      #! Once the files have been saved, we resolve our promise with the list of
-      #! images.
+      # Once the files have been saved, we resolve our promise with the list of
+      # images.
       .then -> ret
 
 
@@ -308,20 +308,20 @@ exports = module.exports = (settings) ->
     ###
     delete: (files) -> new Promise (resolve, reject) ->
       asyncJob = (filepath, cb) ->
-        #! Prepare the functions to remove the files
+        # Prepare the functions to remove the files
         removeImage = (cb) -> fs.unlink "#{uploadDir}/#{filepath}", cb
         removeThumbnail = (cb) -> fs.unlink "#{thumbsDir}/#{filepath}", cb
 
-        #! create the async job that will remove the files. Because we don't
-        #! expect to have any other errors than OS related errors, we wrap this
-        #! job inside async's retry.
+        # create the async job that will remove the files. Because we don't
+        # expect to have any other errors than OS related errors, we wrap this
+        # job inside async's retry.
         retryJob = (cb) -> async.parallel [removeImage, removeThumbnail], cb
 
-        #! Attempt the remove the files while retrying for 3 times on any error.
+        # Attempt the remove the files while retrying for 3 times on any error.
         async.retry 3, retryJob, cb
 
-      #! For each file in the list, attempt to remove it's thumbnail and main
-      #! image.
+      # For each file in the list, attempt to remove it's thumbnail and main
+      # image.
       async.each files, asyncJob, (error, result) ->
         if error then reject error
         else resolve result
