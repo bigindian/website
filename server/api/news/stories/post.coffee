@@ -137,7 +137,7 @@ createThumbnail = (story, uploadDir) ->
     setTimeout (-> resolve story), 10 * 1000
 
 
-Controller = module.exports = (Settings, Story, StoryExistsError) ->
+Controller = module.exports = (Settings, Story, StoryExistsError, CantScrapeStoryError) ->
   validateStory = (story={}) ->
     story.url = normalizeUrl story.url
 
@@ -158,9 +158,20 @@ Controller = module.exports = (Settings, Story, StoryExistsError) ->
       fetchInformationWithBoilerplate story.url
       .catch (e) -> fetchInformationWithRead story.url ###
       fetchInformationWithRead story.url
-
       .then (info) ->
         _.extendOwn story, info
+
+        # Sometimes the title goes missing. We can't have that! So we return an
+        # error.
+        if not story.title? or story.title.length < 5
+          throw new CantScrapeStoryError
+
+        # If the story is coming from a news feed, then we want both an excerpt
+        # and an image!
+        if story.is_feed
+          if not story.excerpt? or story.excerpt.length < 5 or
+          not story.image_url?
+            throw new CantScrapeStoryError
 
         if not story.image_url? then return story.save()
 
@@ -169,11 +180,10 @@ Controller = module.exports = (Settings, Story, StoryExistsError) ->
 
       .catch (e) ->
         # Delete the story and show an error.
+        story.remove()
         throw e
 
-    .then ((story) -> response.json story), (e) ->
-      console.trace e
-      next e
+    .then ((story) -> response.json story), (e) -> next e
 
 
 Controller["@middlewares"] = ["CheckCaptcha"]
@@ -181,6 +191,7 @@ Controller["@require"] = [
   "igloo/settings"
   "models/news/story"
   "libraries/errors/StoryExistsError"
+  "libraries/errors/CantScrapeStoryError"
 ]
 Controller["@routes"] = ["/news/stories"]
 Controller["@singleton"] = true
