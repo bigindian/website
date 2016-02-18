@@ -5,6 +5,7 @@ Schema           = (require "mongoose").Schema
 Model = module.exports = (Mongoose) ->
   schema = new Schema
     uid: type: String, index: true
+    is_moderator: Boolean
     created_at: type: Date, default: Date.now, index: true
 
   schema.plugin findOrCreate
