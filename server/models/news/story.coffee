@@ -50,6 +50,10 @@ Model = module.exports = (Elasticsearch, Mongoose, User) ->
 
     clicks_count: type: Number, default: 1
     comments_count: type: Number, default: 1
+
+    # TODO: remove bot clicks once there is enough traffic on the server.
+    bot_clicks_count: type: Number, default: 1
+
     is_banned: type: Boolean, default: false
     is_expired: type: Boolean, default: false
     is_from_feed: Boolean
@@ -83,7 +87,7 @@ Model = module.exports = (Elasticsearch, Mongoose, User) ->
     createdDate = Number new Date(@created_at).getTime() or Date.now()
 
     # Calculate the score of the clicks
-    clickScore = (@clicks_count or 1) * CLICKS_WEIGHT
+    clickScore = (@clicks_count or 1 - @bot_clicks_count) * CLICKS_WEIGHT
 
     # Calculate the score of the comments
     commentsScore = (@comments_count or 0) * COMMENTS_WEIGHT

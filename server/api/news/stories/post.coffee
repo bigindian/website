@@ -171,7 +171,7 @@ Controller = module.exports = (Settings, Story, StoryExistsError, CantScrapeStor
 
         # If the story is coming from a news feed, then we want both an excerpt
         # and an image!
-        if story.is_feed or true
+        if story.is_feed
           if not story.excerpt? or story.excerpt.length < 5
             throw new CantScrapeStoryError "no excerpt"
           if not story.image_url?
