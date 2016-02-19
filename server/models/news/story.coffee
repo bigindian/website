@@ -18,9 +18,10 @@ Model = module.exports = (Elasticsearch, Mongoose, User) ->
   # given while calculating a story's score.
   #
   # As the site grows, make ACTIVITY_WEIGHT go lower (0.5).
-  COMMENTS_WEIGHT = 0.5
-  CLICKS_WEIGHT = 1
-  ACTIVITY_WEIGHT = 1
+  COMMENTS_WEIGHT = 50.0
+  CLICKS_WEIGHT = 1.0
+  SHARE_WEIGHT = 50.0
+  ACTIVITY_WEIGHT = 1.0
 
   # **FEED_PUNISH** is a special function that punishes the hotness of feed
   # stories
@@ -50,6 +51,7 @@ Model = module.exports = (Elasticsearch, Mongoose, User) ->
 
     clicks_count: type: Number, default: 1
     comments_count: type: Number, default: 1
+    share_count: type: Number, default: 1
 
     # TODO: remove bot clicks once there is enough traffic on the server.
     bot_clicks_count: type: Number, default: 1
@@ -89,11 +91,14 @@ Model = module.exports = (Elasticsearch, Mongoose, User) ->
     # Calculate the score of the clicks
     clickScore = ((@clicks_count or 1) - @bot_clicks_count) * CLICKS_WEIGHT
 
+    # Calculate the score of the shares
+    shareScore = (@share_count or 1) * SHARE_WEIGHT
+
     # Calculate the score of the comments
     commentsScore = (@comments_count or 0) * COMMENTS_WEIGHT
 
     # Calculate the activity's score
-    activityScore = (clickScore + commentsScore) * ACTIVITY_WEIGHT * 1.0
+    activityScore = (clickScore + commentsScore + shareScore) * ACTIVITY_WEIGHT
 
     # Now using the log function (which is really nice because it evens out
     # activity after a bunch of comments and clicks), calculate the number of

@@ -4,7 +4,11 @@ Controller = module.exports = (Story) ->
     .exec (error, story) ->
       if not story? then return do next
 
+      story.clicks_count ?= 0
       story.clicks_count += 1
+
+      story.share_count ?= 0
+      story.share_count += 1
       story.save()
 
       response.redirect story.url
