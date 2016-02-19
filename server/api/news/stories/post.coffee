@@ -11,6 +11,12 @@ read          = require "node-readability"
 slug          = require "slug"
 # Boilerpipe    = require "boilerpipe"
 
+
+IMAGE_MIN_AREA = 300 * 300
+IMAGE_MAXSIZE_THUMB = 400 # 400px x 400px
+EXCERPT_LENGTH = 500
+
+
 ###
 **getExtension()** Returns the extension of the given filename.
 ###
@@ -33,12 +39,7 @@ getDominantColor = (filepath) ->
   rgbToHex thief.getColor filepath
 
 
-IMAGE_MAXSIZE_THUMB = 400 # 400px x 400px
-
-
-excerptify = (text="") ->
-  EXCERPT_LENGTH = 500
-  text.substr 0, text.lastIndexOf " ", EXCERPT_LENGTH
+excerptify = (text="") -> text.substr 0, text.lastIndexOf " ", EXCERPT_LENGTH
 
 
 ###
@@ -65,7 +66,7 @@ fetchInformationWithBoilerplate = (url) -> new Promise (resolve, reject) ->
 
       if images.length > 0
         for image in images
-          if image.area > 300 * 300 then return resolve image.src
+          if image.area > IMAGE_MIN_AREA then return resolve image.src
 
       resolve null
 
