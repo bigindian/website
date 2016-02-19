@@ -42,7 +42,7 @@ Model = module.exports = (Elasticsearch, Mongoose, User) ->
 
   schema = new Schema
     title: String
-    story_html: String
+    # story_html: String
     excerpt: String
 
     hotness: type: Number, index: true
@@ -87,7 +87,7 @@ Model = module.exports = (Elasticsearch, Mongoose, User) ->
     createdDate = Number new Date(@created_at).getTime() or Date.now()
 
     # Calculate the score of the clicks
-    clickScore = (@clicks_count or 1 - @bot_clicks_count) * CLICKS_WEIGHT
+    clickScore = ((@clicks_count or 1) - @bot_clicks_count) * CLICKS_WEIGHT
 
     # Calculate the score of the comments
     commentsScore = (@comments_count or 0) * COMMENTS_WEIGHT
