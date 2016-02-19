@@ -25,31 +25,39 @@ fetchInformationWithRead = (url) -> new Promise (resolve, reject) ->
     resolve text
 
 
-blah = (text="") ->
-  words = (new (pos.Lexer)).lex text.toLowerCase()
+getKeywords = (text="") ->
   tagger = new pos.Tagger
-  taggedWords = tagger.tag words
-
   selected = {}
 
-  for taggedWord in taggedWords
+  # First get all the words.
+  words = (new (pos.Lexer)).lex text.toLowerCase()
+
+  # Tag the words and iterate through each of them.
+  for taggedWord in tagger.tag words
     word = taggedWord[0]
     tag = taggedWord[1]
 
-    if tag in ["NN", "NNP", "NNPS"] and /^[a-z0-9]{2,}$/.test word
+    # Regex to test the word against. This ensures that we take in only words
+    # with only alphanumeric characters and have min. two characters.
+    wordRegex = /^[a-z0-9]{2,}$/
+
+    # Pick out only nouns and words that match our regex above.
+    if tag in ["NN", "NNP", "NNPS"] and wordRegex.test word
       selected[word] ?= count: 0
       selected[word].count += 1
       selected[word].tag = tag
       selected[word].word = word
 
-
+  # Reject nouns that have occured less than once
   selected = _.reject selected, (word) -> word.count <= 1
-  console.log _.sortBy selected, (word) -> word.count
+
+  # Sort the nouns and return!
+  _.sortBy selected, (word) -> word.count
 
 
 Controller = module.exports = (settings) ->
   # fetchInformationWithRead "http://yourstory.com/2016/02/uncool-non_tech-company-era/"
-  # .then blah
+  # .then getKeywords
 
   (request, response, next) ->
     data =
