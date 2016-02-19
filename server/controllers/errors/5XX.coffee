@@ -8,6 +8,8 @@ Controller = module.exports = (settings) ->
     response.status error.status or 500
     isProduction = settings.server.env == "production"
 
+    if not isProduction then console.error error
+
     # For API request just return a JSON version of the message
     if request.url.indexOf("/api") > -1
       return response.json error: error.message, details: error.details
@@ -30,7 +32,7 @@ Controller = module.exports = (settings) ->
     # In production, no stack-traces leaked to user
     if isProduction then error.stack = null
 
-    # In development, display the error on console
+    # In development, display the error using ouch
     else return ouchInstance.handleException error, request, response
 
 

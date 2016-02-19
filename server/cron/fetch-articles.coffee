@@ -12,6 +12,7 @@ Cron = module.exports = (IoC, Settings, Feed) ->
 
   MAX_ARTICLES_PER_FEED = 10
   TIMELIMIT_PER_FEED = 5 * 1000
+  MAX_ARTICLES_TO_SUBMIT = 5
 
 
   job = ->
@@ -53,7 +54,7 @@ Cron = module.exports = (IoC, Settings, Feed) ->
       .finally ->
         logger.info name, "collected #{links.length} links from #{feeds.length} feeds"
 
-        sampleLinks = _.sample links, _.random 3, 10
+        sampleLinks = _.sample links, _.random 0, MAX_ARTICLES_TO_SUBMIT
         logger.info name, "picked #{sampleLinks.length} sample links"
 
         Promise.each sampleLinks, publishLink

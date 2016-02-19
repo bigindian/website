@@ -9,7 +9,7 @@ Initializer = module.exports = (IoC, settings) ->
   # Start initializing the different cron scripts we have..
   # backupDatabase = IoC.create "cron/backup-database"
   clearCache = IoC.create "cron/clear-cache"
-  # fetchNews = IoC.create "cron/fetch-articles"
+  fetchArticles = IoC.create "cron/fetch-articles"
   # emailReport = IoC.create "cron/email-report"
   # deleteBadUsers = IoC.create "cron/delete-bad-users"
   # expireClassifieds = IoC.create "cron/expire-classifieds"
@@ -29,7 +29,7 @@ Initializer = module.exports = (IoC, settings) ->
   ###
   cronHourly = ->
     logger.info name, "running hourly cron scripts"
-    clearCache()
+    do clearCache
 
 
   ###
@@ -40,10 +40,19 @@ Initializer = module.exports = (IoC, settings) ->
     # backupDatabase()
 
 
+  ###
+    This function runs everyday in 6 hour intervals.
+  ###
+  cronQuarterly = ->
+    logger.info name, "running quarterly cron scripts"
+    do fetchArticles
+
+
   # Setup the cron tasks
-  new cronJob "0  0    *  *  *  *", cronHourly, null, true, "Asia/Kuwait"
-  new cronJob "0  0    1  *  *  5", cronWeekly, null, true, "Asia/Kuwait"
-  new cronJob "0  0    21 *  *  *", cronDaily,  null, true, "Asia/Kuwait"
+  new cronJob "0  0  *   *  *  *", cronHourly,     null, true, "Asia/Kuwait"
+  new cronJob "0  0  1   *  *  5", cronWeekly,     null, true, "Asia/Kuwait"
+  new cronJob "0  0  21  *  *  *", cronDaily,      null, true, "Asia/Kuwait"
+  new cronJob "0  0  */6 *  *  *", cronQuarterly,  null, true, "Asia/Kuwait"
 
 
 Initializer["@require"]  =[

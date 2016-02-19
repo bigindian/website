@@ -9,6 +9,7 @@ htmlToText    = require "html-to-text"
 normalizeUrl  = require "normalize-url"
 read          = require "node-readability"
 slug          = require "slug"
+url           = require "url"
 # Boilerpipe    = require "boilerpipe"
 
 
@@ -42,43 +43,43 @@ getDominantColor = (filepath) ->
 excerptify = (text="") -> text.substr 0, text.lastIndexOf " ", EXCERPT_LENGTH
 
 
-###
-**fetchInformation()** Gets information about the given URL and returns a
-JSON which can be used for initializing the story.
-###
-fetchInformationWithBoilerplate = (url) -> new Promise (resolve, reject) ->
-  boilerpipe = new Boilerpipe
-    extractor: Boilerpipe.Extractor.Article
-    url: url
+# ###
+# **fetchInformation()** Gets information about the given URL and returns a
+# JSON which can be used for initializing the story.
+# ###
+# fetchInformationWithBoilerplate = (url) -> new Promise (resolve, reject) ->
+#   boilerpipe = new Boilerpipe
+#     extractor: Boilerpipe.Extractor.Article
+#     url: url
 
-  textPromise = new Promise (resolve, reject) ->
-    boilerpipe.getText (error, text="") ->
-      if error then reject error
-      resolve excerptify text
+#   textPromise = new Promise (resolve, reject) ->
+#     boilerpipe.getText (error, text="") ->
+#       if error then reject error
+#       resolve excerptify text
 
-  htmlPromise = new Promise (resolve, reject) ->
-    boilerpipe.getHtml (error, html) ->
-      if error then reject error else return resolve html
+#   htmlPromise = new Promise (resolve, reject) ->
+#     boilerpipe.getHtml (error, html) ->
+#       if error then reject error else return resolve html
 
-  imagesPromise = new Promise (resolve, reject) ->
-    boilerpipe.getImages (error, images=[]) ->
-      if error then resolve null
+#   imagesPromise = new Promise (resolve, reject) ->
+#     boilerpipe.getImages (error, images=[]) ->
+#       if error then resolve null
 
-      if images.length > 0
-        for image in images
-          if image.area > IMAGE_MIN_AREA then return resolve image.src
+#       if images.length > 0
+#         for image in images
+#           if image.area > IMAGE_MIN_AREA then return resolve image.src
 
-      resolve null
+#       resolve null
 
 
-  Promise.props
-    excerpt: textPromise
-    image_url: imagesPromise
-    story_html: htmlPromise
-  .then (values) ->
-    values.words_count = values.excerpt.split(" ").length
-    resolve values
-  .catch (error) -> reject error
+#   Promise.props
+#     excerpt: textPromise
+#     image_url: imagesPromise
+#     story_html: htmlPromise
+#   .then (values) ->
+#     values.words_count = values.excerpt.split(" ").length
+#     resolve values
+#   .catch (error) -> reject error
 
 
 fetchInformationWithRead = (url) -> new Promise (resolve, reject) ->
@@ -86,9 +87,6 @@ fetchInformationWithRead = (url) -> new Promise (resolve, reject) ->
     if error then return reject error
 
     if not article.title? then return reject new Error "no title"
-
-    #! Replace title with regex from DB
-    title = article.title.replace /[|].*/, ""
 
     text = htmlToText.fromString article.content,
       hideLinkHrefIfSameAsText: true
@@ -100,7 +98,7 @@ fetchInformationWithRead = (url) -> new Promise (resolve, reject) ->
         excerpt: excerptify text
         image_url: meta.image
         story_html: article.content
-        title: title
+        title: article.title
         words_count: text.split(" ").length
 
 
@@ -140,7 +138,7 @@ createThumbnail = (story, uploadDir) ->
     setTimeout (-> resolve story), 10 * 1000
 
 
-Controller = module.exports = (Settings, Story, StoryExistsError, CantScrapeStoryError) ->
+Controller = module.exports = (Settings, Story, Domain, StoryExistsError, CantScrapeStoryError) ->
   validateStory = (story={}) ->
     story.url = normalizeUrl story.url
 
@@ -150,12 +148,30 @@ Controller = module.exports = (Settings, Story, StoryExistsError, CantScrapeStor
       story
 
 
+  fixTitle = (story) -> new Promise (resolve) ->
+    story_url = url.parse story.url or ""
+    hostname = story_url.hostname
+
+    if hostname?
+      Domain.findOrCreate domain: hostname, (error, model) ->
+        if error then return resolve story
+
+        if not story.is_from_feed
+          model.last_title = story.title
+          model.save()
+
+        if model.title_remove_regex?
+          regex = new RegExp model.title_remove_regex
+          story.title = story.title.replace regex, ""
+          resolve story.save()
+        else resolve story
+    else resolve story
+
+
   (request, response, next) ->
     validateStory request.body
     .then (story) -> Story.create story
     .then (story) ->
-
-
       ### # Attempt to read the story with Boilerplate first, if that fails then
       # with Readability.
       fetchInformationWithBoilerplate story.url
@@ -171,12 +187,15 @@ Controller = module.exports = (Settings, Story, StoryExistsError, CantScrapeStor
 
         # If the story is coming from a news feed, then we want both an excerpt
         # and an image!
-        if story.is_feed
+        if story.is_from_feed
           if not story.excerpt? or story.excerpt.length < 5
             throw new CantScrapeStoryError "no excerpt"
           if not story.image_url?
             throw new CantScrapeStoryError "no image"
 
+        fixTitle story
+
+      .then (story) ->
         if not story.image_url? then return story.save()
 
         createThumbnail story, "#{Settings.publicDir}/uploads"
@@ -194,6 +213,7 @@ Controller["@middlewares"] = ["CheckCaptcha"]
 Controller["@require"] = [
   "igloo/settings"
   "models/news/story"
+  "models/news/domain"
   "libraries/errors/StoryExistsError"
   "libraries/errors/CantScrapeStoryError"
 ]
