@@ -10,7 +10,7 @@ Controller = module.exports = (settings) ->
 
     # For API request just return a JSON version of the message
     if request.url.indexOf("/api") > -1
-      return response.json error: error.message
+      return response.json error: error.message, details: error.details
 
     # Redirect 401s to the login page..
     if error.status is 401

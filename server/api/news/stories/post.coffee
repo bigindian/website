@@ -86,6 +86,8 @@ fetchInformationWithRead = (url) -> new Promise (resolve, reject) ->
     if error then return reject error
 
     if not article.title? then return reject new Error "no title"
+
+    #! Replace title with regex from DB
     title = article.title.replace /[|].*/, ""
 
     text = htmlToText.fromString article.content,
@@ -96,10 +98,10 @@ fetchInformationWithRead = (url) -> new Promise (resolve, reject) ->
     onMetaInspectFinish = (meta={}) ->
       resolve
         excerpt: excerptify text
-        story_html: article.content
         image_url: meta.image
-        words_count: text.split(" ").length
+        story_html: article.content
         title: title
+        words_count: text.split(" ").length
 
 
     client = new MetaInspector url
@@ -165,14 +167,15 @@ Controller = module.exports = (Settings, Story, StoryExistsError, CantScrapeStor
         # Sometimes the title goes missing. We can't have that! So we return an
         # error.
         if not story.title? or story.title.length < 5
-          throw new CantScrapeStoryError
+          throw new CantScrapeStoryError "no title"
 
         # If the story is coming from a news feed, then we want both an excerpt
         # and an image!
-        if story.is_feed
-          if not story.excerpt? or story.excerpt.length < 5 or
-          not story.image_url?
-            throw new CantScrapeStoryError
+        if story.is_feed or true
+          if not story.excerpt? or story.excerpt.length < 5
+            throw new CantScrapeStoryError "no excerpt"
+          if not story.image_url?
+            throw new CantScrapeStoryError "no image"
 
         if not story.image_url? then return story.save()
 

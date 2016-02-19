@@ -1,9 +1,10 @@
 exports = module.exports = (IoC) ->
-  CantScrapeStoryError = ->
+  CantScrapeStoryError = (details) ->
     Error.captureStackTrace this, @constructor
-    this.name = @constructor.name
-    this.message = "CantScrapeStoryError"
-    this.status = 400
+    @name = @constructor.name
+    @message = "CantScrapeStoryError"
+    @details = details
+    @status = 400
 
   require("util").inherits CantScrapeStoryError, Error
   CantScrapeStoryError
