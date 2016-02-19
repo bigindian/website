@@ -18,6 +18,9 @@ Controller = module.exports = (Settings, Story, Report) ->
 
       story.save() # Do some special algo stuff here
 
+      # If it was sent from an Android device, then log that!
+      if request.android? then report.created_by_android = request.android._id
+
       Report.create report
     .then ((report) -> response.json report), (e) -> next e
 

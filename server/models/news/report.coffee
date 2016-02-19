@@ -13,6 +13,7 @@ Model = module.exports = (Elasticsearch, Mongoose, User) ->
     story: type: Schema.Types.ObjectId, ref: "Story"
 
     created_by: type: Schema.Types.ObjectId, ref: "User"
+    created_by_android: type: Schema.Types.ObjectId, ref: "Android"
     created_at: type: Date, default: Date.now, index: true
   schema.plugin mongoosePaginate
 
