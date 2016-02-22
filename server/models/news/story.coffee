@@ -14,8 +14,8 @@ Model = module.exports = (Elasticsearch, Mongoose, User) ->
   # **RECENT_DAYS** Days a story is considered recent, for resubmitting
   RECENT_DAYS = 30
 
-  # **COOMENTS_WEIGHT**, **CLICKS_WEIGHT**, **ACTIVITY_WEIGHT** are weights
-  # given while calculating a story's score.
+  # **COMMENTS_WEIGHT**, **SHARE_WEIGHT**, **CLICKS_WEIGHT**,
+  # **ACTIVITY_WEIGHT** are weights given while calculating a story's score.
   #
   # As the site grows, make ACTIVITY_WEIGHT go lower (0.5).
   COMMENTS_WEIGHT = 50.0
@@ -25,7 +25,7 @@ Model = module.exports = (Elasticsearch, Mongoose, User) ->
 
   # **FEED_PUNISH** is a special function that punishes the hotness of feed
   # stories
-  FEED_PUNISH = (hotness) -> hotness - 5
+  FEED_PUNISH = (hotness) -> hotness - 2
 
   # **CREATION_WINDOW** The window variable is used narrow down how effective
   # the creation date is when the post's hotness is calculated. A smaller window
