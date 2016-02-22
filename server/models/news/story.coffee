@@ -49,9 +49,9 @@ Model = module.exports = (Elasticsearch, Mongoose, User) ->
     hotness: type: Number, index: true
     activity_hotness: Number
 
-    clicks_count: type: Number, default: 1
-    comments_count: type: Number, default: 1
-    share_count: type: Number, default: 1
+    clicks_count: type: Number, default: 0
+    comments_count: type: Number, default: 0
+    share_count: type: Number, default: 0
 
     # TODO: remove bot clicks once there is enough traffic on the server.
     bot_clicks_count: type: Number, default: 1
